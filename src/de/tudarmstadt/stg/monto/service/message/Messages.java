@@ -7,17 +7,22 @@ public class Messages {
     public static VersionMessage getVersionMessage(List<Message> messages) {
         if (messages == null)
             throw new IllegalArgumentException("Message list was null");
-        messages.stream()
+        VersionMessage versionMessage = messages.stream()
                 .filter(msg -> msg instanceof VersionMessage)
                 .findFirst()
-                .map(msg -> (VersionMessage) msg);
-        throw new IllegalArgumentException("VersionMessage missing");
+                .map(msg -> {
+                    return (VersionMessage) msg;
+                }).get();
+        if (versionMessage == null) {
+            throw new IllegalArgumentException("VersionMessage missing");
+        }
+        return versionMessage;
     }
 
     public static ProductMessage getProductMessage(List<Message> messages, Product product, Language language) {
         if (messages == null)
             throw new IllegalArgumentException("Message list was null");
-        messages.stream()
+        ProductMessage productMessage = messages.stream()
                 .filter(msg -> {
                     if (msg instanceof ProductMessage) {
                         ProductMessage msg1 = (ProductMessage) msg;
@@ -26,7 +31,10 @@ public class Messages {
                         return false;
                     }
                 }).findAny()
-                .map(msg -> (ProductMessage) msg);
-        throw new IllegalArgumentException(String.format("ProductMessage missing: %s, %s", product, language));
+                .map(msg -> (ProductMessage) msg).get();
+        if (productMessage == null) {
+            throw new IllegalArgumentException(String.format("ProductMessage missing: %s, %s", product, language));
+        }
+        return productMessage;
     }
 }

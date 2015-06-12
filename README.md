@@ -5,7 +5,7 @@ This project contains base classes for creating new services for the [monto brok
 
 Creating your own services
 --------------------------
-1. Import the jar library located in the `dist` folder or the sources into your project
+1. Import the jar library located in the `dist` and in the `lib` folder
 2. Create a class for each service that extends the class `de.tudarmstadt.stg.monto.service.MontoService`
 3. Override `ProductMessage onMessage(List<Message> messages)` which should handle Version Message requests sent from the broker and return a Product Message to the broker
 4. Instantiate your class and provide it the address and the zeromq context.
