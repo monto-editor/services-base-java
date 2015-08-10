@@ -19,7 +19,6 @@ public class VersionMessages {
     @SuppressWarnings("unchecked")
     public static VersionMessage decode(JSONObject message) throws ParseException {
         try {
-            final long start = System.nanoTime();
             final LongKey id = new LongKey((Long) message.get("version_id"));
             final Source source = new Source((String) message.get("source"));
             final Language language = new Language((String) message.get("language"));
