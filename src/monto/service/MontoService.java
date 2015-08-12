@@ -7,6 +7,7 @@ import org.json.simple.JSONValue;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
+import org.zeromq.ZMQException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,9 +74,11 @@ public abstract class MontoService implements Runnable {
                         socket.send(ProductMessages.encode(onMessage(decodedMessages)).toJSONString());
                     }
                     thread.sleep(100);
-                } catch (Exception e) {
+                } catch (ZMQException e) {
                     e.printStackTrace();
                     break;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         } else {
