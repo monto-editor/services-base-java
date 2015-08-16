@@ -12,15 +12,16 @@ import org.zeromq.ZMQException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Template for a monto service.
+ */
 public abstract class MontoService implements Runnable {
 
     private ZContext context;
-    private Socket socket;
     private Socket registrationSocket;
     private Thread thread;
     private String address;
-    private int port;
-    private int registrationPort;
+    private String registrationAddress;
     private volatile boolean running;
 
     private volatile String serviceID;
@@ -28,10 +29,20 @@ public abstract class MontoService implements Runnable {
     private volatile Product product;
     private volatile String[] dependencies;
 
-    public MontoService(ZContext context, String address, int registrationPort, String serviceID, Product product, Language language, String[] dependencies) {
+    /**
+     * Template for a monto service.
+     * @param context
+     * @param address address of the service without port, e.g. "tcp://*"
+     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
+     * @param serviceID
+     * @param product
+     * @param language
+     * @param dependencies
+     */
+    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, Product product, Language language, String[] dependencies) {
         this.context = context;
         this.address = address;
-        this.registrationPort = registrationPort;
+        this.registrationAddress = registrationAddress;
         this.serviceID = serviceID;
         this.language = language;
         this.product = product;
@@ -46,17 +57,17 @@ public abstract class MontoService implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("registering: " + serviceID + " on " + address + registrationPort);
+        System.out.println("registering: " + serviceID + " on " + registrationAddress);
         registrationSocket = context.createSocket(ZMQ.REQ);
-        registrationSocket.connect(address + registrationPort);
+        registrationSocket.connect(registrationAddress);
         registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, language, product, dependencies)).toJSONString());
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
         if (decodedResponse.getRespondToServiceID().equals(serviceID) && decodedResponse.getResponse().equals("ok")) {
-            port = decodedResponse.getBindOnPort();
-            System.out.println("registered: " + serviceID + ", connecting on " + address + port);
-            socket = context.createSocket(ZMQ.PAIR);
-            socket.connect(address + port);
+            int port = decodedResponse.getBindOnPort();
+            System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
+            Socket socket = context.createSocket(ZMQ.PAIR);
+            socket.connect(address + ":" + port);
             System.out.println("connected: " + serviceID);
             while (running) {
                 JSONArray messages;
@@ -73,7 +84,7 @@ public abstract class MontoService implements Runnable {
                         }
                         socket.send(ProductMessages.encode(onMessage(decodedMessages)).toJSONString());
                     }
-                    thread.sleep(100);
+                    thread.sleep(1);
                 } catch (ZMQException e) {
                     e.printStackTrace();
                     break;
@@ -96,6 +107,13 @@ public abstract class MontoService implements Runnable {
         System.out.println("terminated: " + serviceID);
     }
 
+    /**
+     * This method is called by the run method.
+     * It handles the messages that are received from the broker and determines the response back to the broker.
+     * @param messages
+     * @return
+     * @throws Exception
+     */
     public abstract ProductMessage onMessage(List<Message> messages) throws Exception;
 
     public synchronized String getServiceID() {
