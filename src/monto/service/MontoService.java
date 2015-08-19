@@ -19,7 +19,6 @@ public abstract class MontoService implements Runnable {
 
     private ZContext context;
     private Socket registrationSocket;
-    private Thread thread;
     private String address;
     private String registrationAddress;
     private volatile boolean running;
@@ -51,7 +50,7 @@ public abstract class MontoService implements Runnable {
     }
 
     public void start() {
-        thread = new Thread(this);
+        Thread thread = new Thread(this);
         thread.start();
     }
 
@@ -63,7 +62,7 @@ public abstract class MontoService implements Runnable {
         registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, language, product, dependencies)).toJSONString());
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
-        if (decodedResponse.getRespondToServiceID().equals(serviceID) && decodedResponse.getResponse().equals("ok")) {
+        if (decodedResponse.getResponse().equals("ok")) {
             int port = decodedResponse.getBindOnPort();
             System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
             Socket socket = context.createSocket(ZMQ.PAIR);
@@ -84,7 +83,7 @@ public abstract class MontoService implements Runnable {
                         }
                         socket.send(ProductMessages.encode(onMessage(decodedMessages)).toJSONString());
                     }
-                    thread.sleep(1);
+                    Thread.sleep(1);
                 } catch (ZMQException e) {
                     e.printStackTrace();
                     break;
@@ -93,7 +92,7 @@ public abstract class MontoService implements Runnable {
                 }
             }
         } else {
-            System.out.println("could not register service " + serviceID + ": " + decodedResponse.getResponse());
+            System.out.printf("could not register service %s: %s%n", serviceID, decodedResponse.getResponse());
         }
     }
 

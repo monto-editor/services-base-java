@@ -2,18 +2,12 @@ package monto.service.message;
 
 public class RegisterServiceResponse {
 
-    private final String respondToServiceID;
     private final String response;
     private final int bindOnPort;
 
-    public RegisterServiceResponse(String respondToServiceID, String response, int bindOnPort) {
-        this.respondToServiceID = respondToServiceID;
+    public RegisterServiceResponse(String response, int bindOnPort) {
         this.response = response;
         this.bindOnPort = bindOnPort;
-    }
-
-    public String getRespondToServiceID() {
-        return respondToServiceID;
     }
 
     public String getResponse() {
