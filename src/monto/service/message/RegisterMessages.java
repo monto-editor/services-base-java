@@ -9,6 +9,8 @@ public class RegisterMessages {
     public static JSONObject encode(RegisterServiceRequest message) {
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("service_id", message.getServiceID());
+        jsonObj.put("label", message.getLabel());
+        jsonObj.put("description", message.getDescription());
         jsonObj.put("language", message.getLanguage().toString());
         jsonObj.put("product", message.getProduct().toString());
         JSONArray dependencies = new JSONArray();

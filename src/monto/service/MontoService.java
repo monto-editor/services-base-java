@@ -24,6 +24,8 @@ public abstract class MontoService implements Runnable {
     private volatile boolean running;
 
     private volatile String serviceID;
+    private volatile String label;
+    private volatile String description;
     private volatile Language language;
     private volatile Product product;
     private volatile String[] dependencies;
@@ -38,11 +40,13 @@ public abstract class MontoService implements Runnable {
      * @param language
      * @param dependencies
      */
-    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, Product product, Language language, String[] dependencies) {
+    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Product product, Language language, String[] dependencies) {
         this.context = context;
         this.address = address;
         this.registrationAddress = registrationAddress;
         this.serviceID = serviceID;
+        this.label = label;
+        this.description = description;
         this.language = language;
         this.product = product;
         this.dependencies = dependencies;
@@ -59,7 +63,7 @@ public abstract class MontoService implements Runnable {
         System.out.println("registering: " + serviceID + " on " + registrationAddress);
         registrationSocket = context.createSocket(ZMQ.REQ);
         registrationSocket.connect(registrationAddress);
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, language, product, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, dependencies)).toJSONString());
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
         if (decodedResponse.getResponse().equals("ok")) {
