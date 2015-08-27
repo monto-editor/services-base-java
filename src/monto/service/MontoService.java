@@ -1,5 +1,6 @@
 package monto.service;
 
+import monto.service.configuration.Configuration;
 import monto.service.message.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,6 +29,7 @@ public abstract class MontoService implements Runnable {
     private volatile String description;
     private volatile Language language;
     private volatile Product product;
+    private volatile List<Configuration> configuration;
     private volatile String[] dependencies;
 
     /**
@@ -49,8 +51,14 @@ public abstract class MontoService implements Runnable {
         this.description = description;
         this.language = language;
         this.product = product;
+        this.configuration = null;
         this.dependencies = dependencies;
         running = true;
+    }
+
+    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Language language, Product product, List<Configuration> configuration, String[] dependencies) {
+        this(context, address, registrationAddress, serviceID, label, description, product, language, dependencies);
+        this.configuration = configuration;
     }
 
     public void start() {
@@ -63,7 +71,7 @@ public abstract class MontoService implements Runnable {
         System.out.println("registering: " + serviceID + " on " + registrationAddress);
         registrationSocket = context.createSocket(ZMQ.REQ);
         registrationSocket.connect(registrationAddress);
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, configuration, dependencies)).toJSONString());
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
         if (decodedResponse.getResponse().equals("ok")) {
