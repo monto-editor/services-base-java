@@ -16,8 +16,8 @@ public class RegisterMessages {
         jsonObject.put("description", message.getDescription());
         jsonObject.put("language", message.getLanguage().toString());
         jsonObject.put("product", message.getProduct().toString());
-        List<Configuration> configuration = message.getConfiguration();
-        if (configuration != null && !configuration.isEmpty()) {
+        Configuration[] configuration = message.getConfiguration();
+        if (configuration != null && !(configuration.length == 0)) {
             JSONArray configuratons = new JSONArray();
             for (Configuration conf : configuration) {
                 configuratons.add(conf.encode());

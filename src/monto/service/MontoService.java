@@ -24,13 +24,13 @@ public abstract class MontoService implements Runnable {
     private String registrationAddress;
     private volatile boolean running;
 
-    private volatile String serviceID;
-    private volatile String label;
-    private volatile String description;
-    private volatile Language language;
-    private volatile Product product;
-    private volatile List<Configuration> configuration;
-    private volatile String[] dependencies;
+    protected volatile String serviceID;
+    protected volatile String label;
+    protected volatile String description;
+    protected volatile Language language;
+    protected volatile Product product;
+    protected volatile Configuration[] configuration;
+    protected volatile String[] dependencies;
 
     /**
      * Template for a monto service.
@@ -56,7 +56,20 @@ public abstract class MontoService implements Runnable {
         running = true;
     }
 
-    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Language language, Product product, List<Configuration> configuration, String[] dependencies) {
+    /**
+     * Template for a monto service with configuration.
+     * @param context
+     * @param address address of the service without port, e.g. "tcp://*"
+     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
+     * @param serviceID
+     * @param label
+     * @param description
+     * @param language
+     * @param product
+     * @param configuration
+     * @param dependencies
+     */
+    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Language language, Product product, Configuration[] configuration, String[] dependencies) {
         this(context, address, registrationAddress, serviceID, label, description, product, language, dependencies);
         this.configuration = configuration;
     }
@@ -141,5 +154,9 @@ public abstract class MontoService implements Runnable {
 
     public synchronized String[] getDependencies() {
         return dependencies;
+    }
+
+    public synchronized Configuration[] getConfiguration() {
+        return configuration;
     }
 }

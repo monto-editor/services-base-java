@@ -11,11 +11,11 @@ public class RegisterServiceRequest {
     private final String description;
     private final Language language;
     private final Product product;
-    private final List<Configuration> configuration;
+    private final Configuration[] configuration;
     private final String[] dependencies;
 
 
-    public RegisterServiceRequest(String serviceID, String label, String description, Language language, Product product, List<Configuration> configuration, String... dependencies) {
+    public RegisterServiceRequest(String serviceID, String label, String description, Language language, Product product, Configuration[] configuration, String... dependencies) {
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
@@ -45,7 +45,7 @@ public class RegisterServiceRequest {
         return product;
     }
 
-    public List<Configuration> getConfiguration() {
+    public Configuration[] getConfiguration() {
         return configuration;
     }
 

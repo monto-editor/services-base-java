@@ -8,9 +8,9 @@ import java.util.List;
 public class OptionGroup implements Configuration {
 
     private String requiredOption;
-    private List<Configuration> members;
+    private Configuration[] members;
 
-    public OptionGroup(String requiredOption, List<Configuration> members) {
+    public OptionGroup(String requiredOption, Configuration[] members) {
         this.requiredOption = requiredOption;
         this.members = members;
     }
@@ -19,7 +19,7 @@ public class OptionGroup implements Configuration {
         return requiredOption;
     }
 
-    public List<Configuration> getMembers() {
+    public Configuration[] getMembers() {
         return members;
     }
 
