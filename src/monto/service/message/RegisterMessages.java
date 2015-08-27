@@ -18,11 +18,11 @@ public class RegisterMessages {
         jsonObject.put("product", message.getProduct().toString());
         Configuration[] configuration = message.getConfiguration();
         if (configuration != null && !(configuration.length == 0)) {
-            JSONArray configuratons = new JSONArray();
+            JSONArray configurations = new JSONArray();
             for (Configuration conf : configuration) {
-                configuratons.add(conf.encode());
+                configurations.add(conf.encode());
             }
-            jsonObject.put("configuration", configuration);
+            jsonObject.put("configuration", configurations.toJSONString());
         }
         JSONArray dependencies = new JSONArray();
         for (String dependency : message.getDependencies()) {
