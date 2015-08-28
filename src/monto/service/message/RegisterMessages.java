@@ -4,8 +4,6 @@ import monto.service.configuration.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.List;
-
 public class RegisterMessages {
 
     @SuppressWarnings("unchecked")
@@ -16,13 +14,13 @@ public class RegisterMessages {
         jsonObject.put("description", message.getDescription());
         jsonObject.put("language", message.getLanguage().toString());
         jsonObject.put("product", message.getProduct().toString());
-        Configuration[] configuration = message.getConfiguration();
-        if (configuration != null && !(configuration.length == 0)) {
-            JSONArray configurations = new JSONArray();
-            for (Configuration conf : configuration) {
-                configurations.add(conf.encode());
+        Option[] options = message.getOptions();
+        if (options != null && !(options.length == 0)) {
+            JSONArray jsonOptions = new JSONArray();
+            for (Option option : options) {
+                jsonOptions.add(option.encode());
             }
-            jsonObject.put("configuration", configurations.toJSONString());
+            jsonObject.put("options", jsonOptions.toJSONString());
         }
         JSONArray dependencies = new JSONArray();
         for (String dependency : message.getDependencies()) {

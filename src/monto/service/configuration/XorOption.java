@@ -5,7 +5,7 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
-public class XorOption extends Option<String> {
+public class XorOption extends AbstractOption<String> {
 
     private List<String> values;
 

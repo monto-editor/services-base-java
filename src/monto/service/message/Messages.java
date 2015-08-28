@@ -37,4 +37,23 @@ public class Messages {
         }
         return productMessage;
     }
+
+    public static ConfigurationMessage getConfigurationMessage(List<Message> messages) {
+        if (messages == null) {
+            throw new IllegalArgumentException("Message list was null");
+        }
+        ConfigurationMessage configurationMessage = messages.stream()
+                .filter(msg -> {
+                    if (msg instanceof  ConfigurationMessage) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }).findAny()
+                .map(msg -> (ConfigurationMessage) msg).get();
+        if (configurationMessage == null) {
+            throw new IllegalArgumentException("ConfigurationMessage missing");
+        }
+        return configurationMessage;
+    }
 }

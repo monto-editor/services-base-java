@@ -34,7 +34,6 @@ public class VersionMessage implements Message {
         return versionId;
     }
 
-    @Override
     public Source getSource() {
         return source;
     }
@@ -43,7 +42,6 @@ public class VersionMessage implements Message {
         return content;
     }
 
-    @Override
     public Language getLanguage() {
         return language;
     }
@@ -52,7 +50,6 @@ public class VersionMessage implements Message {
         return selections;
     }
 
-    @Override
     public List<Dependency> getInvalid() {
         return invalid;
     }

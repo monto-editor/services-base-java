@@ -2,7 +2,7 @@ package monto.service.configuration;
 
 import org.json.simple.JSONObject;
 
-public class TextOption extends Option<String> {
+public class TextOption extends AbstractOption<String> {
 
     private String regularExpression;
 

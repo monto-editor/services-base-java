@@ -1,8 +1,20 @@
 package monto.service.configuration;
 
-import org.json.simple.JSONObject;
+public class Configuration<T> {
 
-public interface Configuration {
+    private String optionID;
+    private T value;
 
-    JSONObject encode();
+    public Configuration(String optionID, T value) {
+        this.optionID = optionID;
+        this.value = value;
+    }
+
+    public String getOptionID() {
+        return optionID;
+    }
+
+    public T getValue() {
+        return value;
+    }
 }

@@ -1,8 +1,6 @@
 package monto.service.message;
 
-import monto.service.configuration.Configuration;
-
-import java.util.List;
+import monto.service.configuration.Option;
 
 public class RegisterServiceRequest {
 
@@ -11,17 +9,17 @@ public class RegisterServiceRequest {
     private final String description;
     private final Language language;
     private final Product product;
-    private final Configuration[] configuration;
+    private final Option[] options;
     private final String[] dependencies;
 
 
-    public RegisterServiceRequest(String serviceID, String label, String description, Language language, Product product, Configuration[] configuration, String... dependencies) {
+    public RegisterServiceRequest(String serviceID, String label, String description, Language language, Product product, Option[] options, String... dependencies) {
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
         this.language = language;
         this.product = product;
-        this.configuration = configuration;
+        this.options = options;
         this.dependencies = dependencies;
     }
 
@@ -45,8 +43,8 @@ public class RegisterServiceRequest {
         return product;
     }
 
-    public Configuration[] getConfiguration() {
-        return configuration;
+    public Option[] getOptions() {
+        return options;
     }
 
     public String[] getDependencies() {

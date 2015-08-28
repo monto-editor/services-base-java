@@ -55,7 +55,6 @@ public class ProductMessage implements Message {
         return contents;
     }
 
-    @Override
     public List<Dependency> getInvalid() {
         return invalid;
     }

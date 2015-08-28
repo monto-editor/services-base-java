@@ -1,6 +1,6 @@
 package monto.service;
 
-import monto.service.configuration.Configuration;
+import monto.service.configuration.Option;
 import monto.service.message.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,7 +29,7 @@ public abstract class MontoService implements Runnable {
     protected volatile String description;
     protected volatile Language language;
     protected volatile Product product;
-    protected volatile Configuration[] configuration;
+    protected volatile Option[] options;
     protected volatile String[] dependencies;
 
     /**
@@ -51,13 +51,13 @@ public abstract class MontoService implements Runnable {
         this.description = description;
         this.language = language;
         this.product = product;
-        this.configuration = null;
+        this.options = null;
         this.dependencies = dependencies;
         running = true;
     }
 
     /**
-     * Template for a monto service with configuration.
+     * Template for a monto service with options.
      * @param context
      * @param address address of the service without port, e.g. "tcp://*"
      * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
@@ -66,12 +66,12 @@ public abstract class MontoService implements Runnable {
      * @param description
      * @param language
      * @param product
-     * @param configuration
+     * @param options
      * @param dependencies
      */
-    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Language language, Product product, Configuration[] configuration, String[] dependencies) {
+    public MontoService(ZContext context, String address, String registrationAddress, String serviceID, String label, String description, Language language, Product product, Option[] options, String[] dependencies) {
         this(context, address, registrationAddress, serviceID, label, description, product, language, dependencies);
-        this.configuration = configuration;
+        this.options = options;
     }
 
     public void start() {
@@ -84,7 +84,7 @@ public abstract class MontoService implements Runnable {
         System.out.println("registering: " + serviceID + " on " + registrationAddress);
         registrationSocket = context.createSocket(ZMQ.REQ);
         registrationSocket.connect(registrationAddress);
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, configuration, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, options, dependencies)).toJSONString());
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
         if (decodedResponse.getResponse().equals("ok")) {
@@ -96,6 +96,7 @@ public abstract class MontoService implements Runnable {
             while (running) {
                 JSONArray messages;
                 String rawMsg;
+                Boolean isConfig = false;
                 try {
                     rawMsg = socket.recvStr(ZMQ.NOBLOCK);
                     if (rawMsg != null && !rawMsg.equals("")) {
@@ -103,10 +104,26 @@ public abstract class MontoService implements Runnable {
                         List<Message> decodedMessages = new ArrayList<>();
                         for (Object object : messages) {
                             JSONObject message = (JSONObject) object;
-                            Message decoded = message.containsKey("product") ? ProductMessages.decode(message) : VersionMessages.decode(message);
-                            decodedMessages.add(decoded);
+                            Message decoded = null;
+                            if (message.containsKey("product")) {
+                                decoded = ProductMessages.decode(message);
+                            } else if (message.containsKey("configurations")){
+                                isConfig = true;
+                                decoded = ConfigurationMessages.decode(message);
+                            } else {
+                                decoded = VersionMessages.decode(message);
+                            }
+                            if (decoded != null) {
+                                decodedMessages.add(decoded);
+                            }
                         }
-                        socket.send(ProductMessages.encode(onMessage(decodedMessages)).toJSONString());
+                        if (isConfig) {
+                            isConfig = false;
+                            onConfigurationMessage(decodedMessages);
+                        } else {
+                            socket.send(ProductMessages.encode(onVersionMessage(decodedMessages)).toJSONString());
+                        }
+
                     }
                     Thread.sleep(1);
                 } catch (ZMQException e) {
@@ -138,7 +155,9 @@ public abstract class MontoService implements Runnable {
      * @return
      * @throws Exception
      */
-    public abstract ProductMessage onMessage(List<Message> messages) throws Exception;
+    public abstract ProductMessage onVersionMessage(List<Message> messages) throws Exception;
+
+    public abstract void onConfigurationMessage(List<Message> messages) throws Exception;
 
     public synchronized String getServiceID() {
         return serviceID;
@@ -156,7 +175,7 @@ public abstract class MontoService implements Runnable {
         return dependencies;
     }
 
-    public synchronized Configuration[] getConfiguration() {
-        return configuration;
+    public synchronized Option[] getOptions() {
+        return options;
     }
 }

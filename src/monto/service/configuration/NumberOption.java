@@ -2,7 +2,7 @@ package monto.service.configuration;
 
 import org.json.simple.JSONObject;
 
-public class NumberOption extends Option<Double> {
+public class NumberOption extends AbstractOption<Double> {
 
     private double from;
     private double to;

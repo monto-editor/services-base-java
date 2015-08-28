@@ -3,14 +3,12 @@ package monto.service.configuration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.List;
-
-public class OptionGroup implements Configuration {
+public class OptionGroup implements Option {
 
     private String requiredOption;
-    private Configuration[] members;
+    private Option[] members;
 
-    public OptionGroup(String requiredOption, Configuration[] members) {
+    public OptionGroup(String requiredOption, Option[] members) {
         this.requiredOption = requiredOption;
         this.members = members;
     }
@@ -19,7 +17,7 @@ public class OptionGroup implements Configuration {
         return requiredOption;
     }
 
-    public Configuration[] getMembers() {
+    public Option[] getMembers() {
         return members;
     }
 
@@ -29,7 +27,7 @@ public class OptionGroup implements Configuration {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("required_option", getRequiredOption());
         JSONArray members = new JSONArray();
-        for (Configuration conf : getMembers()) {
+        for (Option conf : getMembers()) {
             members.add(conf.encode());
         }
         jsonObject.put("members", members);
