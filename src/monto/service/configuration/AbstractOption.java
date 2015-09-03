@@ -39,7 +39,7 @@ public abstract class AbstractOption<T> implements Option {
         jsonObject.put("option_id", getOptionId());
         jsonObject.put("label", getLabel());
         jsonObject.put("type", getType());
-        jsonObject.put("default_value", getDefaultValue().toString());
+        jsonObject.put("default_value", getDefaultValue());
         return jsonObject;
     }
 }

@@ -1,8 +1,8 @@
 package monto.service.configuration;
 
-public class NumberConfiguration extends Configuration<Double> {
+public class NumberConfiguration extends Configuration<Long> {
 
-    public NumberConfiguration(String optionID, Double value) {
+    public NumberConfiguration(String optionID, long value) {
         super(optionID, value);
     }
 }

@@ -2,12 +2,12 @@ package monto.service.configuration;
 
 import org.json.simple.JSONObject;
 
-public class NumberOption extends AbstractOption<Double> {
+public class NumberOption extends AbstractOption<Long> {
 
-    private double from;
-    private double to;
+    private long from;
+    private long to;
 
-    public NumberOption(String optionId, String label, Double defaultValue, double from, double to) {
+    public NumberOption(String optionId, String label, long defaultValue, long from, long to) {
         super(optionId, label, "number", defaultValue);
         this.from = from;
         this.to = to;
