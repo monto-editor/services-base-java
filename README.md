@@ -5,34 +5,36 @@ This project contains base classes for creating new services for the [monto brok
 
 Creating your own services
 --------------------------
-1. Import the jar library located in the `dist` and in the `lib` folder
-2. Create a class for each service that extends the class `de.tudarmstadt.stg.monto.service.MontoService`
-3. Override `ProductMessage onMessage(List<Message> messages)` which should handle Version Message requests sent from the broker and return a Product Message to the broker
-4. Instantiate your class and provide it the address and the zeromq context.
+1. Import the jar libraries located in the `dist` and in the `lib` folder
+2. Create a new class that extends the class `de.tudarmstadt.stg.monto.service.MontoService` for a new service
+3. Override `ProductMessage onVersionMessage(List<Message> messages)` which should handle Version Messages sent from the broker and return a Product Message to the broker
+4. Override `void onConfigurationMessage(List<Message> messages)` which should handle Configuration Messages and set the proper configurations in the service.
 
-Example main using ecmascript/javascript services
+Example main from ecmascript/javascript services
 --------------------------------------
 ```
-String addr = "tcp://localhost:";
+String address = "tcp://*";
+String regAddress = "tcp://*:5004";
+ZContext context = new ZContext(1);
 List<MontoService> services = new ArrayList<>();
-Context context = ZMQ.context(1);
 
 Runtime.getRuntime().addShutdownHook(new Thread() {
 	@Override
-	public void run() {
-        System.out.println("terminating...");
-        context.term();
+    public void run() {
+    	System.out.println("terminating...");
         for (MontoService service : services) {
-			service.stop();
-		}
-		System.out.println("terminated");
-	}
+        	service.stop();
+	    }
+        context.destroy();
+        System.out.println("everything terminated, good bye");
+    }
 });
 
-services.add(new ECMAScriptTokenizer(addr + 5010, context));
-services.add(new ECMAScriptParser(addr + 5011, context));
-services.add(new ECMAScriptOutliner(addr + 5012, context));
-services.add(new ECMAScriptCodeCompletion(addr + 5013, context));
+services.add(new ECMAScriptTokenizer(context, address, regAddress, "ecmascriptTokenizer"));
+services.add(new ECMAScriptParser(context, address, regAddress, "ecmascriptParser"));
+services.add(new ECMAScriptOutliner(context, address, regAddress, "ecmascriptOutliner"));
+services.add(new ECMAScriptCodeCompletion(context, address, regAddress, "ecmascriptCodeCompletioner"));
+services.add(new FlowTypeChecker(context, address, regAddress, "ecmascriptFlowTypeChecker"));
 
 for (MontoService service : services) {
 	service.start();
