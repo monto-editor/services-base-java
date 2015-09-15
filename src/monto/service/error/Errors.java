@@ -28,6 +28,7 @@ public class Errors {
                 errors.add(new Error(
                         (int) encoding.get("offset"),
                         (int) encoding.get("length"),
+                        (String) encoding.get("level"),
                         (String) encoding.get("category"),
                         (String) encoding.get("description")));
             }
@@ -52,6 +53,7 @@ public class Errors {
         JSONObject object = new JSONObject();
         object.put("offset", error.getOffset());
         object.put("length", error.getLength());
+        object.put("level", error.getLevel());
         object.put("category", error.getCategory());
         object.put("description", error.getDescription());
         return object;
