@@ -21,6 +21,7 @@ public abstract class MontoService implements Runnable {
     private ZContext context;
     private Socket registrationSocket;
     private String address;
+    private int port;
     private String registrationAddress;
     private volatile boolean running;
 
@@ -81,50 +82,12 @@ public abstract class MontoService implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("registering: " + serviceID + " on " + registrationAddress);
-        registrationSocket = context.createSocket(ZMQ.REQ);
-        registrationSocket.connect(registrationAddress);
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, options, dependencies)).toJSONString());
-        JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
-        RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
-        if (decodedResponse.getResponse().equals("ok")) {
-            int port = decodedResponse.getBindOnPort();
-            System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
-            Socket socket = context.createSocket(ZMQ.PAIR);
-            socket.connect(address + ":" + port);
-            System.out.println("connected: " + serviceID);
+        registerService();
+        if (isRegisterResponseOk()) {
+            Socket socket = connectService();
             while (running) {
-                JSONArray messages;
-                String rawMsg;
-                Boolean isConfig = false;
                 try {
-                    rawMsg = socket.recvStr(ZMQ.NOBLOCK);
-                    if (rawMsg != null && !rawMsg.equals("")) {
-                        messages = (JSONArray) JSONValue.parse(rawMsg);
-                        List<Message> decodedMessages = new ArrayList<>();
-                        for (Object object : messages) {
-                            JSONObject message = (JSONObject) object;
-                            Message decoded = null;
-                            if (message.containsKey("product")) {
-                                decoded = ProductMessages.decode(message);
-                            } else if (message.containsKey("configurations")){
-                                isConfig = true;
-                                decoded = ConfigurationMessages.decode(message);
-                            } else {
-                                decoded = VersionMessages.decode(message);
-                            }
-                            if (decoded != null) {
-                                decodedMessages.add(decoded);
-                            }
-                        }
-                        if (isConfig) {
-                            isConfig = false;
-                            onConfigurationMessage(decodedMessages);
-                        } else {
-                            socket.send(ProductMessages.encode(onVersionMessage(decodedMessages)).toJSONString());
-                        }
-
-                    }
+                    handleMessages(socket);
                     Thread.sleep(1);
                 } catch (ZMQException e) {
                     e.printStackTrace();
@@ -133,49 +96,109 @@ public abstract class MontoService implements Runnable {
                     e.printStackTrace();
                 }
             }
-        } else {
-            System.out.printf("could not register service %s: %s%n", serviceID, decodedResponse.getResponse());
         }
     }
 
-    public synchronized void stop() {
+    public void stop() {
         running = false;
         System.out.println("disconnecting: " + serviceID);
         System.out.println("deregistering: " + serviceID);
         registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
-        registrationSocket.recvStr();
-        System.out.println("deregistered: " + serviceID);
         System.out.println("terminated: " + serviceID);
     }
 
+    private void registerService() {
+        System.out.println("registering: " + serviceID + " on " + registrationAddress);
+        registrationSocket = context.createSocket(ZMQ.REQ);
+        registrationSocket.connect(registrationAddress);
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, options, dependencies)).toJSONString());
+    }
+
+    private boolean isRegisterResponseOk() {
+        JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
+        RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
+        if (decodedResponse.getResponse().equals("ok")) {
+            port = decodedResponse.getBindOnPort();
+            System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
+            return true;
+        }
+        System.out.printf("could not register service %s: %s%n", serviceID, decodedResponse.getResponse());
+        return false;
+    }
+
+    private Socket connectService() {
+        Socket socket = context.createSocket(ZMQ.PAIR);
+        socket.connect(address + ":" + port);
+        System.out.println("connected: " + serviceID);
+        return socket;
+    }
+
+    private void handleMessages(Socket socket) throws Exception {
+        Boolean isConfig = false;
+        String rawMsg = socket.recvStr(ZMQ.NOBLOCK);
+        if (rawMsg != null && !rawMsg.equals("")) {
+            JSONArray messages = (JSONArray) JSONValue.parse(rawMsg);
+            List<Message> decodedMessages = new ArrayList<>();
+            for (Object object : messages) {
+                JSONObject message = (JSONObject) object;
+                Message decoded = null;
+                if (message.containsKey("product")) {
+                    decoded = ProductMessages.decode(message);
+                } else if (message.containsKey("configurations")){
+                    isConfig = true;
+                    decoded = ConfigurationMessages.decode(message);
+                } else {
+                    decoded = VersionMessages.decode(message);
+                }
+                if (decoded != null) {
+                    decodedMessages.add(decoded);
+                }
+            }
+            if (isConfig) {
+                isConfig = false;
+                onConfigurationMessage(decodedMessages);
+            } else {
+                socket.send(ProductMessages.encode(onVersionMessage(decodedMessages)).toJSONString());
+            }
+
+        }
+    }
+
     /**
-     * This method is called by the run method.
-     * It handles the messages that are received from the broker and determines the response back to the broker.
+     * This method is called by the run() method.
+     * It handles the version messages from the broker and determines the response.
      * @param messages
      * @return
      * @throws Exception
      */
     public abstract ProductMessage onVersionMessage(List<Message> messages) throws Exception;
 
+    /**
+     * This method is called by the run() method.
+     * It handles the configuration messages from the broker and determines the response.
+     * @param messages
+     * @return
+     * @throws Exception
+     */
     public abstract void onConfigurationMessage(List<Message> messages) throws Exception;
 
-    public synchronized String getServiceID() {
+    public String getServiceID() {
         return serviceID;
     }
 
-    public synchronized Language getLanguage() {
+    public Language getLanguage() {
         return language;
     }
 
-    public synchronized Product getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public synchronized String[] getDependencies() {
+    public String[] getDependencies() {
         return dependencies;
     }
 
-    public synchronized Option[] getOptions() {
+    public Option[] getOptions() {
         return options;
     }
 }
