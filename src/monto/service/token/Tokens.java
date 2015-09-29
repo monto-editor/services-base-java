@@ -41,17 +41,15 @@ public class Tokens {
     }
 
     public static List<Token> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents().getReader());
+        return decode(message.getContents());
     }
 
     /**
      * Decodes a product message that contains a tokenization result
      * into a list of tokens.
      */
-    public static List<Token> decode(Reader reader) throws ParseException {
+    public static List<Token> decode(JSONArray syntaxList) throws ParseException {
         try {
-            JSONArray syntaxList = (JSONArray) JSONValue.parse(reader);
-
             List<Token> tokens = new ArrayList<>();
             for (Object syntaxObj : syntaxList) {
                 JSONObject syntax = (JSONObject) syntaxObj;

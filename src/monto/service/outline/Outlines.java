@@ -15,7 +15,7 @@ import java.util.List;
 public class Outlines {
 
     @SuppressWarnings("unchecked")
-    public static JSONObject encode(Outline outline) {
+    public static JSONArray encode(Outline outline) {
         JSONObject encoding = new JSONObject();
 
         encoding.put("description", outline.getDescription());
@@ -31,16 +31,18 @@ public class Outlines {
             encoding.put("icon", outline.getIcon().get());
         }
 
-        return encoding;
+        JSONArray a = new JSONArray();
+        a.add(encoding);
+        return a;
     }
 
     public static Outline decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents().getReader());
+        return decode(message.getContents());
     }
 
-    public static Outline decode(Reader reader) throws ParseException {
+    public static Outline decode(JSONArray array) throws ParseException {
         try {
-            return decode((JSONObject) JSONValue.parse(reader));
+            return decode((JSONObject) array.get(0));
         } catch (Exception e) {
             throw new ParseException(e);
         }

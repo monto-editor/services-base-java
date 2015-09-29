@@ -16,12 +16,11 @@ import java.util.stream.Stream;
 public class Errors {
 
     public static List<Error> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents().getReader());
+        return decode(message.getContents());
     }
 
-    public static List<Error> decode(Reader reader) throws ParseException {
+    public static List<Error> decode(JSONArray array) throws ParseException {
         try {
-            JSONArray array = (JSONArray) JSONValue.parse(reader);
             List<Error> errors = new ArrayList<>();
             for (Object obj : array) {
                 JSONObject encoding = (JSONObject) obj;

@@ -1,5 +1,7 @@
 package monto.service.message;
 
+import org.json.simple.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,15 +14,15 @@ public class ProductMessage implements Message {
     private final Source source;
     private final Product product;
     private final Language language;
-    private final Contents contents;
+    private final JSONArray contents;
     private final List<Dependency> invalid;
     private final List<Dependency> dependencies;
 
-    public ProductMessage(LongKey versionId, LongKey productId, Source source, Product product, Language language, Contents contents, Dependency... dependencies) {
+    public ProductMessage(LongKey versionId, LongKey productId, Source source, Product product, Language language, JSONArray contents, Dependency... dependencies) {
         this(versionId, productId, source, product, language, contents, new ArrayList<>(), Arrays.asList(dependencies));
     }
 
-    public ProductMessage(LongKey versionId, LongKey productId, Source source, Product product, Language language, Contents contents, List<Dependency> invalid2, List<Dependency> dependencies) {
+    public ProductMessage(LongKey versionId, LongKey productId, Source source, Product product, Language language, JSONArray contents, List<Dependency> invalid2, List<Dependency> dependencies) {
         this.versionId = versionId;
         this.productId = productId;
         this.source = source;
@@ -51,7 +53,7 @@ public class ProductMessage implements Message {
         return language;
     }
 
-    public Contents getContents() {
+    public JSONArray getContents() {
         return contents;
     }
 

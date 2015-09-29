@@ -16,12 +16,11 @@ import java.util.stream.Stream;
 public class Completions {
 
     public static List<Completion> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents().getReader());
+        return decode(message.getContents());
     }
 
-    public static List<Completion> decode(Reader reader) throws ParseException {
+    public static List<Completion> decode(JSONArray array) throws ParseException {
         try {
-            JSONArray array = (JSONArray) JSONValue.parse(reader);
             List<Completion> completions = new ArrayList<>();
             for (Object obj : array) {
                 JSONObject encoding = (JSONObject) obj;

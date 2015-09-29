@@ -23,7 +23,7 @@ public class ProductMessages {
             Source source = new Source((String) message.get("source"));
             Product product = new Product((String) message.get("product"));
             Language language = new Language((String) message.get("language"));
-            Contents contents = new StringContent((String) message.get("contents"));
+            JSONArray contents = (JSONArray) message.get("contents");
             List<Dependency> invalid = Dependencies.decode((JSONArray) message.getOrDefault("invalid", new JSONArray()));
             List<Dependency> dependencies = Dependencies.decode((JSONArray) message.getOrDefault("dependencies", new JSONArray()));
             return new ProductMessage(
@@ -48,7 +48,7 @@ public class ProductMessages {
         encoding.put("source", msg.getSource().toString());
         encoding.put("product", msg.getProduct().toString());
         encoding.put("language", msg.getLanguage().toString());
-        encoding.put("contents", msg.getContents().toString());
+        encoding.put("contents", msg.getContents());
         encoding.put("invalid", Dependencies.encode(msg.getInvalid()));
         encoding.put("dependencies", Dependencies.encode(msg.getDependencies()));
         return encoding;

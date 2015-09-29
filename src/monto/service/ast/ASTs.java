@@ -43,13 +43,15 @@ import java.util.List;
  */
 public class ASTs {
 
-    public static Contents encode(AST ast) {
+    public static JSONArray encode(AST ast) {
         Encoder encoder = new Encoder();
         ast.accept(encoder);
         if (encoder.getEncoding() instanceof JSONObject) {
-            return new StringContent(((JSONObject) encoder.getEncoding()).toJSONString());
+            JSONArray a = new JSONArray();
+            a.add((JSONObject) encoder.getEncoding());
+            return a;
         } else if (encoder.getEncoding() instanceof JSONArray) {
-            return new StringContent(((JSONArray) encoder.getEncoding()).toJSONString());
+            return (JSONArray) encoder.getEncoding();
         } else {
             return null;
         }
@@ -83,7 +85,7 @@ public class ASTs {
 
     public static AST decode(ProductMessage message) throws ParseException {
         try {
-            Object json = JSONValue.parse(message.getContents().getReader());
+            JSONArray json = message.getContents();
             return decode(json);
         } catch (Exception e) {
             throw new ParseException(e);
