@@ -20,7 +20,7 @@ public class RegisterMessages {
             for (Option option : options) {
                 jsonOptions.add(option.encode());
             }
-            jsonObject.put("options", jsonOptions.toJSONString());
+            jsonObject.put("options", jsonOptions);
         }
         JSONArray dependencies = new JSONArray();
         for (String dependency : message.getDependencies()) {

@@ -12,10 +12,9 @@ import java.util.List;
 public class Configurations {
 
     @SuppressWarnings("unchecked")
-    public static List<Configuration> encode(String message) throws ParseException {
+    public static List<Configuration> decode(JSONArray array) throws ParseException {
         try {
             List<Configuration> configurations = new ArrayList<>();
-            JSONArray array = (JSONArray) JSONValue.parse(message);
             Iterator<JSONObject> iterator = array.iterator();
             while (iterator.hasNext()) {
                 final JSONObject obj = iterator.next();

@@ -2,12 +2,14 @@ package monto.service.message;
 
 import monto.service.configuration.Configuration;
 
+import java.util.List;
+
 public class ConfigurationMessage implements Message {
 
     private String serviceID;
-    private String configurations;
+    private List<Configuration> configurations;
 
-    public ConfigurationMessage(String serviceID, String configurations) {
+    public ConfigurationMessage(String serviceID, List<Configuration> configurations) {
         this.serviceID = serviceID;
         this.configurations = configurations;
     }
@@ -16,7 +18,7 @@ public class ConfigurationMessage implements Message {
         return serviceID;
     }
 
-    public String getConfigurations() {
+    public List<Configuration> getConfigurations() {
         return configurations;
     }
 }
