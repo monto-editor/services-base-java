@@ -5,6 +5,11 @@ public class RegisterServiceResponse {
     private final String response;
     private final int bindOnPort;
 
+    public RegisterServiceResponse(String response) {
+        this.response = response;
+        bindOnPort = -1;
+    }
+
     public RegisterServiceResponse(String response, int bindOnPort) {
         this.response = response;
         this.bindOnPort = bindOnPort;

@@ -40,7 +40,11 @@ public class RegisterMessages {
     @SuppressWarnings("unchecked")
     public static RegisterServiceResponse decodeResponse(JSONObject message) {
         final String response = (String) message.get("response");
-        final int bindOnPort = ((Long) message.getOrDefault("bind_on_port", 0)).intValue();
-        return new RegisterServiceResponse(response, bindOnPort);
+        try {
+            int bindOnPort = ((Long) message.getOrDefault("bind_on_port", 0)).intValue();
+            return new RegisterServiceResponse(response, bindOnPort);
+        } catch (Exception e) {
+            return new RegisterServiceResponse(response);
+        }
     }
 }

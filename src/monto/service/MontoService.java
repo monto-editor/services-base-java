@@ -117,7 +117,7 @@ public abstract class MontoService implements Runnable {
     private boolean isRegisterResponseOk() {
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
-        if (decodedResponse.getResponse().equals("ok")) {
+        if (decodedResponse.getResponse().equals("ok") && decodedResponse.getBindOnPort() > -1) {
             port = decodedResponse.getBindOnPort();
             System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
             return true;
