@@ -6,9 +6,7 @@ import monto.service.region.Region;
 import monto.service.region.Regions;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,13 @@ public class Outlines {
 
     @SuppressWarnings("unchecked")
     public static JSONArray encode(Outline outline) {
+        JSONArray a = new JSONArray();
+        a.add(encodeSingle(outline));
+        return a;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static JSONObject encodeSingle(Outline outline) {
         JSONObject encoding = new JSONObject();
 
         encoding.put("description", outline.getDescription());
@@ -23,7 +28,7 @@ public class Outlines {
 
         if (!outline.isLeaf()) {
             JSONArray children = new JSONArray();
-            outline.getChildren().forEach(child -> children.add(encode(child)));
+            outline.getChildren().forEach(child -> children.add(encodeSingle(child)));
             encoding.put("children", children);
         }
 
@@ -31,9 +36,7 @@ public class Outlines {
             encoding.put("icon", outline.getIcon().get());
         }
 
-        JSONArray a = new JSONArray();
-        a.add(encoding);
-        return a;
+        return encoding;
     }
 
     public static Outline decode(ProductMessage message) throws ParseException {
