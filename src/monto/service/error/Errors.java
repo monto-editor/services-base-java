@@ -1,13 +1,10 @@
 package monto.service.error;
 
-import monto.service.completion.Completion;
 import monto.service.message.ParseException;
 import monto.service.message.ProductMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

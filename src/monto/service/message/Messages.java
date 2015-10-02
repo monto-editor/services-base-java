@@ -10,9 +10,7 @@ public class Messages {
         VersionMessage versionMessage = messages.stream()
                 .filter(msg -> msg instanceof VersionMessage)
                 .findFirst()
-                .map(msg -> {
-                    return (VersionMessage) msg;
-                }).get();
+                .map(msg -> (VersionMessage) msg).get();
         if (versionMessage == null) {
             throw new IllegalArgumentException("VersionMessage missing");
         }
@@ -43,13 +41,7 @@ public class Messages {
             throw new IllegalArgumentException("Message list was null");
         }
         ConfigurationMessage configurationMessage = messages.stream()
-                .filter(msg -> {
-                    if (msg instanceof  ConfigurationMessage) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }).findAny()
+                .filter(msg -> msg instanceof ConfigurationMessage).findAny()
                 .map(msg -> (ConfigurationMessage) msg).get();
         if (configurationMessage == null) {
             throw new IllegalArgumentException("ConfigurationMessage missing");

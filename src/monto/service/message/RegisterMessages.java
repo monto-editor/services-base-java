@@ -4,6 +4,8 @@ import monto.service.configuration.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Collections;
+
 public class RegisterMessages {
 
     @SuppressWarnings("unchecked")
@@ -23,9 +25,7 @@ public class RegisterMessages {
             jsonObject.put("options", jsonOptions);
         }
         JSONArray dependencies = new JSONArray();
-        for (String dependency : message.getDependencies()) {
-            dependencies.add(dependency);
-        }
+        Collections.addAll(dependencies, message.getDependencies());
         jsonObject.put("dependencies", dependencies);
         return jsonObject;
     }

@@ -3,10 +3,8 @@ package monto.service.configuration;
 import monto.service.message.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Configurations {
@@ -15,9 +13,7 @@ public class Configurations {
     public static List<Configuration> decode(JSONArray array) throws ParseException {
         try {
             List<Configuration> configurations = new ArrayList<>();
-            Iterator<JSONObject> iterator = array.iterator();
-            while (iterator.hasNext()) {
-                final JSONObject obj = iterator.next();
+            for (JSONObject obj : (Iterable<JSONObject>) array) {
                 configurations.add(new Configuration((String) obj.get("option_id"), obj.get("value")));
             }
             return configurations;

@@ -35,8 +35,9 @@ public abstract class MontoService implements Runnable {
 
     /**
      * Template for a monto service.
+     *
      * @param context
-     * @param address address of the service without port, e.g. "tcp://*"
+     * @param address             address of the service without port, e.g. "tcp://*"
      * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
      * @param serviceID
      * @param product
@@ -59,8 +60,9 @@ public abstract class MontoService implements Runnable {
 
     /**
      * Template for a monto service with options.
+     *
      * @param context
-     * @param address address of the service without port, e.g. "tcp://*"
+     * @param address             address of the service without port, e.g. "tcp://*"
      * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
      * @param serviceID
      * @param label
@@ -141,10 +143,10 @@ public abstract class MontoService implements Runnable {
             List<Message> decodedMessages = new ArrayList<>();
             for (Object object : messages) {
                 JSONObject message = (JSONObject) object;
-                Message decoded = null;
+                Message decoded;
                 if (message.containsKey("product")) {
                     decoded = ProductMessages.decode(message);
-                } else if (message.containsKey("configurations")){
+                } else if (message.containsKey("configurations")) {
                     isConfig = true;
                     decoded = ConfigurationMessages.decode(message);
                 } else {
@@ -155,7 +157,6 @@ public abstract class MontoService implements Runnable {
                 }
             }
             if (isConfig) {
-                isConfig = false;
                 onConfigurationMessage(decodedMessages);
             } else {
                 socket.send(ProductMessages.encode(onVersionMessage(decodedMessages)).toJSONString());
@@ -167,8 +168,9 @@ public abstract class MontoService implements Runnable {
     /**
      * This method is called by the run() method.
      * It handles the version messages from the broker and determines the response.
-     * @param messages
-     * @return
+     *
+     * @param messages VersionMessage an dependency ProductMessages
+     * @return a ProductMessage for the service
      * @throws Exception
      */
     public abstract ProductMessage onVersionMessage(List<Message> messages) throws Exception;
@@ -176,8 +178,8 @@ public abstract class MontoService implements Runnable {
     /**
      * This method is called by the run() method.
      * It handles the configuration messages from the broker and determines the response.
-     * @param messages
-     * @return
+     *
+     * @param messages VersionMessage an dependency ProductMessages
      * @throws Exception
      */
     public abstract void onConfigurationMessage(List<Message> messages) throws Exception;

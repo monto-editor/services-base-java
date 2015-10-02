@@ -17,7 +17,6 @@ public class ProductMessages {
     @SuppressWarnings("unchecked")
     public static ProductMessage decode(JSONObject message) throws ParseException {
         try {
-            long start = System.nanoTime();
             Long versionId = (Long) message.get("version_id");
             Long productId = (Long) message.get("product_id");
             Source source = new Source((String) message.get("source"));
