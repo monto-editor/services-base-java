@@ -24,6 +24,7 @@ public abstract class MontoService implements Runnable {
     private int port;
     private String registrationAddress;
     private volatile boolean running;
+    private boolean registered;
 
     protected volatile String serviceID;
     protected volatile String label;
@@ -56,6 +57,7 @@ public abstract class MontoService implements Runnable {
         this.options = null;
         this.dependencies = dependencies;
         running = true;
+        registered = false;
     }
 
     /**
@@ -102,11 +104,13 @@ public abstract class MontoService implements Runnable {
     }
 
     public void stop() {
-        running = false;
-        System.out.println("disconnecting: " + serviceID);
-        System.out.println("deregistering: " + serviceID);
-        registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
-        System.out.println("terminated: " + serviceID);
+        if (registered == true) {
+            running = false;
+            System.out.println("disconnecting: " + serviceID);
+            System.out.println("deregistering: " + serviceID);
+            registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
+            System.out.println("terminated: " + serviceID);
+        }
     }
 
     private void registerService() {
@@ -122,6 +126,7 @@ public abstract class MontoService implements Runnable {
         if (decodedResponse.getResponse().equals("ok") && decodedResponse.getBindOnPort() > -1) {
             port = decodedResponse.getBindOnPort();
             System.out.println("registered: " + serviceID + ", connecting on " + address + ":" + port);
+            registered = true;
             return true;
         }
         System.out.printf("could not register service %s: %s%n", serviceID, decodedResponse.getResponse());
