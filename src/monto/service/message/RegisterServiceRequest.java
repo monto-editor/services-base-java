@@ -2,6 +2,7 @@ package monto.service.message;
 
 import monto.service.configuration.Option;
 
+@SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {
 
     private final String serviceID;
@@ -9,7 +10,7 @@ public class RegisterServiceRequest {
     private final String description;
     private final Language language;
     private final Product product;
-    private final Option[] options;
+	private final Option[] options;
     private final String[] dependencies;
 
 

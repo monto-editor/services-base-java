@@ -39,7 +39,11 @@ public class Tokens {
     }
 
     public static List<Token> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents());
+    	try {
+    		return decode((JSONArray)message.getContents());
+    	} catch (ClassCastException e) {
+    		throw new ParseException(message.getContents().toString(), e);
+    	}
     }
 
     /**

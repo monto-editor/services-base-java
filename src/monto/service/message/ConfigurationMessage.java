@@ -4,10 +4,11 @@ import monto.service.configuration.Configuration;
 
 import java.util.List;
 
+@SuppressWarnings("rawtypes")
 public class ConfigurationMessage implements Message {
 
     private String serviceID;
-    private List<Configuration> configurations;
+	private List<Configuration> configurations;
 
     public ConfigurationMessage(String serviceID, List<Configuration> configurations) {
         this.serviceID = serviceID;

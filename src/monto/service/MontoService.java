@@ -1,7 +1,8 @@
 package monto.service;
 
-import monto.service.configuration.Option;
-import monto.service.message.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -10,12 +11,23 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
 import org.zeromq.ZMQException;
 
-import java.util.ArrayList;
-import java.util.List;
+import monto.service.configuration.Option;
+import monto.service.message.ConfigurationMessages;
+import monto.service.message.DeregisterService;
+import monto.service.message.Language;
+import monto.service.message.Message;
+import monto.service.message.Product;
+import monto.service.message.ProductMessage;
+import monto.service.message.ProductMessages;
+import monto.service.message.RegisterMessages;
+import monto.service.message.RegisterServiceRequest;
+import monto.service.message.RegisterServiceResponse;
+import monto.service.message.VersionMessages;
 
 /**
  * Template for a monto service.
  */
+@SuppressWarnings("rawtypes")
 public abstract class MontoService implements Runnable {
 
     private ZContext context;
@@ -31,7 +43,7 @@ public abstract class MontoService implements Runnable {
     protected volatile String description;
     protected volatile Language language;
     protected volatile Product product;
-    protected volatile Option[] options;
+	protected volatile Option[] options;
     protected volatile String[] dependencies;
 
     /**

@@ -1,6 +1,6 @@
 package monto.service.configuration;
 
-import org.json.simple.JSONObject;
+import java.util.function.Function;
 
 public class TextOption extends AbstractOption<String> {
 
@@ -15,11 +15,14 @@ public class TextOption extends AbstractOption<String> {
         return regularExpression;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public JSONObject encode() {
-        JSONObject jsonObject = super.encode();
-        jsonObject.put("regular_expression", getRegularExpression());
-        return jsonObject;
-    }
+	@Override
+	public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
+			Function<XorOption, A> i, Function<OptionGroup, A> j) {
+		return h.apply(this);
+	}
+
+	@Override
+	public <A> A match(Function<AbstractOption<String>, A> f, Function<OptionGroup, A> g) {
+		return f.apply(this);
+	}
 }

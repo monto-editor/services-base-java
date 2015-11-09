@@ -13,14 +13,7 @@ import java.util.List;
 public class Outlines {
 
     @SuppressWarnings("unchecked")
-    public static JSONArray encode(Outline outline) {
-        JSONArray a = new JSONArray();
-        a.add(encodeSingle(outline));
-        return a;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static JSONObject encodeSingle(Outline outline) {
+    public static JSONObject encode(Outline outline) {
         JSONObject encoding = new JSONObject();
 
         encoding.put("description", outline.getDescription());
@@ -28,7 +21,7 @@ public class Outlines {
 
         if (!outline.isLeaf()) {
             JSONArray children = new JSONArray();
-            outline.getChildren().forEach(child -> children.add(encodeSingle(child)));
+            outline.getChildren().forEach(child -> children.add(encode(child)));
             encoding.put("children", children);
         }
 
@@ -40,15 +33,11 @@ public class Outlines {
     }
 
     public static Outline decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents());
-    }
-
-    public static Outline decode(JSONArray array) throws ParseException {
-        try {
-            return decode((JSONObject) array.get(0));
-        } catch (Exception e) {
-            throw new ParseException(e);
-        }
+    	try {
+    		return decode((JSONObject)message.getContents());
+    	} catch (Exception e) {
+    		throw new ParseException(message.getContents().toString(),e);
+    	}
     }
 
     public static Outline decode(JSONObject encoding) throws ParseException {

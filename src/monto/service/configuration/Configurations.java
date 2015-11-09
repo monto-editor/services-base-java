@@ -1,18 +1,23 @@
 package monto.service.configuration;
 
-import monto.service.message.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import monto.service.message.ParseException;
 
+
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class Configurations {
 
-    @SuppressWarnings("unchecked")
     public static List<Configuration> decode(JSONArray array) throws ParseException {
         try {
             List<Configuration> configurations = new ArrayList<>();
+            if(array == null)
+            	return configurations;
             for (JSONObject obj : (Iterable<JSONObject>) array) {
                 configurations.add(new Configuration((String) obj.get("option_id"), obj.get("value")));
             }
@@ -20,5 +25,35 @@ public class Configurations {
         } catch (Exception e) {
             throw new ParseException(e);
         }
+    }
+
+	public static <T> JSONObject encodeConfiguration(Configuration<T> conf) {
+    	JSONObject obj = new JSONObject();
+    	obj.put("option_id",conf.getOptionID());
+    	obj.put("value", conf.getValue());
+    	return obj;
+    }
+    
+	public static JSONObject encodeServiceConfiguration(ServiceConfiguration conf) {
+    	JSONObject obj = new JSONObject();
+    	obj.put("service_id", conf.getServiceID());
+    	JSONArray arr = new JSONArray();
+    	for(Configuration c : conf.getConfigurations())
+    		arr.add(encodeConfiguration(c));
+    	obj.put("configurations", arr);
+    	return obj;
+    }
+    
+	public static JSONObject encode(List<ServiceConfiguration> confs) {
+    	JSONObject obj = new JSONObject();
+    	JSONArray arr = new JSONArray();
+    	for(ServiceConfiguration conf : confs)
+    		arr.add(encodeServiceConfiguration(conf));
+    	obj.put("configure_services", arr);
+    	return obj;
+    }
+    
+    public static JSONObject encode(ServiceConfiguration ...confs) {
+    	return encode(Arrays.asList(confs));
     }
 }

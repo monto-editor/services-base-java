@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class Completions {
 
     public static List<Completion> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents());
+        return decode((JSONArray)message.getContents());
     }
 
     public static List<Completion> decode(JSONArray array) throws ParseException {
@@ -45,7 +45,7 @@ public class Completions {
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONObject encode(Completion completion) {
+    private static JSONObject encode(Completion completion) {
         JSONObject object = new JSONObject();
         object.put("description", completion.getDescription());
         object.put("replacement", completion.getReplacement());

@@ -1,17 +1,15 @@
 package monto.service.message;
 
+import java.util.List;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import java.io.Reader;
-import java.util.List;
-
 public class ProductMessages {
 
-    public static ProductMessage decode(Reader reader) throws ParseException {
-        JSONObject message = (JSONObject) JSONValue.parse(reader);
-        return decode(message);
+    public static ProductMessage decode(String string) throws ParseException {
+        return decode((JSONObject) JSONValue.parse(string));
     }
 
     @SuppressWarnings("unchecked")
@@ -22,7 +20,7 @@ public class ProductMessages {
             Source source = new Source((String) message.get("source"));
             Product product = new Product((String) message.get("product"));
             Language language = new Language((String) message.get("language"));
-            JSONArray contents = (JSONArray) message.get("contents");
+            Object contents = message.get("contents");
             List<Dependency> invalid = Dependencies.decode((JSONArray) message.getOrDefault("invalid", new JSONArray()));
             List<Dependency> dependencies = Dependencies.decode((JSONArray) message.getOrDefault("dependencies", new JSONArray()));
             return new ProductMessage(

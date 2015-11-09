@@ -1,6 +1,6 @@
 package monto.service.configuration;
 
-import org.json.simple.JSONObject;
+import java.util.function.Function;
 
 public class NumberOption extends AbstractOption<Long> {
 
@@ -13,20 +13,22 @@ public class NumberOption extends AbstractOption<Long> {
         this.to = to;
     }
 
-    public double getFrom() {
+    public long getFrom() {
         return from;
     }
 
-    public double getTo() {
+    public long getTo() {
         return to;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public JSONObject encode() {
-        JSONObject jsonObject = super.encode();
-        jsonObject.put("from", getFrom());
-        jsonObject.put("to", getTo());
-        return jsonObject;
-    }
+	@Override
+	public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
+			Function<XorOption, A> i, Function<OptionGroup, A> j) {
+		return g.apply(this);
+	}
+
+	@Override
+	public <A> A match(Function<AbstractOption<Long>, A> f, Function<OptionGroup, A> g) {
+		return f.apply(this);
+	}
 }

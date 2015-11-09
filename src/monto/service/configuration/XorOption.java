@@ -1,9 +1,7 @@
 package monto.service.configuration;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import java.util.List;
+import java.util.function.Function;
 
 public class XorOption extends AbstractOption<String> {
 
@@ -18,15 +16,14 @@ public class XorOption extends AbstractOption<String> {
         return values;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public JSONObject encode() {
-        JSONObject jsonObject = super.encode();
-        JSONArray values = new JSONArray();
-        for (String value : getValues()) {
-            values.add(value);
-        }
-        jsonObject.put("values", values);
-        return jsonObject;
-    }
+	@Override
+	public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
+			Function<XorOption, A> i, Function<OptionGroup, A> j) {
+		return i.apply(this);
+	}
+
+	@Override
+	public <A> A match(Function<AbstractOption<String>, A> f, Function<OptionGroup, A> g) {
+		return f.apply(this);
+	}
 }

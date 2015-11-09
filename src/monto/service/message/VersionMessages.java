@@ -22,7 +22,7 @@ public class VersionMessages {
             final LongKey id = new LongKey((Long) message.get("version_id"));
             final Source source = new Source((String) message.get("source"));
             final Language language = new Language((String) message.get("language"));
-            final Contents contents = new StringContent((String) message.get("contents"));
+            final String contents = (String) message.get("contents");
             final JSONArray selectionsArray = (JSONArray) message.getOrDefault("selections", new JSONArray());
             final List<Selection> selections = new ArrayList<>(selectionsArray.size());
             Iterator<JSONObject> iterator = selectionsArray.iterator();

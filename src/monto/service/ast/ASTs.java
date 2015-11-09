@@ -1,14 +1,15 @@
 package monto.service.ast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import monto.service.message.ParseException;
 import monto.service.message.ProductMessage;
 import monto.service.region.Region;
 import monto.service.region.Regions;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -40,7 +41,8 @@ import java.util.List;
  */
 public class ASTs {
 
-    public static JSONArray encode(AST ast) {
+    @SuppressWarnings("unchecked")
+	public static JSONArray encode(AST ast) {
         Encoder encoder = new Encoder();
         ast.accept(encoder);
         if (encoder.getEncoding() instanceof JSONObject) {
@@ -82,8 +84,7 @@ public class ASTs {
 
     public static AST decode(ProductMessage message) throws ParseException {
         try {
-            JSONArray json = message.getContents();
-            return decode(json);
+            return decode(message.getContents());
         } catch (Exception e) {
             throw new ParseException(e);
         }

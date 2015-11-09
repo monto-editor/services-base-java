@@ -6,9 +6,9 @@ import org.json.simple.JSONObject;
 
 import java.util.Collections;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {
 
-    @SuppressWarnings("unchecked")
     public static JSONObject encode(RegisterServiceRequest message) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("service_id", message.getServiceID());
@@ -20,7 +20,7 @@ public class RegisterMessages {
         if (options != null && !(options.length == 0)) {
             JSONArray jsonOptions = new JSONArray();
             for (Option option : options) {
-                jsonOptions.add(option.encode());
+                jsonOptions.add(Options.encode(option));
             }
             jsonObject.put("options", jsonOptions);
         }
@@ -30,14 +30,12 @@ public class RegisterMessages {
         return jsonObject;
     }
 
-    @SuppressWarnings("unchecked")
     public static JSONObject encode(DeregisterService message) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("deregister_service_id", message.getDeregisterServiceID());
         return jsonObject;
     }
 
-    @SuppressWarnings("unchecked")
     public static RegisterServiceResponse decodeResponse(JSONObject message) {
         final String response = (String) message.get("response");
         try {

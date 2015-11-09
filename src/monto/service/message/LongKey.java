@@ -17,8 +17,8 @@ public class LongKey implements Key {
         return new LongKey(key + 1);
     }
 
-    public boolean newerThan(LongKey other) {
-        return other.key < this.key;
+    public boolean upToDate(LongKey other) {
+        return this.key <= other.key;
     }
 
     @Override
@@ -39,4 +39,8 @@ public class LongKey implements Key {
     public long longValue() {
         return key;
     }
+
+	public void increment() {
+		key++;
+	}
 }

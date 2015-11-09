@@ -1,8 +1,6 @@
 package monto.service.configuration;
 
-import org.json.simple.JSONObject;
-
-public abstract class AbstractOption<T> implements Option {
+public abstract class AbstractOption<T> implements Option<T> {
 
     private String optionId;
     private String label;
@@ -31,15 +29,9 @@ public abstract class AbstractOption<T> implements Option {
     public T getDefaultValue() {
         return defaultValue;
     }
-
+    
     @Override
-    @SuppressWarnings("checked")
-    public JSONObject encode() {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("option_id", getOptionId());
-        jsonObject.put("label", getLabel());
-        jsonObject.put("type", getType());
-        jsonObject.put("default_value", getDefaultValue());
-        return jsonObject;
+    public String toString() {
+    	return optionId;
     }
 }

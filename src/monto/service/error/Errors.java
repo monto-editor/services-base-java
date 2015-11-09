@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public class Errors {
 
     public static List<Error> decode(ProductMessage message) throws ParseException {
-        return decode(message.getContents());
+        return decode((JSONArray)message.getContents());
     }
 
     public static List<Error> decode(JSONArray array) throws ParseException {

@@ -10,6 +10,10 @@ public class ParseException extends Exception {
         super(reason);
     }
 
-    private static final long serialVersionUID = -8652632901411933961L;
+    public ParseException(String reason, Exception e) {
+		super(reason,e);
+	}
+
+	private static final long serialVersionUID = -8652632901411933961L;
 
 }
