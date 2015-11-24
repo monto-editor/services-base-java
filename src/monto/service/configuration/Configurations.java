@@ -1,7 +1,6 @@
 package monto.service.configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -32,28 +31,5 @@ public class Configurations {
     	obj.put("option_id",conf.getOptionID());
     	obj.put("value", conf.getValue());
     	return obj;
-    }
-    
-	public static JSONObject encodeServiceConfiguration(ServiceConfiguration conf) {
-    	JSONObject obj = new JSONObject();
-    	obj.put("service_id", conf.getServiceID());
-    	JSONArray arr = new JSONArray();
-    	for(Configuration c : conf.getConfigurations())
-    		arr.add(encodeConfiguration(c));
-    	obj.put("configurations", arr);
-    	return obj;
-    }
-    
-	public static JSONObject encode(List<ServiceConfiguration> confs) {
-    	JSONObject obj = new JSONObject();
-    	JSONArray arr = new JSONArray();
-    	for(ServiceConfiguration conf : confs)
-    		arr.add(encodeServiceConfiguration(conf));
-    	obj.put("configure_services", arr);
-    	return obj;
-    }
-    
-    public static JSONObject encode(ServiceConfiguration ...confs) {
-    	return encode(Arrays.asList(confs));
     }
 }

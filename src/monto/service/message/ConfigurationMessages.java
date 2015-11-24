@@ -7,9 +7,9 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class ConfigurationMessages {
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static ConfigurationMessage decode(JSONObject message) throws ParseException {
         try {
             final String serviceID = (String) message.get("service_id");
@@ -18,5 +18,15 @@ public class ConfigurationMessages {
         } catch (Exception e) {
             throw new ParseException(e);
         }
+    }
+
+	public static JSONObject encode(ConfigurationMessage conf) {
+    	JSONObject obj = new JSONObject();
+    	obj.put("service_id", conf.getServiceID());
+    	JSONArray arr = new JSONArray();
+    	for(Configuration c : conf.getConfigurations())
+    		arr.add(Configurations.encodeConfiguration(c));
+    	obj.put("configurations", arr);
+    	return obj;
     }
 }

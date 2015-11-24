@@ -1,10 +1,15 @@
 package monto.service.message;
 
-import monto.service.configuration.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.Collections;
+import monto.service.configuration.Option;
+import monto.service.configuration.Options;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {
@@ -16,14 +21,12 @@ public class RegisterMessages {
         jsonObject.put("description", message.getDescription());
         jsonObject.put("language", message.getLanguage().toString());
         jsonObject.put("product", message.getProduct().toString());
-        Option[] options = message.getOptions();
-        if (options != null && !(options.length == 0)) {
-            JSONArray jsonOptions = new JSONArray();
-            for (Option option : options) {
-                jsonOptions.add(Options.encode(option));
-            }
-            jsonObject.put("options", jsonOptions);
-        }
+        List<Option> options = Arrays.asList(message.getOptions());
+        JSONArray jsonOptions = options
+        		.stream()
+        		.map(option -> Options.encode(option))
+        		.collect(Collectors.toCollection(() -> new JSONArray()));
+        jsonObject.put("options", jsonOptions);
         JSONArray dependencies = new JSONArray();
         Collections.addAll(dependencies, message.getDependencies());
         jsonObject.put("dependencies", dependencies);

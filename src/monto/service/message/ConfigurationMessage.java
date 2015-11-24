@@ -22,4 +22,9 @@ public class ConfigurationMessage implements Message {
     public List<Configuration> getConfigurations() {
         return configurations;
     }
+    
+    @Override
+    public String toString() {
+    	return String.format("ConfigurationMessage { service = %s, configurations = %s }", serviceID, configurations);
+    }
 }

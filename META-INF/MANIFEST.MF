@@ -20,3 +20,4 @@ Export-Package: monto.service,
  org.json.simple.parser,
  org.zeromq,
  zmq
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
