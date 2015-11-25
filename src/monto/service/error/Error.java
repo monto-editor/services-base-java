@@ -42,6 +42,6 @@ public class Error extends Region {
 
     @Override
     public String toString() {
-        return String.format("%s", description);
+        return String.format("Error { offset = %d, length = %d, level = \"%s\", category = \"%s\", description = \"%s\" }", offset, length, level, category, description);
     }
 }

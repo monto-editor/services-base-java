@@ -22,8 +22,8 @@ public class Errors {
             for (Object obj : array) {
                 JSONObject encoding = (JSONObject) obj;
                 errors.add(new Error(
-                        (int) encoding.get("offset"),
-                        (int) encoding.get("length"),
+                        ((Long) encoding.get("offset")).intValue(),
+                        ((Long) encoding.get("length")).intValue(),
                         (String) encoding.get("level"),
                         (String) encoding.get("category"),
                         (String) encoding.get("description")));
