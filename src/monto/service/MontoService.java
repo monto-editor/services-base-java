@@ -213,7 +213,6 @@ public abstract class MontoService {
     protected ProductMessage productMessage(LongKey versionID, Source source, Object contents, ProductDependency ... deps) {
         return new ProductMessage(
                 versionID,
-                new LongKey(1),
                 source,
                 getServiceID(),
                 getProduct(),

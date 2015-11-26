@@ -8,7 +8,6 @@ import java.util.List;
 public class ProductMessage implements Message {
 
     private final LongKey versionId;
-    private final LongKey productId;
     private final Source source;
     private final ServiceID serviceID;
     private final Product product;
@@ -17,13 +16,12 @@ public class ProductMessage implements Message {
     private final List<Dependency> invalid;
     private final List<Dependency> dependencies;
 
-    public ProductMessage(LongKey versionId, LongKey productId, Source source, ServiceID serviceID, Product product, Language language, Object contents, Dependency... dependencies) {
-        this(versionId, productId, source, serviceID, product, language, contents, new ArrayList<>(), Arrays.asList(dependencies));
+    public ProductMessage(LongKey versionId, Source source, ServiceID serviceID, Product product, Language language, Object contents, Dependency... dependencies) {
+        this(versionId, source, serviceID, product, language, contents, new ArrayList<>(), Arrays.asList(dependencies));
     }
 
-    public ProductMessage(LongKey versionId, LongKey productId, Source source, ServiceID serviceID, Product product, Language language, Object contents, List<Dependency> invalid2, List<Dependency> dependencies) {
+    public ProductMessage(LongKey versionId, Source source, ServiceID serviceID, Product product, Language language, Object contents, List<Dependency> invalid2, List<Dependency> dependencies) {
         this.versionId = versionId;
-        this.productId = productId;
         this.source = source;
         this.serviceID = serviceID;
         this.product = product;
@@ -35,10 +33,6 @@ public class ProductMessage implements Message {
 
     public LongKey getVersionId() {
         return versionId;
-    }
-
-    public LongKey getProductId() {
-        return productId;
     }
 
     public Source getSource() {
@@ -73,14 +67,13 @@ public class ProductMessage implements Message {
     public String toString() {
         return String.format("{"
                 + "  vid: %s,\n"
-                + "  pid: %s,\n"
                 + "  source: %s,\n"
                 + "  serviceID: %s,\n"
                 + "  product: %s,\n"
                 + "  language: %s,\n"
                 + "  contents: %s,\n"
                 + "  dependencies: %s\n"
-                + "}", versionId, productId, source, serviceID, product, language, contents, dependencies);
+                + "}", versionId, source, serviceID, product, language, contents, dependencies);
     }
 
 }

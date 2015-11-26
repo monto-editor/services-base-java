@@ -23,11 +23,10 @@ public class Dependencies {
     public static ProductDependency decodeProductDependency(JSONObject obj) throws ParseException {
         try {
             final LongKey versionId = new LongKey((Long) obj.get("version_id"));
-            final LongKey productId = new LongKey((Long) obj.get("product_id"));
             final Source source = new Source((String) obj.get("source"));
             final Language language = new Language((String) obj.get("language"));
             final Product product = new Product((String) obj.get("product"));
-            return new ProductDependency(versionId, productId, source, language, product);
+            return new ProductDependency(versionId, source, language, product);
         } catch (Exception e) {
             throw new ParseException(e);
         }
@@ -76,7 +75,6 @@ public class Dependencies {
                     final JSONObject encoding = new JSONObject();
                     encoding.put("tag", "product");
                     encoding.put("version_id", product.getVersionId().longValue());
-                    encoding.put("product_id", product.getProductId().longValue());
                     encoding.put("source", product.getSource().toString());
                     encoding.put("language", product.getLanguage().toString());
                     encoding.put("product", product.getProduct().toString());

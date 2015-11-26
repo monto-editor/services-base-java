@@ -16,7 +16,6 @@ public class ProductMessages {
     public static ProductMessage decode(JSONObject message) throws ParseException {
         try {
             Long versionId = (Long) message.get("version_id");
-            Long productId = (Long) message.get("product_id");
             Source source = new Source((String) message.get("source"));
             ServiceID serviceID = new ServiceID((String) message.get("service_id"));
             Product product = new Product((String) message.get("product"));
@@ -26,7 +25,6 @@ public class ProductMessages {
             List<Dependency> dependencies = Dependencies.decode((JSONArray) message.getOrDefault("dependencies", new JSONArray()));
             return new ProductMessage(
                     new LongKey(versionId),
-                    new LongKey(productId),
                     source,
                     serviceID,
                     product,
@@ -43,7 +41,6 @@ public class ProductMessages {
     public static JSONObject encode(ProductMessage msg) {
         JSONObject encoding = new JSONObject();
         encoding.put("version_id", msg.getVersionId().longValue());
-        encoding.put("product_id", msg.getProductId().longValue());
         encoding.put("source", msg.getSource().toString());
         encoding.put("service_id", msg.getServiceID().toString());
         encoding.put("product", msg.getProduct().toString());
