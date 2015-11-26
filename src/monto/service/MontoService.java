@@ -14,14 +14,18 @@ import monto.service.message.ConfigurationMessage;
 import monto.service.message.ConfigurationMessages;
 import monto.service.message.DeregisterService;
 import monto.service.message.Language;
+import monto.service.message.LongKey;
 import monto.service.message.Message;
 import monto.service.message.ParseException;
 import monto.service.message.Product;
+import monto.service.message.ProductDependency;
 import monto.service.message.ProductMessage;
 import monto.service.message.ProductMessages;
 import monto.service.message.RegisterMessages;
 import monto.service.message.RegisterServiceRequest;
 import monto.service.message.RegisterServiceResponse;
+import monto.service.message.ServiceID;
+import monto.service.message.Source;
 import monto.service.message.VersionMessages;
 import monto.service.util.PartialConsumer;
 import monto.service.util.PartialFunction;
@@ -37,7 +41,7 @@ public abstract class MontoService {
     private volatile boolean running;
     private boolean registered;
 
-    protected volatile String serviceID;
+    protected volatile ServiceID serviceID;
     protected volatile String label;
     protected volatile String description;
     protected volatile Language language;
@@ -63,7 +67,7 @@ public abstract class MontoService {
      */
     public MontoService(
     		ZMQConfiguration zmqConfig,
-    		String serviceID,
+    		ServiceID serviceID,
     		String label,
     		String description,
     		Product product,
@@ -96,7 +100,7 @@ public abstract class MontoService {
      * @param options
      * @param dependencies
      */
-    public MontoService(ZMQConfiguration zmqConfig, String serviceID, String label, String description, Language language, Product product, Option[] options, String[] dependencies) {
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, String[] dependencies) {
         this(zmqConfig, serviceID, label, description, product, language, dependencies);
         this.options = options;
     }
@@ -149,7 +153,7 @@ public abstract class MontoService {
         	
         	configSocket = zmqConfig.getContext().createSocket(ZMQ.SUB);
         	configSocket.connect(zmqConfig.getConfigurationAddress());
-        	configSocket.subscribe(serviceID.getBytes());
+        	configSocket.subscribe(serviceID.toString().getBytes());
         	configSocket.setReceiveTimeOut(500);
         	configThread = new Thread() {
         		@Override
@@ -205,6 +209,18 @@ public abstract class MontoService {
         System.out.printf("could not register service %s: %s\n", serviceID, decodedResponse.getResponse());
         return false;
     }
+    
+    protected ProductMessage productMessage(LongKey versionID, Source source, Object contents, ProductDependency ... deps) {
+        return new ProductMessage(
+                versionID,
+                new LongKey(1),
+                source,
+                getServiceID(),
+                getProduct(),
+                getLanguage(),
+                contents,
+                deps);
+    }
 
     /**
      * It handles the version messages from the broker and determines the response.
@@ -225,7 +241,7 @@ public abstract class MontoService {
     	// By default ignore configuration messages.
     }
 
-    public String getServiceID() {
+    public ServiceID getServiceID() {
         return serviceID;
     }
 

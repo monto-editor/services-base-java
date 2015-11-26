@@ -16,7 +16,7 @@ public class RegisterMessages {
 
     public static JSONObject encode(RegisterServiceRequest message) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("service_id", message.getServiceID());
+        jsonObject.put("service_id", message.getServiceID().toString());
         jsonObject.put("label", message.getLabel());
         jsonObject.put("description", message.getDescription());
         jsonObject.put("language", message.getLanguage().toString());
@@ -35,7 +35,7 @@ public class RegisterMessages {
 
     public static JSONObject encode(DeregisterService message) {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("deregister_service_id", message.getDeregisterServiceID());
+        jsonObject.put("deregister_service_id", message.getDeregisterServiceID().toString());
         return jsonObject;
     }
 

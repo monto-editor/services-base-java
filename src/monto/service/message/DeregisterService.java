@@ -2,13 +2,13 @@ package monto.service.message;
 
 public class DeregisterService {
 
-    private final String deregisterServiceID;
+    private final ServiceID deregisterServiceID;
 
-    public DeregisterService(String deregisterServiceID) {
+    public DeregisterService(ServiceID deregisterServiceID) {
         this.deregisterServiceID = deregisterServiceID;
     }
 
-    public String getDeregisterServiceID() {
+    public ServiceID getDeregisterServiceID() {
         return deregisterServiceID;
     }
 }

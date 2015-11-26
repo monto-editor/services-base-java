@@ -18,6 +18,7 @@ public class ProductMessages {
             Long versionId = (Long) message.get("version_id");
             Long productId = (Long) message.get("product_id");
             Source source = new Source((String) message.get("source"));
+            ServiceID serviceID = new ServiceID((String) message.get("service_id"));
             Product product = new Product((String) message.get("product"));
             Language language = new Language((String) message.get("language"));
             Object contents = message.get("contents");
@@ -27,6 +28,7 @@ public class ProductMessages {
                     new LongKey(versionId),
                     new LongKey(productId),
                     source,
+                    serviceID,
                     product,
                     language,
                     contents,
@@ -43,6 +45,7 @@ public class ProductMessages {
         encoding.put("version_id", msg.getVersionId().longValue());
         encoding.put("product_id", msg.getProductId().longValue());
         encoding.put("source", msg.getSource().toString());
+        encoding.put("service_id", msg.getServiceID().toString());
         encoding.put("product", msg.getProduct().toString());
         encoding.put("language", msg.getLanguage().toString());
         encoding.put("contents", msg.getContents());
