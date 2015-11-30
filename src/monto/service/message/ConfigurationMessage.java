@@ -7,15 +7,15 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public class ConfigurationMessage implements Message {
 
-    private String serviceID;
+    private ServiceID serviceID;
 	private List<Configuration> configurations;
 
-    public ConfigurationMessage(String serviceID, List<Configuration> configurations) {
+    public ConfigurationMessage(ServiceID serviceID, List<Configuration> configurations) {
         this.serviceID = serviceID;
         this.configurations = configurations;
     }
 
-    public String getServiceID() {
+    public ServiceID getServiceID() {
         return serviceID;
     }
 

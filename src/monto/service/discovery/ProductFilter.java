@@ -2,11 +2,13 @@ package monto.service.discovery;
 
 import java.util.function.Function;
 
+import monto.service.message.Product;
+
 public class ProductFilter implements Filter {
 
-	private String product;
+	private Product product;
 
-	public ProductFilter(String product) {
+	public ProductFilter(Product product) {
 		this.product = product;
 	}
 
@@ -15,7 +17,7 @@ public class ProductFilter implements Filter {
 		return g.apply(this);
 	}
 
-	public String getProduct() {
+	public Product getProduct() {
 		return product;
 	}
 

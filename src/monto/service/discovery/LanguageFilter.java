@@ -2,20 +2,22 @@ package monto.service.discovery;
 
 import java.util.function.Function;
 
+import monto.service.message.Language;
+
 public class LanguageFilter implements Filter {
 
-	public LanguageFilter(String language) {
+	private Language language;
+
+	public LanguageFilter(Language language) {
 		this.language = language;
 	}
-
-	private String language;
 
 	@Override
 	public <A> A match(Function<ServiceIDFilter, A> f, Function<ProductFilter, A> g, Function<LanguageFilter, A> h) {
 		return h.apply(this);
 	}
 
-	public String getLanguage() {
+	public Language getLanguage() {
 		return language;
 	}
 

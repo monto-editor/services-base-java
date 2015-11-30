@@ -2,11 +2,13 @@ package monto.service.discovery;
 
 import java.util.function.Function;
 
+import monto.service.message.ServiceID;
+
 public class ServiceIDFilter implements Filter {
 
-	private String serviceID;
+	private ServiceID serviceID;
 
-	public ServiceIDFilter(String serviceID) {
+	public ServiceIDFilter(ServiceID serviceID) {
 		this.serviceID = serviceID;
 	}
 
@@ -15,7 +17,7 @@ public class ServiceIDFilter implements Filter {
 		return f.apply(this);
 	}
 
-	public String getServiceID() {
+	public ServiceID getServiceID() {
 		return serviceID;
 	}
 }

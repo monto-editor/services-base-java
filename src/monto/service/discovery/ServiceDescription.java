@@ -3,17 +3,18 @@ package monto.service.discovery;
 import java.util.List;
 
 import monto.service.configuration.Option;
+import monto.service.message.ServiceID;
 
 @SuppressWarnings("rawtypes")
 public class ServiceDescription {
-	private String serviceID;
+	private ServiceID serviceID;
 	private String language;
 	private String product;
 	private List<Option> options;
 	private String description;
 	private String label;
 	
-	public ServiceDescription(String serviceID, String language, String product, List<Option> options2, String description, String label) {
+	public ServiceDescription(ServiceID serviceID, String language, String product, List<Option> options2, String description, String label) {
 		this.serviceID = serviceID;
 		this.language = language;
 		this.product = product;
@@ -22,7 +23,7 @@ public class ServiceDescription {
 		this.label = label;
 	}
 
-	public String getServiceID() {
+	public ServiceID getServiceID() {
 		return serviceID;
 	}
 

@@ -1,4 +1,4 @@
-package monto.service.message;
+package monto.service.registration;
 
 public class RegisterServiceResponse {
 

@@ -12,7 +12,7 @@ public class ConfigurationMessages {
 
     public static ConfigurationMessage decode(JSONObject message) throws ParseException {
         try {
-            final String serviceID = (String) message.get("service_id");
+            final ServiceID serviceID = new ServiceID((String) message.get("service_id"));
 			final List<Configuration> configurations = Configurations.decode((JSONArray) message.getOrDefault("configurations", new JSONArray()));
             return new ConfigurationMessage(serviceID, configurations);
         } catch (Exception e) {
@@ -22,7 +22,7 @@ public class ConfigurationMessages {
 
 	public static JSONObject encode(ConfigurationMessage conf) {
     	JSONObject obj = new JSONObject();
-    	obj.put("service_id", conf.getServiceID());
+	obj.put("service_id", conf.getServiceID().toString());
     	JSONArray arr = new JSONArray();
     	for(Configuration c : conf.getConfigurations())
     		arr.add(Configurations.encodeConfiguration(c));

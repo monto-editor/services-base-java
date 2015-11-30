@@ -1,6 +1,9 @@
-package monto.service.message;
+package monto.service.registration;
 
 import monto.service.configuration.Option;
+import monto.service.message.Language;
+import monto.service.message.Product;
+import monto.service.message.ServiceID;
 
 @SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {
@@ -11,10 +14,9 @@ public class RegisterServiceRequest {
     private final Language language;
     private final Product product;
 	private final Option[] options;
-    private final String[] dependencies;
+    private final Dependency[] dependencies;
 
-
-    public RegisterServiceRequest(ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, String... dependencies) {
+    public RegisterServiceRequest(ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, Dependency... dependencies) {
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
@@ -48,7 +50,7 @@ public class RegisterServiceRequest {
         return options;
     }
 
-    public String[] getDependencies() {
+    public Dependency[] getDependencies() {
         return dependencies;
     }
 }

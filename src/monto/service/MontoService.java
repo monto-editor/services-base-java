@@ -21,12 +21,13 @@ import monto.service.message.Product;
 import monto.service.message.ProductDependency;
 import monto.service.message.ProductMessage;
 import monto.service.message.ProductMessages;
-import monto.service.message.RegisterMessages;
-import monto.service.message.RegisterServiceRequest;
-import monto.service.message.RegisterServiceResponse;
 import monto.service.message.ServiceID;
 import monto.service.message.Source;
 import monto.service.message.VersionMessages;
+import monto.service.registration.Dependency;
+import monto.service.registration.RegisterMessages;
+import monto.service.registration.RegisterServiceRequest;
+import monto.service.registration.RegisterServiceResponse;
 import monto.service.util.PartialConsumer;
 import monto.service.util.PartialFunction;
 
@@ -47,7 +48,7 @@ public abstract class MontoService {
     protected volatile Language language;
     protected volatile Product product;
 	protected volatile Option[] options;
-    protected volatile String[] dependencies;
+    protected volatile Dependency[] dependencies;
 	private Socket registrationSocket;
 	private Socket serviceSocket;
 	private Thread serviceThread;
@@ -72,7 +73,7 @@ public abstract class MontoService {
     		String description,
     		Product product,
     		Language language,
-    		String[] dependencies
+		Dependency[] dependencies
     		) {
     	this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;
@@ -80,7 +81,7 @@ public abstract class MontoService {
         this.description = description;
         this.language = language;
         this.product = product;
-        this.options = new Option[]{};
+        this.options = options();
         this.dependencies = dependencies;
         this.running = true;
         this.registered = false;
@@ -100,7 +101,7 @@ public abstract class MontoService {
      * @param options
      * @param dependencies
      */
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, String[] dependencies) {
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, Dependency[] dependencies) {
         this(zmqConfig, serviceID, label, description, product, language, dependencies);
         this.options = options;
     }
@@ -252,11 +253,19 @@ public abstract class MontoService {
         return product;
     }
 
-    public String[] getDependencies() {
+    public Dependency[] getDependencies() {
         return dependencies;
     }
 
     public Option[] getOptions() {
         return options;
+    }
+
+    public static Option[] options(Option... options) {
+	return options;
+    }
+
+    public static Dependency[] dependencies(Dependency... dependencies) {
+	return dependencies;
     }
 }

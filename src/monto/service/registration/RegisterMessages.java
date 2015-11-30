@@ -1,7 +1,6 @@
-package monto.service.message;
+package monto.service.registration;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,6 +9,7 @@ import org.json.simple.JSONObject;
 
 import monto.service.configuration.Option;
 import monto.service.configuration.Options;
+import monto.service.message.DeregisterService;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {
@@ -22,13 +22,21 @@ public class RegisterMessages {
         jsonObject.put("language", message.getLanguage().toString());
         jsonObject.put("product", message.getProduct().toString());
         List<Option> options = Arrays.asList(message.getOptions());
+<<<<<<< 334af460e1fd9e28397f7537fa7cca56c4f96509:src/monto/service/message/RegisterMessages.java
         JSONArray jsonOptions = (JSONArray) options
         		.stream()
         		.map(option -> Options.encode(option))
         		.collect(Collectors.toCollection(JSONArray::new));
+=======
+        JSONArray jsonOptions = options
+			.stream()
+			.map(option -> Options.encode(option))
+			.collect(Collectors.toCollection(() -> new JSONArray()));
+>>>>>>> Use serviceIDs instead of (Product,Language):src/monto/service/registration/RegisterMessages.java
         jsonObject.put("options", jsonOptions);
         JSONArray dependencies = new JSONArray();
-        Collections.addAll(dependencies, message.getDependencies());
+        for(Dependency dep : message.getDependencies())
+		dependencies.add(Dependencies.encode(dep));
         jsonObject.put("dependencies", dependencies);
         return jsonObject;
     }

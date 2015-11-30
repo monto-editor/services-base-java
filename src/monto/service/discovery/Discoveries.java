@@ -11,6 +11,7 @@ import org.json.simple.JSONValue;
 import monto.service.configuration.Option;
 import monto.service.configuration.Options;
 import monto.service.message.ParseException;
+import monto.service.message.ServiceID;
 
 @SuppressWarnings("unchecked")
 public class Discoveries {
@@ -35,9 +36,9 @@ public class Discoveries {
 	private static JSONObject encodeFilter(Filter filter) {
 		JSONObject encoding = new JSONObject();
 		filter.<Void>match(
-				serviceIDFilter -> { encoding.put("service_id", serviceIDFilter.getServiceID()); return null; },
-				productFilter -> { encoding.put("product",productFilter.getProduct()); return null; },
-				languageFilter -> { encoding.put("language",languageFilter.getLanguage()); return null; });
+				serviceIDFilter -> { encoding.put("service_id", serviceIDFilter.getServiceID().toString()); return null; },
+				productFilter -> { encoding.put("product",productFilter.getProduct().toString()); return null; },
+				languageFilter -> { encoding.put("language",languageFilter.getLanguage().toString()); return null; });
 		return encoding;
 	}
 	
@@ -60,7 +61,7 @@ public class Discoveries {
 	private static ServiceDescription decodeServiceDescription(Object encoding) throws ParseException {
 		try {
 			JSONObject enc = (JSONObject) encoding;
-			String serviceID = (String) enc.get("service_id");
+			ServiceID serviceID = new ServiceID((String) enc.get("service_id"));
 			String language = (String) enc.get("language");
 			String product = (String) enc.get("product");
 			JSONArray optionsJSON = (JSONArray) enc.get("options");
