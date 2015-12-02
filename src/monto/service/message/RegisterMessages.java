@@ -22,10 +22,10 @@ public class RegisterMessages {
         jsonObject.put("language", message.getLanguage().toString());
         jsonObject.put("product", message.getProduct().toString());
         List<Option> options = Arrays.asList(message.getOptions());
-        JSONArray jsonOptions = options
+        JSONArray jsonOptions = (JSONArray) options
         		.stream()
         		.map(option -> Options.encode(option))
-        		.collect(Collectors.toCollection(() -> new JSONArray()));
+        		.collect(Collectors.toCollection(JSONArray::new));
         jsonObject.put("options", jsonOptions);
         JSONArray dependencies = new JSONArray();
         Collections.addAll(dependencies, message.getDependencies());
