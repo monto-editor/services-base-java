@@ -1,5 +1,7 @@
 package monto.service.registration;
 
+import java.util.List;
+
 import monto.service.configuration.Option;
 import monto.service.message.Language;
 import monto.service.message.Product;
@@ -12,16 +14,16 @@ public class RegisterServiceRequest {
     private final String label;
     private final String description;
     private final Language language;
-    private final Product product;
-	private final Option[] options;
-    private final Dependency[] dependencies;
+    private final List<Product> products;
+	private final List<Option> options;
+    private final List<Dependency> dependencies;
 
-    public RegisterServiceRequest(ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, Dependency... dependencies) {
+    public RegisterServiceRequest(ServiceID serviceID, String label, String description, Language language, List<Product> products, List<Option> options, List<Dependency> dependencies) {
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
         this.language = language;
-        this.product = product;
+        this.products = products;
         this.options = options;
         this.dependencies = dependencies;
     }
@@ -42,15 +44,15 @@ public class RegisterServiceRequest {
         return language;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public Option[] getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
 
-    public Dependency[] getDependencies() {
+    public List<Dependency> getDependencies() {
         return dependencies;
     }
 }

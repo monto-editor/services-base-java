@@ -1,6 +1,7 @@
 package monto.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -46,9 +47,9 @@ public abstract class MontoService {
     protected volatile String label;
     protected volatile String description;
     protected volatile Language language;
-    protected volatile Product product;
-	protected volatile Option[] options;
-    protected volatile Dependency[] dependencies;
+    protected volatile List<Product> products;
+	protected volatile List<Option> options;
+    protected volatile List<Dependency> dependencies;
 	private Socket registrationSocket;
 	private Socket serviceSocket;
 	private Thread serviceThread;
@@ -71,16 +72,16 @@ public abstract class MontoService {
     		ServiceID serviceID,
     		String label,
     		String description,
-    		Product product,
     		Language language,
-		Dependency[] dependencies
+		List<Product> products,
+		List<Dependency> dependencies
     		) {
     	this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
         this.language = language;
-        this.product = product;
+        this.products = products;
         this.options = options();
         this.dependencies = dependencies;
         this.running = true;
@@ -97,12 +98,17 @@ public abstract class MontoService {
      * @param label
      * @param description
      * @param language
-     * @param product
+     * @param products
      * @param options
      * @param dependencies
      */
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, Option[] options, Dependency[] dependencies) {
-        this(zmqConfig, serviceID, label, description, product, language, dependencies);
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, List<Product> products, List<Option> options, List<Dependency> dependencies) {
+        this(zmqConfig, serviceID, label, description, language, products, dependencies);
+        this.options = options;
+    }
+
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
+	this(zmqConfig, serviceID, label, description, language, Arrays.asList(product), dependencies);
         this.options = options;
     }
 
@@ -195,7 +201,7 @@ public abstract class MontoService {
         System.out.println("registering: " + serviceID + " on " + zmqConfig.getRegistrationAddress());
         registrationSocket = zmqConfig.getContext().createSocket(ZMQ.REQ);
         registrationSocket.connect(zmqConfig.getRegistrationAddress());
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, product, options, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, products, options, dependencies)).toJSONString());
     }
 
     private boolean isRegisterResponseOk() {
@@ -211,12 +217,12 @@ public abstract class MontoService {
         return false;
     }
     
-    protected ProductMessage productMessage(LongKey versionID, Source source, Object contents, ProductDependency ... deps) {
+    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents, ProductDependency ... deps) {
         return new ProductMessage(
                 versionID,
                 source,
                 getServiceID(),
-                getProduct(),
+                product,
                 getLanguage(),
                 contents,
                 deps);
@@ -249,23 +255,23 @@ public abstract class MontoService {
         return language;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public Dependency[] getDependencies() {
+    public List<Dependency> getDependencies() {
         return dependencies;
     }
 
-    public Option[] getOptions() {
+    public List<Option> getOptions() {
         return options;
     }
-
-    public static Option[] options(Option... options) {
-	return options;
+    
+    public static List<Option> options(Option... options) {
+	return Arrays.asList(options);
     }
-
-    public static Dependency[] dependencies(Dependency... dependencies) {
-	return dependencies;
+    
+    public static List<Dependency> dependencies(Dependency... dependencies) {
+	return Arrays.asList(dependencies);
     }
 }

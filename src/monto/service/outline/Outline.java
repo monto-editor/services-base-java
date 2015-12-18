@@ -12,13 +12,13 @@ public class Outline extends Region {
 
     private String description;
     private Optional<String> icon;
-    private List<Outline> childs;
+    private List<Outline> children;
 
     public Outline(String description, IRegion region, String icon, List<Outline> childs) {
         super(region.getStartOffset(), region.getLength());
         this.description = description;
         this.icon = Optional.ofNullable(icon);
-        this.childs = childs;
+        this.children = childs;
     }
 
     public Outline(String description, IRegion region, String icon) {
@@ -26,11 +26,11 @@ public class Outline extends Region {
     }
 
     public void addChild(Outline outline) {
-        childs.add(outline);
+        children.add(outline);
     }
 
     public List<Outline> getChildren() {
-        return childs;
+        return children;
     }
 
     public Optional<String> getIcon() {

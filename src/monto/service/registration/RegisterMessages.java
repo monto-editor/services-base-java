@@ -1,15 +1,11 @@
 package monto.service.registration;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import monto.service.configuration.Option;
-import monto.service.configuration.Options;
 import monto.service.message.DeregisterService;
+import monto.service.message.Product;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {
@@ -20,24 +16,18 @@ public class RegisterMessages {
         jsonObject.put("label", message.getLabel());
         jsonObject.put("description", message.getDescription());
         jsonObject.put("language", message.getLanguage().toString());
-        jsonObject.put("product", message.getProduct().toString());
-        List<Option> options = Arrays.asList(message.getOptions());
-<<<<<<< 334af460e1fd9e28397f7537fa7cca56c4f96509:src/monto/service/message/RegisterMessages.java
-        JSONArray jsonOptions = (JSONArray) options
-        		.stream()
-        		.map(option -> Options.encode(option))
-        		.collect(Collectors.toCollection(JSONArray::new));
-=======
-        JSONArray jsonOptions = options
-			.stream()
-			.map(option -> Options.encode(option))
-			.collect(Collectors.toCollection(() -> new JSONArray()));
->>>>>>> Use serviceIDs instead of (Product,Language):src/monto/service/registration/RegisterMessages.java
+        JSONArray jsonProducts = new JSONArray();
+        for(Product product : message.getProducts())
+		jsonProducts.add(product.toString());
+        jsonObject.put("products", jsonProducts);
+        JSONArray jsonOptions = new JSONArray();
+        for(Option option : message.getOptions())
+          jsonOptions.add(option.toString());
         jsonObject.put("options", jsonOptions);
-        JSONArray dependencies = new JSONArray();
+        JSONArray jsonDependencies = new JSONArray();
         for(Dependency dep : message.getDependencies())
-		dependencies.add(Dependencies.encode(dep));
-        jsonObject.put("dependencies", dependencies);
+		jsonDependencies.add(Dependencies.encode(dep));
+        jsonObject.put("dependencies", jsonDependencies);
         return jsonObject;
     }
 
