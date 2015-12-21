@@ -1,4 +1,4 @@
-package monto.service.message;
+package monto.service.types;
 
 public class Languages {
 	public static final Language JAVA = new Language("java");

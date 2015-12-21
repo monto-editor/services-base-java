@@ -1,9 +1,10 @@
-package monto.service.message;
+package monto.service.configuration;
 
-import monto.service.configuration.Configuration;
-import monto.service.configuration.Configurations;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import monto.service.types.ParseException;
+import monto.service.types.ServiceID;
 
 import java.util.List;
 

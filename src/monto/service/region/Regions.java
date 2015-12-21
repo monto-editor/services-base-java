@@ -1,8 +1,9 @@
 package monto.service.region;
 
-import monto.service.message.ParseException;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
+import monto.service.types.ParseException;
 
 import java.io.Reader;
 

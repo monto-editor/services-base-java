@@ -1,8 +1,9 @@
-package monto.service.message;
-
-import monto.service.configuration.Configuration;
+package monto.service.configuration;
 
 import java.util.List;
+
+import monto.service.types.Message;
+import monto.service.types.ServiceID;
 
 @SuppressWarnings("rawtypes")
 public class ConfigurationMessage implements Message {

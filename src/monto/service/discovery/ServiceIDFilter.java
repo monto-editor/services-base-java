@@ -2,7 +2,7 @@ package monto.service.discovery;
 
 import java.util.function.Function;
 
-import monto.service.message.ServiceID;
+import monto.service.types.ServiceID;
 
 public class ServiceIDFilter implements Filter {
 

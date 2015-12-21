@@ -2,7 +2,7 @@ package monto.service.discovery;
 
 import java.util.function.Function;
 
-import monto.service.message.Product;
+import monto.service.types.Product;
 
 public class ProductFilter implements Filter {
 

@@ -3,9 +3,9 @@ package monto.service.registration;
 import java.util.List;
 
 import monto.service.configuration.Option;
-import monto.service.message.Language;
-import monto.service.message.Product;
-import monto.service.message.ServiceID;
+import monto.service.types.Language;
+import monto.service.types.Product;
+import monto.service.types.ServiceID;
 
 @SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {

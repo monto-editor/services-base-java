@@ -1,4 +1,4 @@
-package monto.service.message;
+package monto.service.types;
 
 public class Product implements Comparable<Product> {
     private String name;

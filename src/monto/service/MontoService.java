@@ -10,27 +10,27 @@ import org.json.simple.JSONValue;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
 
+import monto.service.configuration.ConfigurationMessage;
+import monto.service.configuration.ConfigurationMessages;
 import monto.service.configuration.Option;
-import monto.service.message.ConfigurationMessage;
-import monto.service.message.ConfigurationMessages;
-import monto.service.message.DeregisterService;
-import monto.service.message.Language;
-import monto.service.message.LongKey;
-import monto.service.message.Message;
-import monto.service.message.ParseException;
-import monto.service.message.Product;
-import monto.service.message.ProductDependency;
-import monto.service.message.ProductMessage;
-import monto.service.message.ProductMessages;
-import monto.service.message.ServiceID;
-import monto.service.message.Source;
-import monto.service.message.VersionMessages;
+import monto.service.filedependencies.ProductDependency;
+import monto.service.product.ProductMessage;
+import monto.service.product.ProductMessages;
 import monto.service.registration.Dependency;
+import monto.service.registration.DeregisterService;
 import monto.service.registration.RegisterMessages;
 import monto.service.registration.RegisterServiceRequest;
 import monto.service.registration.RegisterServiceResponse;
-import monto.service.util.PartialConsumer;
-import monto.service.util.PartialFunction;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Message;
+import monto.service.types.ParseException;
+import monto.service.types.PartialConsumer;
+import monto.service.types.PartialFunction;
+import monto.service.types.Product;
+import monto.service.types.ServiceID;
+import monto.service.types.Source;
+import monto.service.version.VersionMessages;
 
 /**
  * Template for a monto service.

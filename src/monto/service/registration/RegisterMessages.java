@@ -4,8 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import monto.service.configuration.Option;
-import monto.service.message.DeregisterService;
-import monto.service.message.Product;
+import monto.service.types.Product;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {

@@ -1,7 +1,8 @@
 package monto.service.completion;
 
-import monto.service.message.ParseException;
-import monto.service.message.ProductMessage;
+import monto.service.product.ProductMessage;
+import monto.service.types.ParseException;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

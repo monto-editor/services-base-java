@@ -6,7 +6,7 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import monto.service.message.ParseException;
+import monto.service.types.ParseException;
 
 
 @SuppressWarnings({ "unchecked", "rawtypes" })

@@ -3,7 +3,7 @@ package monto.service.discovery;
 import java.util.List;
 
 import monto.service.configuration.Option;
-import monto.service.message.ServiceID;
+import monto.service.types.ServiceID;
 
 @SuppressWarnings("rawtypes")
 public class ServiceDescription {

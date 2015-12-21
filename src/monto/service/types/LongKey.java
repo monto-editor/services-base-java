@@ -1,4 +1,4 @@
-package monto.service.message;
+package monto.service.types;
 
 public class LongKey implements Key {
 

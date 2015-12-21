@@ -1,9 +1,10 @@
 package monto.service.outline;
 
-import monto.service.message.ParseException;
-import monto.service.message.ProductMessage;
+import monto.service.product.ProductMessage;
 import monto.service.region.Region;
 import monto.service.region.Regions;
+import monto.service.types.ParseException;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 

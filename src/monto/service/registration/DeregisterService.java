@@ -1,4 +1,6 @@
-package monto.service.message;
+package monto.service.registration;
+
+import monto.service.types.ServiceID;
 
 public class DeregisterService {
 

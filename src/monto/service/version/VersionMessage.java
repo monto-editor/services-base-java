@@ -1,8 +1,15 @@
-package monto.service.message;
+package monto.service.version;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import monto.service.filedependencies.Dependency;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Message;
+import monto.service.types.Selection;
+import monto.service.types.Source;
 
 public class VersionMessage implements Message {
 

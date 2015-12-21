@@ -10,8 +10,8 @@ import org.json.simple.JSONValue;
 
 import monto.service.configuration.Option;
 import monto.service.configuration.Options;
-import monto.service.message.ParseException;
-import monto.service.message.ServiceID;
+import monto.service.types.ParseException;
+import monto.service.types.ServiceID;
 
 @SuppressWarnings("unchecked")
 public class Discoveries {

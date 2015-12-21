@@ -1,6 +1,12 @@
-package monto.service.message;
+package monto.service.filedependencies;
 
 import java.util.function.Function;
+
+import monto.service.product.ProductMessage;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Product;
+import monto.service.types.Source;
 
 public class ProductDependency implements Dependency {
 

@@ -1,4 +1,6 @@
-package monto.service.message;
+package monto.service.product;
+
+import monto.service.types.Product;
 
 public class Products {
 	public static final Product OUTLINE = new Product("outline");

@@ -1,6 +1,11 @@
-package monto.service.message;
+package monto.service.filedependencies;
 
 import java.util.function.Function;
+
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Source;
+import monto.service.version.VersionMessage;
 
 public class VersionDependency implements Dependency {
 

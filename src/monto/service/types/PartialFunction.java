@@ -1,4 +1,4 @@
-package monto.service.util;
+package monto.service.types;
 
 @FunctionalInterface
 public interface PartialFunction<A, B, E extends Throwable> {

@@ -6,10 +6,10 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import monto.service.message.ParseException;
-import monto.service.message.ProductMessage;
+import monto.service.product.ProductMessage;
 import monto.service.region.Region;
 import monto.service.region.Regions;
+import monto.service.types.ParseException;
 
 
 /**

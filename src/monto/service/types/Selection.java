@@ -1,4 +1,4 @@
-package monto.service.message;
+package monto.service.types;
 
 import monto.service.region.Region;
 
