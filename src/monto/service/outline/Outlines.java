@@ -8,6 +8,7 @@ import monto.service.types.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Outlines {
         }
 
         if (outline.getIcon().isPresent()) {
-            encoding.put("icon", outline.getIcon().get());
+            encoding.put("icon", outline.getIcon().get().toString());
         }
 
         return encoding;
@@ -46,9 +47,9 @@ public class Outlines {
             String description = (String) encoding.get("description");
             Region identifier = Regions.decode((JSONObject) encoding.get("identifier"));
 
-            String icon = null;
-            if (encoding.containsKey("icon")) {
-                icon = (String) encoding.get("icon");
+            URL icon = null;
+            if (encoding.containsKey("icon") && !((String) encoding.get("icon")).isEmpty()) {
+                icon = new URL((String) encoding.get("icon"));
             }
 
             List<Outline> children = new ArrayList<>();
