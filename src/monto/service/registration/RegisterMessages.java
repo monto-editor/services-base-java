@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import monto.service.configuration.Option;
+import monto.service.configuration.Options;
 import monto.service.types.Product;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -21,7 +22,7 @@ public class RegisterMessages {
         jsonObject.put("products", jsonProducts);
         JSONArray jsonOptions = new JSONArray();
         for(Option option : message.getOptions())
-          jsonOptions.add(option.toString());
+          jsonOptions.add(Options.encode(option));
         jsonObject.put("options", jsonOptions);
         JSONArray jsonDependencies = new JSONArray();
         for(Dependency dep : message.getDependencies())
