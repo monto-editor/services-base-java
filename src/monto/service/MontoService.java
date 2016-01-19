@@ -131,7 +131,7 @@ public abstract class MontoService {
 		}
     }
     
-    public void start() {
+    public void start() throws Exception {
         registerService();
         if (isRegisterResponseOk()) {
         	running = true;
@@ -178,7 +178,7 @@ public abstract class MontoService {
         }
     }
 
-    public void stop() {
+    public void stop() throws Exception {
         if (registered == true) {
             running = false;
             System.out.println("disconnecting: " + serviceID);
