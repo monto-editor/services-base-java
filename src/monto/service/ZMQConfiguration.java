@@ -1,5 +1,8 @@
 package monto.service;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.zeromq.ZContext;
 
 public class ZMQConfiguration {
@@ -7,12 +10,14 @@ public class ZMQConfiguration {
 	private String serviceAddress;
 	private String registrationAddress;
 	private String configurationAdress;
+	private int resourcePort;
 
-	public ZMQConfiguration(ZContext context, String serviceAddress, String registrationAddress, String configurationAdress) {
+	public ZMQConfiguration(ZContext context, String serviceAddress, String registrationAddress, String configurationAdress, int resourcePort) {
 		this.context = context;
 		this.serviceAddress = serviceAddress;
 		this.registrationAddress = registrationAddress;
 		this.configurationAdress = configurationAdress;
+		this.resourcePort = resourcePort;
 	}
 
 	public ZContext getContext() {
@@ -31,15 +36,29 @@ public class ZMQConfiguration {
 		return configurationAdress;
 	}
 	
+	public int getResourcePort() {
+		return resourcePort;
+	}
+	
+	public URL getResourceURL(String name) {
+		try {
+			return new URL(String.format("http://localhost:%d/%s", resourcePort, name));
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	@Override
 	public String toString() {
 		return String.format(
 				"ZMQ Configuration:\n"
 				+ "  Service Address: %s\n"
 				+ "  Registration Address: %s\n"
-				+ "  Configuration Address: %s",
+				+ "  Configuration Address: %s"
+				+ "  Resource Port: %d",
 				getServiceAddress(),
 				getRegistrationAddress(),
-				getConfigurationAddress());
+				getConfigurationAddress(),
+				getResourcePort());
 	}
 }

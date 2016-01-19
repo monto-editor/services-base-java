@@ -1,5 +1,6 @@
 package monto.service;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -273,5 +274,9 @@ public abstract class MontoService {
     
     public static List<Dependency> dependencies(Dependency... dependencies) {
 	return Arrays.asList(dependencies);
+    }
+    
+    public URL getResource(String name) {
+    	return zmqConfig.getResourceURL(name);
     }
 }
