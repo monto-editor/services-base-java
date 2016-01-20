@@ -6,6 +6,7 @@ import monto.service.types.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,7 @@ public class Completions {
                         (String) encoding.get("description"),
                         (String) encoding.get("replacement"),
                         ((Long) encoding.get("insertionOffset")).intValue(),
-                        (String) encoding.get("icon")));
+                        new URL((String) encoding.get("icon"))));
             }
             return completions;
         } catch (Exception e) {

@@ -1,17 +1,19 @@
 package monto.service.completion;
 
+import java.net.URL;
+
 public class Completion {
 
     private String description;
     private String replacement;
-    private String icon;
+    private URL icon;
     private int insertionOffset;
 
-    public Completion(String description, String replacement, String icon) {
+    public Completion(String description, String replacement, URL icon) {
         this(description, replacement, 0, icon);
     }
 
-    public Completion(String description, String replacement, int insertionOffset, String icon) {
+    public Completion(String description, String replacement, int insertionOffset, URL icon) {
         this.description = description;
         this.replacement = replacement;
         this.insertionOffset = insertionOffset;
@@ -26,7 +28,7 @@ public class Completion {
         return replacement;
     }
 
-    public String getIcon() {
+    public URL getIcon() {
         return icon;
     }
 
