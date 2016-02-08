@@ -31,4 +31,11 @@ public interface IRegion {
     default boolean encloses(IRegion part) {
         return part.inRange(this);
     }
+    
+    /**
+     * Extract a region of text from the given string.
+     */
+    default String extract(String str) {
+    	return str.substring(getStartOffset(), getEndOffset());
+    }
 }

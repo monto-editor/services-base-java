@@ -1,8 +1,10 @@
 package monto.service.ast;
 
+import java.util.function.Function;
+
 import monto.service.region.IRegion;
 
-public class Terminal implements AST {
+public class Terminal implements AST, IRegion {
     private int offset;
     private int length;
 
@@ -17,6 +19,11 @@ public class Terminal implements AST {
     }
 
     @Override
+	public <A> A match(Function<NonTerminal, A> f, Function<Terminal, A> g) {
+		return g.apply(this);
+	}
+
+	@Override
     public int getStartOffset() {
         return offset;
     }

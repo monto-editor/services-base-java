@@ -1,16 +1,14 @@
 package monto.service.completion;
 
-import monto.service.product.ProductMessage;
-import monto.service.types.ParseException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Stream;
+import monto.service.product.ProductMessage;
+import monto.service.types.ParseException;
 
 
 public class Completions {
@@ -37,12 +35,10 @@ public class Completions {
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONArray encode(Stream<Completion> completions) {
-        Iterator<Completion> iter = completions.iterator();
-        JSONArray array = new JSONArray();
-        while (iter.hasNext()) {
-            array.add(encode(iter.next()));
-        }
+    public static JSONArray encode(List<Completion> completions) {
+    	JSONArray array = new JSONArray();
+        for(Completion c: completions)
+            array.add(encode(c));
         return array;
     }
 

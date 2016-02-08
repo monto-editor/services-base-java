@@ -3,8 +3,11 @@ package monto.service.ast;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
-public class NonTerminal implements AST {
+import monto.service.region.IRegion;
+
+public class NonTerminal implements AST, IRegion {
 
     private String name;
     private List<AST> children;
@@ -23,7 +26,12 @@ public class NonTerminal implements AST {
         visitor.visit(this);
     }
 
-    public String getName() {
+    @Override
+	public <A> A match(Function<NonTerminal, A> f, Function<Terminal, A> g) {
+		return f.apply(this);
+	}
+
+	public String getName() {
         return name;
     }
 

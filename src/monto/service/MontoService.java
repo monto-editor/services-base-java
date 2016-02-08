@@ -74,8 +74,8 @@ public abstract class MontoService {
     		String label,
     		String description,
     		Language language,
-		List<Product> products,
-		List<Dependency> dependencies
+    		List<Product> products,
+    		List<Dependency> dependencies
     		) {
     	this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;

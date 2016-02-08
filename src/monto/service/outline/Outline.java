@@ -1,29 +1,30 @@
 package monto.service.outline;
 
-import monto.service.region.IRegion;
-import monto.service.region.Region;
-
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import monto.service.region.IRegion;
+import monto.service.region.Region;
 
 
 public class Outline extends Region {
 
-    private String description;
+    private String label;
     private Optional<URL> icon;
     private List<Outline> children;
 
-    public Outline(String description, IRegion region, URL icon, List<Outline> childs) {
-        super(region.getStartOffset(), region.getLength());
-        this.description = description;
+    public Outline(String label, IRegion link, URL icon, List<Outline> children) {
+        super(link.getStartOffset(), link.getLength());
+        this.label = label;
         this.icon = Optional.ofNullable(icon);
-        this.children = childs;
+        this.children = children;
     }
-
-    public Outline(String description, IRegion region, URL url) {
-        this(description, region, url, new ArrayList<>());
+    
+    public Outline(String label, IRegion link, URL icon, Outline ... children) {
+        this(label,link,icon,new ArrayList<>(Arrays.asList(children)));
     }
 
     public void addChild(Outline outline) {
@@ -42,16 +43,16 @@ public class Outline extends Region {
         return getChildren().size() == 0;
     }
 
-    public String getDescription() {
-        return description;
+    public String getLabel() {
+        return label;
     }
 
-    public IRegion getIdentifier() {
+    public IRegion getLink() {
         return this;
     }
 
     @Override
     public String toString() {
-        return description;
+        return label;
     }
 }

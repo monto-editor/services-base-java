@@ -18,8 +18,8 @@ public class Outlines {
     public static JSONObject encode(Outline outline) {
         JSONObject encoding = new JSONObject();
 
-        encoding.put("description", outline.getDescription());
-        encoding.put("identifier", Regions.encode(outline.getIdentifier()));
+        encoding.put("label", outline.getLabel());
+        encoding.put("link", Regions.encode(outline.getLink()));
 
         if (!outline.isLeaf()) {
             JSONArray children = new JSONArray();
@@ -44,21 +44,21 @@ public class Outlines {
 
     public static Outline decode(JSONObject encoding) throws ParseException {
         try {
-            String description = (String) encoding.get("description");
-            Region identifier = Regions.decode((JSONObject) encoding.get("identifier"));
+            String label = (String) encoding.get("label");
+            Region link = Regions.decode((JSONObject) encoding.get("link"));
 
             URL icon = null;
             if (encoding.containsKey("icon") && !((String) encoding.get("icon")).isEmpty()) {
                 icon = new URL((String) encoding.get("icon"));
             }
-
+            
             List<Outline> children = new ArrayList<>();
             if (encoding.containsKey("children")) {
                 for (Object child : (JSONArray) encoding.get("children"))
                     children.add(decode((JSONObject) child));
             }
 
-            return new Outline(description, identifier, icon, children);
+            return new Outline(label, link, icon, children);
 
         } catch (Exception e) {
             throw new ParseException(e);
