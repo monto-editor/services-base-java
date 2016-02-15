@@ -22,8 +22,8 @@ public class ProductDependency implements Dependency {
         this.product = product;
     }
 
-    public ProductDependency(ProductMessage message) {
-        this(message.getVersionId(), message.getSource(), message.getLanguage(), message.getProduct());
+    public ProductDependency(ProductMessage ast) {
+        this(ast.getVersionId(), ast.getSource(), ast.getLanguage(), ast.getProduct());
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Messages {
         ProductMessage productMessage = messages.stream()
                 .filter(msg -> {
                     if (msg instanceof ProductMessage) {
-                        ProductMessage msg1 = (ProductMessage) msg;
+			ProductMessage msg1 = (ProductMessage) msg;
                         return msg1.getProduct().equals(product) && msg1.getLanguage().equals(language);
                     } else {
                         return false;

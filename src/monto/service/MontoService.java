@@ -14,8 +14,13 @@ import org.zeromq.ZMQ.Socket;
 import monto.service.configuration.ConfigurationMessage;
 import monto.service.configuration.ConfigurationMessages;
 import monto.service.configuration.Option;
-import monto.service.filedependencies.ProductDependency;
+import monto.service.distributor.ContentsVisitor;
+import monto.service.distributor.Distributor;
+import monto.service.distributor.InvalidKeyException;
+import monto.service.product.IProductMessage;
 import monto.service.product.ProductMessage;
+import monto.service.product.ProductMessageWithContents;
+import monto.service.product.ProductMessageWithKey;
 import monto.service.product.ProductMessages;
 import monto.service.registration.Dependency;
 import monto.service.registration.DeregisterService;
@@ -41,33 +46,22 @@ public abstract class MontoService {
 
     private ZMQConfiguration zmqConfig;
     private int port;
-    private volatile boolean running;
+    private boolean running;
     private boolean registered;
 
-    protected volatile ServiceID serviceID;
-    protected volatile String label;
-    protected volatile String description;
-    protected volatile Language language;
-    protected volatile List<Product> products;
-	protected volatile List<Option> options;
-    protected volatile List<Dependency> dependencies;
+    protected ServiceID serviceID;
+    protected String label;
+    protected String description;
+    protected Language language;
+    protected List<Product> products;
+	protected List<Option> options;
+    protected List<monto.service.registration.Dependency> dependencies;
 	private Socket registrationSocket;
 	private Socket serviceSocket;
 	private Thread serviceThread;
 	private Thread configThread;
 	private Socket configSocket;
 
-    /**
-     * Template for a monto service.
-     *
-     * @param context
-     * @param fullServiceAddress             address of the service without port, e.g. "tcp://*"
-     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
-     * @param serviceID
-     * @param product
-     * @param language
-     * @param dependencies
-     */
     public MontoService(
     		ZMQConfiguration zmqConfig,
     		ServiceID serviceID,
@@ -82,34 +76,14 @@ public abstract class MontoService {
         this.label = label;
         this.description = description;
         this.language = language;
-        this.products = products;
         this.options = options();
         this.dependencies = dependencies;
         this.running = true;
         this.registered = false;
     }
 
-    /**
-     * Template for a monto service with options.
-     *
-     * @param context
-     * @param fullServiceAddress             address of the service without port, e.g. "tcp://*"
-     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
-     * @param serviceID
-     * @param label
-     * @param description
-     * @param language
-     * @param products
-     * @param options
-     * @param dependencies
-     */
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, List<Product> products, List<Option> options, List<Dependency> dependencies) {
-        this(zmqConfig, serviceID, label, description, language, products, dependencies);
-        this.options = options;
-    }
-
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
-	this(zmqConfig, serviceID, label, description, language, Arrays.asList(product), dependencies);
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product products, List<Option> options, List<Dependency> dependencies) {
+        this(zmqConfig, serviceID, label, description, language, Arrays.asList(products), dependencies);
         this.options = options;
     }
 
@@ -143,6 +117,7 @@ public abstract class MontoService {
         	serviceThread = new Thread() {
         		@Override
         		public void run() {
+				Distributor distributor = new Distributor();
         			while(running)
         				that.<JSONArray,List<Message>>handleMessage (
         						serviceSocket,
@@ -150,11 +125,33 @@ public abstract class MontoService {
         							List<Message> decodedMessages = new ArrayList<>();
         							for (Object object : messages) {
         								JSONObject message = (JSONObject) object;
-        								decodedMessages.add(message.containsKey("product") ? ProductMessages.decode(message) : VersionMessages.decode(message));
+//        								decodedMessages.add(message.containsKey("product") ? ProductMessages.decode(message) : VersionMessages.decode(message));
+
+									if(message.containsKey("product")){
+										try {
+											System.out.println("Received Message!");
+											IProductMessage prdMsgWithKeyOrContents = ProductMessages.decode(message);
+												ProductMessage prdMsgWithContents = prdMsgWithKeyOrContents.accept(new ContentsVisitor(distributor));
+												decodedMessages.add(prdMsgWithContents);
+											} catch (InvalidKeyException e) {
+												e.printStackTrace();
+											}
+									} else{
+										decodedMessages.add(VersionMessages.decode(message));
+									}
         							}
         							return decodedMessages;
         						},
-        						messages -> serviceSocket.send(ProductMessages.encode(onVersionMessage(messages)).toJSONString()));
+							messages -> {
+								ProductMessage prdMsgWithContents = onVersionMessage(messages);
+
+								Integer contentsKey = distributor.put(prdMsgWithContents.getContents());
+								ProductMessageWithKey prdMsgWithContentsKey = ProductMessages.constructMsgWithKey(prdMsgWithContents, contentsKey);
+
+								String toBeSend = ProductMessages.encode(prdMsgWithContentsKey).toJSONString();
+								serviceSocket.send(toBeSend);
+							}
+							);
         		}
         	};
         	serviceThread.start();
@@ -192,7 +189,7 @@ public abstract class MontoService {
 			}
             registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
             
-            // Sockets will be closed by ZContext.destroy()
+            // Sockets will be closed by ZContext.ProductMessageWithContentsdestroy()
             
             System.out.println("terminated: " + serviceID);
         }
@@ -218,8 +215,8 @@ public abstract class MontoService {
         return false;
     }
     
-    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents, ProductDependency ... deps) {
-        return new ProductMessage(
+    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents, monto.service.filedependencies.Dependency ... deps) {
+        return new ProductMessageWithContents(
                 versionID,
                 source,
                 getServiceID(),
