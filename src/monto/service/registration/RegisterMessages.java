@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 
 import monto.service.configuration.Option;
 import monto.service.configuration.Options;
-import monto.service.types.Product;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class RegisterMessages {
@@ -15,10 +14,9 @@ public class RegisterMessages {
         jsonObject.put("service_id", message.getServiceID().toString());
         jsonObject.put("label", message.getLabel());
         jsonObject.put("description", message.getDescription());
-        jsonObject.put("language", message.getLanguage().toString());
         JSONArray jsonProducts = new JSONArray();
-        for(Product product : message.getProducts())
-		jsonProducts.add(product.toString());
+        for(ProductDescription product : message.getProducts())
+		jsonProducts.add(encodeProductDescription(product));
         jsonObject.put("products", jsonProducts);
         JSONArray jsonOptions = new JSONArray();
         for(Option option : message.getOptions())
@@ -31,7 +29,14 @@ public class RegisterMessages {
         return jsonObject;
     }
 
-    public static JSONObject encode(DeregisterService message) {
+    private static JSONObject encodeProductDescription(ProductDescription productDescription) {
+		JSONObject encoding = new JSONObject();
+        encoding.put("language", productDescription.getLanguage().toString());
+        encoding.put("product", productDescription.getProduct().toString());
+		return encoding;
+	}
+
+	public static JSONObject encode(DeregisterService message) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("deregister_service_id", message.getDeregisterServiceID().toString());
         return jsonObject;

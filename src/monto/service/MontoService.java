@@ -16,6 +16,7 @@ import monto.service.product.ProductMessage;
 import monto.service.product.ProductMessages;
 import monto.service.registration.Dependency;
 import monto.service.registration.DeregisterService;
+import monto.service.registration.ProductDescription;
 import monto.service.registration.RegisterMessages;
 import monto.service.registration.RegisterServiceRequest;
 import monto.service.registration.RegisterServiceResponse;
@@ -44,8 +45,7 @@ public abstract class MontoService {
     protected volatile ServiceID serviceID;
     protected volatile String label;
     protected volatile String description;
-    protected volatile Language language;
-    protected volatile List<Product> products;
+    protected volatile List<ProductDescription> products;
 	protected volatile List<Option> options;
     protected volatile List<Dependency> dependencies;
 	private Socket registrationSocket;
@@ -70,15 +70,13 @@ public abstract class MontoService {
     		ServiceID serviceID,
     		String label,
     		String description,
-    		Language language,
-    		List<Product> products,
+    		List<ProductDescription> products,
     		List<Dependency> dependencies
     		) {
     	this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
-        this.language = language;
         this.products = products;
         this.options = options();
         this.dependencies = dependencies;
@@ -86,27 +84,13 @@ public abstract class MontoService {
         this.registered = false;
     }
 
-    /**
-     * Template for a monto service with options.
-     *
-     * @param context
-     * @param fullServiceAddress             address of the service without port, e.g. "tcp://*"
-     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
-     * @param serviceID
-     * @param label
-     * @param description
-     * @param language
-     * @param products
-     * @param options
-     * @param dependencies
-     */
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, List<Product> products, List<Option> options, List<Dependency> dependencies) {
-        this(zmqConfig, serviceID, label, description, language, products, dependencies);
+    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
+        this(zmqConfig, serviceID, label, description,  products, dependencies);
         this.options = options;
     }
 
     public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
-	this(zmqConfig, serviceID, label, description, language, Arrays.asList(product), dependencies);
+	this(zmqConfig, serviceID, label, description, Arrays.asList(new ProductDescription(product, language)), dependencies);
         this.options = options;
     }
 
@@ -192,7 +176,7 @@ public abstract class MontoService {
         System.out.println("registering: " + serviceID + " on " + zmqConfig.getRegistrationAddress());
         registrationSocket = zmqConfig.getContext().createSocket(ZMQ.REQ);
         registrationSocket.connect(zmqConfig.getRegistrationAddress());
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, language, products, options, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, products, options, dependencies)).toJSONString());
     }
 
     private boolean isRegisterResponseOk() {
@@ -208,13 +192,13 @@ public abstract class MontoService {
         return false;
     }
     
-    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents) {
+    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Language language, Object contents) {
         return new ProductMessage(
                 versionID,
                 source,
                 getServiceID(),
                 product,
-                getLanguage(),
+                language,
                 contents);
     }
 
@@ -234,11 +218,7 @@ public abstract class MontoService {
         return serviceID;
     }
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public List<Product> getProducts() {
+    public List<ProductDescription> getProducts() {
         return products;
     }
 
