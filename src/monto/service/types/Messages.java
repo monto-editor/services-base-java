@@ -4,17 +4,17 @@ import java.util.List;
 
 import monto.service.configuration.ConfigurationMessage;
 import monto.service.product.ProductMessage;
-import monto.service.version.VersionMessage;
+import monto.service.source.SourceMessage;
 
 
 public class Messages {
-    public static VersionMessage getVersionMessage(List<Message> messages) {
+    public static SourceMessage getVersionMessage(List<Message> messages) {
         if (messages == null)
             throw new IllegalArgumentException("Message list was null");
-        VersionMessage versionMessage = messages.stream()
-                .filter(msg -> msg instanceof VersionMessage)
+        SourceMessage versionMessage = messages.stream()
+                .filter(msg -> msg instanceof SourceMessage)
                 .findFirst()
-                .map(msg -> (VersionMessage) msg).get();
+                .map(msg -> (SourceMessage) msg).get();
         if (versionMessage == null) {
             throw new IllegalArgumentException("VersionMessage missing");
         }

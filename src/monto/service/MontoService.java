@@ -1,11 +1,9 @@
 package monto.service;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.zeromq.ZMQ;
@@ -14,7 +12,6 @@ import org.zeromq.ZMQ.Socket;
 import monto.service.configuration.ConfigurationMessage;
 import monto.service.configuration.ConfigurationMessages;
 import monto.service.configuration.Option;
-import monto.service.filedependencies.ProductDependency;
 import monto.service.product.ProductMessage;
 import monto.service.product.ProductMessages;
 import monto.service.registration.Dependency;
@@ -22,16 +19,16 @@ import monto.service.registration.DeregisterService;
 import monto.service.registration.RegisterMessages;
 import monto.service.registration.RegisterServiceRequest;
 import monto.service.registration.RegisterServiceResponse;
+import monto.service.request.Request;
+import monto.service.request.Requests;
 import monto.service.types.Language;
 import monto.service.types.LongKey;
-import monto.service.types.Message;
 import monto.service.types.ParseException;
 import monto.service.types.PartialConsumer;
 import monto.service.types.PartialFunction;
 import monto.service.types.Product;
 import monto.service.types.ServiceID;
 import monto.service.types.Source;
-import monto.service.version.VersionMessages;
 
 /**
  * Template for a monto service.
@@ -144,17 +141,10 @@ public abstract class MontoService {
         		@Override
         		public void run() {
         			while(running)
-        				that.<JSONArray,List<Message>>handleMessage (
+        				that.<JSONObject,Request>handleMessage (
         						serviceSocket,
-        						messages -> {
-        							List<Message> decodedMessages = new ArrayList<>();
-        							for (Object object : messages) {
-        								JSONObject message = (JSONObject) object;
-        								decodedMessages.add(message.containsKey("product") ? ProductMessages.decode(message) : VersionMessages.decode(message));
-        							}
-        							return decodedMessages;
-        						},
-        						messages -> serviceSocket.send(ProductMessages.encode(onVersionMessage(messages)).toJSONString()));
+        						request -> Requests.decode(request),
+        						request -> serviceSocket.send(ProductMessages.encode(onRequest(request)).toJSONString()));
         		}
         	};
         	serviceThread.start();
@@ -218,31 +208,23 @@ public abstract class MontoService {
         return false;
     }
     
-    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents, ProductDependency ... deps) {
+    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Object contents) {
         return new ProductMessage(
                 versionID,
                 source,
                 getServiceID(),
                 product,
                 getLanguage(),
-                contents,
-                deps);
+                contents);
     }
 
     /**
-     * It handles the version messages from the broker and determines the response.
-     *
-     * @param messages VersionMessage an dependency ProductMessages
-     * @return a ProductMessage for the service
-     * @throws Exception
+     * handles request messages send by the broker and return a product message.
      */
-    public abstract ProductMessage onVersionMessage(List<Message> messages) throws Exception;
+    public abstract ProductMessage onRequest(Request request) throws Exception;
 
     /**
      * It handles the configuration messages from the broker and determines the response.
-     *
-     * @param message The received configuration message
-     * @throws Exception
      */
     public void onConfigurationMessage(ConfigurationMessage message) throws Exception {
     	// By default ignore configuration messages.
