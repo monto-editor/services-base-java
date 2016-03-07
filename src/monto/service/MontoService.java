@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+import monto.service.dependency.RegisterDynamicDependencies;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.zeromq.ZMQ;
@@ -53,17 +54,10 @@ public abstract class MontoService {
 	private Thread serviceThread;
 	private Thread configThread;
 	private Socket configSocket;
+    private Socket dyndepSocket;
 
     /**
      * Template for a monto service.
-     *
-     * @param context
-     * @param fullServiceAddress             address of the service without port, e.g. "tcp://*"
-     * @param registrationAddress registration address of the broker, e.g. "tcp://*:5004"
-     * @param serviceID
-     * @param product
-     * @param language
-     * @param dependencies
      */
     public MontoService(
     		ZMQConfiguration zmqConfig,
@@ -117,6 +111,10 @@ public abstract class MontoService {
         registerService();
         if (isRegisterResponseOk()) {
         	running = true;
+            dyndepSocket = zmqConfig.getContext().createSocket(ZMQ.PUB);
+            dyndepSocket.connect(zmqConfig.getDyndepAddress());
+            dyndepSocket.setReceiveTimeOut(500);
+
         	serviceSocket = zmqConfig.getContext().createSocket(ZMQ.PAIR);
         	serviceSocket.connect(zmqConfig.getServiceAddress() + ":" + port);
         	serviceSocket.setReceiveTimeOut(500);
@@ -240,5 +238,11 @@ public abstract class MontoService {
     
     public URL getResource(String name) {
     	return zmqConfig.getResourceURL(name);
+    }
+
+    protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
+        if (dyndepSocket != null) {
+            dyndepSocket.send(RegisterDynamicDependencies.encode(dyndeps).toJSONString());
+        }
     }
 }

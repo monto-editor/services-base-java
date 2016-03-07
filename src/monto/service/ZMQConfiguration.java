@@ -9,14 +9,16 @@ public class ZMQConfiguration {
 	private ZContext context;
 	private String serviceAddress;
 	private String registrationAddress;
-	private String configurationAdress;
+	private String configurationAddress;
+	private String dyndepAddress;
 	private int resourcePort;
 
-	public ZMQConfiguration(ZContext context, String serviceAddress, String registrationAddress, String configurationAdress, int resourcePort) {
+	public ZMQConfiguration(ZContext context, String serviceAddress, String registrationAddress, String configurationAddress, String dyndepAddress, int resourcePort) {
 		this.context = context;
 		this.serviceAddress = serviceAddress;
 		this.registrationAddress = registrationAddress;
-		this.configurationAdress = configurationAdress;
+		this.configurationAddress = configurationAddress;
+		this.dyndepAddress = dyndepAddress;
 		this.resourcePort = resourcePort;
 	}
 
@@ -33,9 +35,13 @@ public class ZMQConfiguration {
 	}
 
 	public String getConfigurationAddress() {
-		return configurationAdress;
+		return configurationAddress;
 	}
-	
+
+	public String getDyndepAddress() {
+		return dyndepAddress;
+	}
+
 	public int getResourcePort() {
 		return resourcePort;
 	}
@@ -55,10 +61,12 @@ public class ZMQConfiguration {
 				+ "  Service Address: %s\n"
 				+ "  Registration Address: %s\n"
 				+ "  Configuration Address: %s"
+				+ "  Dynamic Dependencies Address: %s"
 				+ "  Resource Port: %d",
 				getServiceAddress(),
 				getRegistrationAddress(),
 				getConfigurationAddress(),
+				getDyndepAddress(),
 				getResourcePort());
 	}
 }
