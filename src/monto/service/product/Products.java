@@ -8,4 +8,6 @@ public class Products {
 	public static final Product AST = new Product("ast");
 	public static final Product COMPLETIONS = new Product("completions");
 	public static final Product ERRORS = new Product("errors");
+	public static final Product FILE_DEPENDENCIES = new Product("filedependencies");
+	public static final Product FILE_GRAPH = new Product("filegraph");
 }
