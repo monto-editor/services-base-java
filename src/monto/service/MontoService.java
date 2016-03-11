@@ -65,8 +65,7 @@ public abstract class MontoService {
     		String label,
     		String description,
     		List<ProductDescription> products,
-    		List<Dependency> dependencies
-    		) {
+    		List<Dependency> dependencies) {
     	this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;
         this.label = label;
@@ -102,12 +101,12 @@ public abstract class MontoService {
 				onMessage.accept(decoded);
 			}
 		} catch (Exception e) {
-			System.err.printf("An exception occured during handling the message %s\n",rawMsg);
-			e.printStackTrace();
+			//System.err.printf("An exception occured during handling the message %s\n",rawMsg);
+			e.printStackTrace(System.err);
 		}
     }
-    
-    public void start() throws Exception {
+
+	public void start() throws Exception {
         registerService();
         if (isRegisterResponseOk()) {
         	running = true;
@@ -125,7 +124,7 @@ public abstract class MontoService {
         			while(running)
         				that.<JSONObject,Request>handleMessage (
         						serviceSocket,
-        						request -> Requests.decode(request),
+        						Requests::decode,
         						request -> serviceSocket.send(ProductMessages.encode(onRequest(request)).toJSONString()));
         		}
         	};

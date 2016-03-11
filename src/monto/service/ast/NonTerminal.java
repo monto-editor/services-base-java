@@ -63,6 +63,6 @@ public class NonTerminal implements AST, IRegion {
 
     @Override
     public String toString() {
-        return name;
+        return String.format("%s%s", name, children);
     }
 }

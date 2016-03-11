@@ -27,11 +27,15 @@ public class Regions {
 
     public static Region decode(JSONObject encoding) throws ParseException {
         try {
-            Long offset = (Long) encoding.get("offset");
-            Long length = (Long) encoding.get("length");
-            return new Region(offset.intValue(), length.intValue());
+            int offset = intValue(encoding.get("offset"));
+            int length = intValue(encoding.get("length"));
+            return new Region(offset, length);
         } catch (Exception e) {
             throw new ParseException(e);
         }
+    }
+    
+    private static int intValue(Object obj) {
+    	return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
     }
 }

@@ -56,6 +56,19 @@ public class ASTs {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public static JSONObject encode(ASTNode ast) {
+    	JSONObject obj = new JSONObject();
+    	JSONArray children = new JSONArray();
+    	obj.put("name", ast.getName());
+    	for(ASTNode child : ast.getChildren())
+    		children.add(encode(child));
+    	obj.put("children", children);
+    	obj.put("offset", ast.getOffset());
+    	obj.put("length", ast.getLength());
+    	return obj;
+    }
+
     private static class Encoder implements ASTVisitor {
 
         private Object encoding;
@@ -113,5 +126,24 @@ public class ASTs {
             childs.add(decode(object));
 
         return new NonTerminal(name, childs);
+    }
+    
+    public static ASTNode decodeASTNode(JSONObject arr) throws ParseException {
+        try {
+        	String name = (String) arr.get("name");
+        	int offset = intValue(arr.get("offset"));
+        	int length = intValue(arr.get("length"));
+        	JSONArray chld = (JSONArray) arr.get("children");
+        	List<ASTNode> children = new ArrayList<>(chld.size());
+        	for(Object child : chld)
+        		children.add(decodeASTNode((JSONObject) child));
+        	return new ASTNode(name,children,offset,length);
+        } catch (Exception e) {
+            throw new ParseException(String.format("%s", arr),e);
+        }
+    }
+
+    private static int intValue(Object obj) {
+    	return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
     }
 }
