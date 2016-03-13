@@ -9,10 +9,8 @@ public class DynamicDependencies {
         JSONObject obj = new JSONObject();
         obj.put("service_id", dyndep.getServiceID().toString());
         obj.put("source", dyndep.getSource().toString());
-        JSONArray arr = new JSONArray();
-        for(Edge e : dyndep.getEdges())
-            arr.add(Edges.encode(e));
-        obj.put("edges", arr);
+        obj.put("product", dyndep.getProduct().toString());
+        obj.put("language", dyndep.getLanguage().toString());
         return obj;
     }
 }

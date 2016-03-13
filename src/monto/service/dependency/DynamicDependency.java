@@ -1,5 +1,7 @@
 package monto.service.dependency;
 
+import monto.service.types.Language;
+import monto.service.types.Product;
 import monto.service.types.ServiceID;
 import monto.service.types.Source;
 
@@ -9,12 +11,14 @@ public class DynamicDependency {
 
     private Source source;
     private ServiceID serviceID;
-    private Set<Edge> edges;
+    private Product product;
+    private Language language;
 
-    public DynamicDependency(Source source, ServiceID serviceID, Set<Edge> edges) {
+    public DynamicDependency(Source source, ServiceID serviceID, Product product, Language language) {
         this.source = source;
         this.serviceID = serviceID;
-        this.edges = edges;
+        this.product = product;
+        this.language = language;
     }
 
     public Source getSource() {
@@ -25,8 +29,12 @@ public class DynamicDependency {
         return serviceID;
     }
 
-    public Set<Edge> getEdges() {
-        return edges;
+    public Product getProduct() {
+        return product;
+    }
+
+    public Language getLanguage() {
+        return language;
     }
 
     @Override
@@ -38,7 +46,8 @@ public class DynamicDependency {
 
         if (source != null ? !source.equals(that.source) : that.source != null) return false;
         if (serviceID != null ? !serviceID.equals(that.serviceID) : that.serviceID != null) return false;
-        return edges != null ? edges.equals(that.edges) : that.edges == null;
+        if (product != null ? !product.equals(that.product) : that.product != null) return false;
+        return language != null ? language.equals(that.language) : that.language == null;
 
     }
 
@@ -46,7 +55,8 @@ public class DynamicDependency {
     public int hashCode() {
         int result = source != null ? source.hashCode() : 0;
         result = 31 * result + (serviceID != null ? serviceID.hashCode() : 0);
-        result = 31 * result + (edges != null ? edges.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (language != null ? language.hashCode() : 0);
         return result;
     }
 }
