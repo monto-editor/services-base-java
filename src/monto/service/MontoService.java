@@ -55,6 +55,7 @@ public abstract class MontoService {
 	private Thread configThread;
 	private Socket configSocket;
     private Socket dyndepSocket;
+	private boolean debug = false;
 
     /**
      * Template for a monto service.
@@ -100,9 +101,8 @@ public abstract class MontoService {
 				Decoded decoded = decodeMessage.apply(msg);
 				onMessage.accept(decoded);
 			}
-		} catch (Exception e) {
-			//System.err.printf("An exception occured during handling the message %s\n",rawMsg);
-			e.printStackTrace(System.err);
+		} catch (Throwable e) {
+			if(debug) e.printStackTrace(System.err);
 		}
     }
 
@@ -167,6 +167,11 @@ public abstract class MontoService {
             
             System.out.println("terminated: " + serviceID);
         }
+    }
+    
+    public MontoService enableDebugging() {
+    	debug = true;
+    	return this;
     }
 
     private void registerService() {
