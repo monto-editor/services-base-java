@@ -5,7 +5,8 @@ Bundle-SymbolicName: servies-base-java
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: servies-base-java.jar,
  lib/json-simple-1.1.1.jar,
- lib/jeromq-0.3.4.jar
+ lib/jeromq-0.3.4.jar,
+ lib/commons-lang3-3.4.jar
 Export-Package: monto.service,
  monto.service.ast,
  monto.service.benchmark,

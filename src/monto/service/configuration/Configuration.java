@@ -1,20 +1,30 @@
 package monto.service.configuration;
 
-public class Configuration<T> {
+import java.util.List;
 
-    private String optionID;
-    private T value;
+import monto.service.types.ServiceID;
 
-    public Configuration(String optionID, T value) {
-        this.optionID = optionID;
-        this.value = value;
+@SuppressWarnings("rawtypes")
+public class Configuration {
+
+    private ServiceID serviceID;
+	private List<Setting> configurations;
+
+    public Configuration(ServiceID serviceID, List<Setting> configurations) {
+        this.serviceID = serviceID;
+        this.configurations = configurations;
     }
 
-    public String getOptionID() {
-        return optionID;
+    public ServiceID getServiceID() {
+        return serviceID;
     }
 
-    public T getValue() {
-        return value;
+    public List<Setting> getConfigurations() {
+        return configurations;
+    }
+    
+    @Override
+    public String toString() {
+    	return String.format("ConfigurationMessage { service = %s, configurations = %s }", serviceID, configurations);
     }
 }

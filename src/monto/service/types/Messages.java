@@ -2,7 +2,7 @@ package monto.service.types;
 
 import java.util.List;
 
-import monto.service.configuration.ConfigurationMessage;
+import monto.service.configuration.Configuration;
 import monto.service.product.ProductMessage;
 import monto.service.source.SourceMessage;
 
@@ -40,13 +40,13 @@ public class Messages {
         return productMessage;
     }
 
-    public static ConfigurationMessage getConfigurationMessage(List<Message> messages) {
+    public static Configuration getConfigurationMessage(List<Message> messages) {
         if (messages == null) {
             throw new IllegalArgumentException("Message list was null");
         }
-        ConfigurationMessage configurationMessage = messages.stream()
-                .filter(msg -> msg instanceof ConfigurationMessage).findAny()
-                .map(msg -> (ConfigurationMessage) msg).get();
+        Configuration configurationMessage = messages.stream()
+                .filter(msg -> msg instanceof Configuration).findAny()
+                .map(msg -> (Configuration) msg).get();
         if (configurationMessage == null) {
             throw new IllegalArgumentException("ConfigurationMessage missing");
         }

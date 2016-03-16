@@ -4,15 +4,15 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-import monto.service.dependency.RegisterDynamicDependencies;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
 
-import monto.service.configuration.ConfigurationMessage;
-import monto.service.configuration.ConfigurationMessages;
+import monto.service.configuration.Configuration;
+import monto.service.configuration.Configurations;
 import monto.service.configuration.Option;
+import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.product.ProductMessage;
 import monto.service.product.ProductMessages;
 import monto.service.registration.Dependency;
@@ -138,9 +138,9 @@ public abstract class MontoService {
         		@Override
         		public void run() {
         			while(running) {
-        				that.<JSONObject,ConfigurationMessage>handleMessage(
+        				that.<JSONObject,Configuration>handleMessage(
         						configSocket,
-        						ConfigurationMessages::decode,
+        						Configurations::decodeConfiguration,
         						message -> onConfigurationMessage(message));
         			}
         		};
@@ -184,8 +184,8 @@ public abstract class MontoService {
     private boolean isRegisterResponseOk() {
         JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
-        if (decodedResponse.getResponse().equals("ok") && decodedResponse.getBindOnPort() > -1) {
-            port = decodedResponse.getBindOnPort();
+        if (decodedResponse.getResponse().equals("ok") && decodedResponse.getConnectToPort() > -1) {
+            port = decodedResponse.getConnectToPort();
             System.out.println("registered: " + serviceID + ", connecting on " + zmqConfig.getServiceAddress() + ":" + port);
             registered = true;
             return true;
@@ -212,7 +212,7 @@ public abstract class MontoService {
     /**
      * It handles the configuration messages from the broker and determines the response.
      */
-    public void onConfigurationMessage(ConfigurationMessage message) throws Exception {
+    public void onConfigurationMessage(Configuration message) throws Exception {
     	// By default ignore configuration messages.
     }
 
