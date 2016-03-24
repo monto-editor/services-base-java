@@ -102,7 +102,10 @@ public abstract class MontoService {
 				onMessage.accept(decoded);
 			}
 		} catch (Throwable e) {
-			if(debug) e.printStackTrace(System.err);
+			if(debug) {
+				System.err.printf("An error occured in the service %s\n", serviceID);
+				e.printStackTrace(System.err);
+			}
 		}
     }
 
@@ -201,9 +204,21 @@ public abstract class MontoService {
                 getServiceID(),
                 product,
                 language,
-                contents);
+                contents,
+                0);
     }
 
+    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Language language, Object contents, long time) {
+        return new ProductMessage(
+                versionID,
+                source,
+                getServiceID(),
+                product,
+                language,
+                contents,
+                time);
+    }
+    
     /**
      * handles request messages send by the broker and return a product message.
      */

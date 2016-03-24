@@ -16,7 +16,6 @@ public class ProductMessages {
         return decode((JSONObject) JSONValue.parse(string));
     }
 
-    @SuppressWarnings("unchecked")
     public static ProductMessage decode(JSONObject message) throws ParseException {
         try {
             Long versionId = (Long) message.get("id");
@@ -25,14 +24,17 @@ public class ProductMessages {
             Product product = new Product((String) message.get("product"));
             Language language = new Language((String) message.get("language"));
             Object contents = message.get("contents");
+            long time = (long) message.get("time");
             return new ProductMessage(
                     new LongKey(versionId),
                     source,
                     serviceID,
                     product,
                     language,
-                    contents);
+                    contents,
+                    time);
         } catch (Exception e) {
+        	System.out.println(message.containsKey("time"));
             throw new ParseException(e);
         }
     }
@@ -46,7 +48,7 @@ public class ProductMessages {
         encoding.put("product", msg.getProduct().toString());
         encoding.put("language", msg.getLanguage().toString());
         encoding.put("contents", msg.getContents());
+        encoding.put("time", msg.getTime());
         return encoding;
     }
-
 }

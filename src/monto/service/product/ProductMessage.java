@@ -19,14 +19,16 @@ public class ProductMessage implements Message {
     private final Product product;
     private final Language language;
     private final Object contents;
+    private final long time;
 
-    public ProductMessage(LongKey id, Source source, ServiceID serviceID, Product product, Language language, Object contents) {
+    public ProductMessage(LongKey id, Source source, ServiceID serviceID, Product product, Language language, Object contents, long time) {
         this.id = id;
         this.source = source;
         this.serviceID = serviceID;
         this.product = product;
         this.language = language;
         this.contents = contents;
+        this.time = time;
     }
 
     public LongKey getId() {
@@ -51,6 +53,10 @@ public class ProductMessage implements Message {
 
     public Object getContents() {
         return contents;
+    }
+    
+    public long getTime() {
+    	return time;
     }
 
     @Override

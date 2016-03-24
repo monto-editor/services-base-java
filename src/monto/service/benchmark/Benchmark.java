@@ -1,17 +1,23 @@
 package monto.service.benchmark;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import monto.service.types.Source;
 
 public abstract class Benchmark {
+
+	protected String filetype;
 
 	protected void setup() throws Exception {}
 	protected void tearDown() throws Exception {}
@@ -23,11 +29,11 @@ public abstract class Benchmark {
 
 
 	protected void premeasure(Source source, String contents) throws Exception {}
-	protected abstract void measure(Source source, String contents) throws Exception;
+	protected abstract long measure(Source source, String contents) throws Exception;
 
 	public void runBenchmark(Path corpus, Path csvOutput, int repititions, long interval) throws Exception {
-		long[] times = new long[repititions];
-		boolean[] successful = new boolean[repititions];
+		long[] overall = new long[repititions];
+		long[] productiveTime = new long[repititions];
 		setup();
 	
 		try {
@@ -43,37 +49,56 @@ public abstract class Benchmark {
 //						restart();
 //					}
 //				}
-//			}
+////			}
+			final Duration timeout = Duration.ofSeconds(10);
+			ExecutorService executor = Executors.newSingleThreadExecutor();
 			
-			try(PrintWriter csv = new PrintWriter(Files.newBufferedWriter(csvOutput))) {
-				csv.println("file,lines,bytes,roundtrip");
-				for(Path file: Files.newDirectoryStream(corpus, "*.java")) {
+			boolean started = false;
+			try(PrintWriter csv = new PrintWriter(Files.newBufferedWriter(csvOutput), true)) {
+				csv.println("file,bytes,overall,productive");
+
+				for(Path file: Files.newDirectoryStream(corpus, filetype)) {
 	
 					String contents = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
 					int lines = countLineNumbers(contents);
 					
-					Thread.sleep(1000);
-					for(int i = 0; i < repititions; i++) {
-						try {
-							Source source = new Source(file.toString());
-							premeasure(source, contents);
-							Thread.sleep(interval);
-							long start = System.nanoTime();
-							measure(source, contents);
-							long end = System.nanoTime();
-							times[i] = end-start;
-						} catch(Exception e) {
-							System.err.println(e);
-							restart();
-							i = -1;
-						}
-					}
+					Thread.sleep(100);
+//					
+//					while(true) {
+//						try {
+//							final Future<Void> future = executor.submit(() -> {
+								for(int i = 0; i < repititions; i++) {
+									try {
+										Source source = new Source(file.toString());
+										premeasure(source, contents);
+										Thread.sleep(interval);
+										long start = System.nanoTime();
+										long productive = measure(source, contents);
+										long end = System.nanoTime();
+										overall[i] = end-start;
+										productiveTime[i] = productive;
+									} catch(Throwable e) {
+										System.err.println(e);
+										restart();
+										i = -1;
+									}
+								}
+//								return null;
+//							});
+//							future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
+//							break;
+//						} catch(Throwable e) {
+//							System.err.println("timeout");
+//							restart();
+//						}
+//					}
+					
 					for(int i = 0; i < repititions; i++)
-						csv.printf("%s,%d,%d,%d\n", file.getFileName(), lines, contents.length(), times[i]);
+						csv.printf("%s,%d,%d,%d\n", file.getFileName(), contents.length(), overall[i], productiveTime[i]);
 					System.out.printf("file: %s\nlines: %d\n%s\n\n",
 						file.getFileName(),
 						lines,
-						statistics(times));
+						statistics(overall));
 				}
 			}
 		} finally {

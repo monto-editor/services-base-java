@@ -28,12 +28,12 @@ public enum TokenCategory {
 	PARENTHESIS(theme -> TokenCategory.NORMAL.getColor(theme)),
 	WHITESPACE(theme -> theme.white);
 	
-	private Function<Solarized,Color> color;
-	TokenCategory(Function<Solarized,Color> getColor) {
+	private Function<ColorTheme,Color> color;
+	TokenCategory(Function<ColorTheme,Color> getColor) {
 		this.color = getColor;
 	}
 	
-	public Color getColor(Solarized solarized) {
+	public Color getColor(ColorTheme solarized) {
 		return color.apply(solarized);
 	}
 }

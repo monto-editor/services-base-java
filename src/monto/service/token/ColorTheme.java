@@ -1,12 +1,12 @@
 package monto.service.token;
 
-public class Solarized {
+public class ColorTheme {
 	public Color base0,base00,base01,base02,base03,	
 		base1,base2,base3,blue,cyan,green,magenta,
 		orange,red,violet,yellow,white;
 	
-	public static Solarized dark() {
-		Solarized theme = new Solarized();
+	public static ColorTheme solarized() {
+		ColorTheme theme = new ColorTheme();
 		theme.base0 = new Color(131,148,150);
 		theme.base00 = new Color(101,123,131);	
 		theme.base01 = new Color(88,110,117);	
