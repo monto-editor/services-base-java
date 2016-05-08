@@ -11,7 +11,7 @@ public final class Identifiers {
     public static JSONObject encode(Identifier identifier) {
         JSONObject json = new JSONObject();
         json.put("identifier", identifier.getIdentifier());
-        json.put("type", identifier.getType());
+        json.put("type", identifier.getType().name());
         return json;
     }
 

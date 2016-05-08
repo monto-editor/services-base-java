@@ -48,7 +48,7 @@ public class Completions {
         object.put("description", completion.getDescription());
         object.put("replacement", completion.getReplacement());
         object.put("insertionOffset", completion.getInsertionOffset());
-        object.put("icon", completion.getIcon());
+        object.put("icon", completion.getIcon().toString());
         return object;
     }
 }
