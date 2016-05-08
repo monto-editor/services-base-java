@@ -38,6 +38,6 @@ public class Completion {
 
     @Override
     public String toString() {
-        return String.format("%s", description);
+        return String.format("Completition {%s (%s)}", replacement, description);
     }
 }
