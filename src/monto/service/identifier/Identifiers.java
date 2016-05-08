@@ -1,6 +1,7 @@
 package monto.service.identifier;
 
 import monto.service.product.ProductMessage;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.util.List;
@@ -15,9 +16,17 @@ public final class Identifiers {
         return json;
     }
 
+    @SuppressWarnings("unchecked")
+    public static JSONArray encode(List<Identifier> identifiers) {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.addAll(identifiers.parallelStream().map(Identifiers::encode).collect(Collectors.toList()));
+        return jsonArray;
+    }
+
+    @SuppressWarnings("unchecked")
     public static List<Identifier> decode(ProductMessage productMessage) {
-        List<JSONObject> jsonObjects = (List<JSONObject>) productMessage.getContents();
-        return jsonObjects.stream().map(Identifiers::decode).collect(Collectors.toList());
+        JSONArray jsonIdentifiers = (JSONArray) productMessage.getContents();
+        return (List<Identifier>) jsonIdentifiers.stream().map(obj -> decode((JSONObject) obj)).collect(Collectors.toList());
     }
 
     public static Identifier decode(JSONObject json) {
