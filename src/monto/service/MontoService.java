@@ -55,7 +55,7 @@ public abstract class MontoService {
 	private Thread configThread;
 	private Socket configSocket;
     private Socket dyndepSocket;
-	private boolean debug = false;
+	protected boolean debug = false;
 
     /**
      * Template for a monto service.
