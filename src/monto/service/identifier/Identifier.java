@@ -1,6 +1,7 @@
 package monto.service.identifier;
 
-public class Identifier {
+
+public class Identifier implements Comparable<Identifier> {
     private String identifier;
     private IdentifierType type;
 
@@ -17,12 +18,17 @@ public class Identifier {
         return type;
     }
 
-    public enum IdentifierType {
-        IMPORT, CLASS, INTERFACE, ENUM, METHOD, FIELD, VARIABLE, GENERIC
-    }
-
     @Override
     public String toString() {
         return String.format("Identifier{%s, type:%s}", identifier, type);
+    }
+
+    @Override
+    public int compareTo(Identifier o) {
+        return identifier.compareToIgnoreCase(o.getIdentifier());
+    }
+
+    public enum IdentifierType {
+        IMPORT, CLASS, INTERFACE, ENUM, METHOD, FIELD, VARIABLE, GENERIC
     }
 }
