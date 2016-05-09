@@ -4,6 +4,7 @@ import monto.service.product.ProductMessage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public final class Identifiers {
     }
 
     @SuppressWarnings("unchecked")
-    public static JSONArray encode(List<Identifier> identifiers) {
+    public static JSONArray encode(Collection<Identifier> identifiers) {
         JSONArray jsonArray = new JSONArray();
         jsonArray.addAll(identifiers.parallelStream().map(Identifiers::encode).collect(Collectors.toList()));
         return jsonArray;
