@@ -1,16 +1,16 @@
 package monto.service.registration;
 
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 
 public class DeregisterService {
 
-    private final ServiceID deregisterServiceID;
+    private final ServiceId deregisterServiceId;
 
-    public DeregisterService(ServiceID deregisterServiceID) {
-        this.deregisterServiceID = deregisterServiceID;
+    public DeregisterService(ServiceId deregisterServiceId) {
+        this.deregisterServiceId = deregisterServiceId;
     }
 
-    public ServiceID getDeregisterServiceID() {
-        return deregisterServiceID;
+    public ServiceId getDeregisterServiceId() {
+        return deregisterServiceId;
     }
 }

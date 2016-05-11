@@ -1,26 +1,26 @@
 package monto.service.discovery;
 
 import monto.service.configuration.Option;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class ServiceDescription {
-    private ServiceID serviceID;
+    private ServiceId serviceId;
     private List<Option> options;
     private String description;
     private String label;
 
-    public ServiceDescription(ServiceID serviceID, List<Option> options, String description, String label) {
-        this.serviceID = serviceID;
+    public ServiceDescription(ServiceId serviceId, List<Option> options, String description, String label) {
+        this.serviceId = serviceId;
         this.options = options;
         this.description = description;
         this.label = label;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public List<Option> getOptions() {

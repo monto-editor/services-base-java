@@ -13,7 +13,7 @@ public class LanguageFilter implements Filter {
     }
 
     @Override
-    public <A> A match(Function<ServiceIDFilter, A> f, Function<ProductFilter, A> g, Function<LanguageFilter, A> h) {
+    public <A> A match(Function<ServiceIdFilter, A> f, Function<ProductFilter, A> g, Function<LanguageFilter, A> h) {
         return h.apply(this);
     }
 

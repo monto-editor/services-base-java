@@ -3,7 +3,7 @@ package monto.service.discovery;
 import monto.service.configuration.Option;
 import monto.service.configuration.Options;
 import monto.service.types.ParseException;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -36,7 +36,7 @@ public class Discoveries {
     private static ServiceDescription decodeServiceDescription(Object encoding) throws ParseException {
         try {
             JSONObject enc = (JSONObject) encoding;
-            ServiceID serviceID = new ServiceID((String) enc.get("service_id"));
+            ServiceId serviceId = new ServiceId((String) enc.get("service_id"));
             JSONArray optionsJSON = (JSONArray) enc.get("options");
             optionsJSON = optionsJSON == null ? new JSONArray() : optionsJSON;
             List<Option> options = new ArrayList<>(optionsJSON.size());
@@ -44,7 +44,7 @@ public class Discoveries {
                 options.add(Options.decode((JSONObject) option));
             String description = (String) enc.get("description");
             String label = (String) enc.get("label");
-            return new ServiceDescription(serviceID, options, description, label);
+            return new ServiceDescription(serviceId, options, description, label);
         } catch (Exception e) {
             throw new ParseException(encoding.toString(), e);
         }

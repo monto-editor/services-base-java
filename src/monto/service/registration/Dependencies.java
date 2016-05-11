@@ -8,7 +8,7 @@ public class Dependencies {
     public static JSONObject encode(Dependency dep) {
         JSONObject encoding = new JSONObject();
         dep.<Void>match(productDep -> {
-                    encoding.put("service_id", productDep.getServiceID().toString());
+                    encoding.put("service_id", productDep.getServiceId().toString());
                     encoding.put("language", productDep.getLanguage().toString());
                     encoding.put("product", productDep.getProduct().toString());
                     return null;

@@ -1,7 +1,7 @@
 package monto.service.configuration;
 
 import monto.service.types.ParseException;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -36,9 +36,9 @@ public class Configurations {
 
     public static Configuration decodeConfiguration(JSONObject message) throws ParseException {
         try {
-            final ServiceID serviceID = new ServiceID((String) message.get("service_id"));
+            final ServiceId serviceId = new ServiceId((String) message.get("service_id"));
             final List<Setting> settings = Configurations.decodeSettings((JSONArray) message.getOrDefault("settings", new JSONArray()));
-            return new Configuration(serviceID, settings);
+            return new Configuration(serviceId, settings);
         } catch (Exception e) {
             throw new ParseException(e);
         }
@@ -46,7 +46,7 @@ public class Configurations {
 
     public static JSONObject encodeConfiguration(Configuration conf) {
         JSONObject obj = new JSONObject();
-        obj.put("service_id", conf.getServiceID().toString());
+        obj.put("service_id", conf.getServiceId().toString());
         JSONArray arr = new JSONArray();
         for (Setting c : conf.getConfigurations())
             arr.add(Configurations.encodeSetting(c));

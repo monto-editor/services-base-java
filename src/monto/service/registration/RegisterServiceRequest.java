@@ -1,22 +1,22 @@
 package monto.service.registration;
 
 import monto.service.configuration.Option;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {
 
-    private final ServiceID serviceID;
+    private final ServiceId serviceId;
     private final String label;
     private final String description;
     private final List<Option> options;
     private final List<ProductDescription> products;
     private final List<Dependency> dependencies;
 
-    public RegisterServiceRequest(ServiceID serviceID, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
-        this.serviceID = serviceID;
+    public RegisterServiceRequest(ServiceId serviceId, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
+        this.serviceId = serviceId;
         this.label = label;
         this.description = description;
         this.products = products;
@@ -24,8 +24,8 @@ public class RegisterServiceRequest {
         this.dependencies = dependencies;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public String getLabel() {

@@ -30,7 +30,7 @@ public abstract class MontoService {
     private volatile boolean running;
     private boolean registered;
 
-    protected volatile ServiceID serviceID;
+    protected volatile ServiceId serviceId;
     protected volatile String label;
     protected volatile String description;
     protected volatile List<ProductDescription> products;
@@ -49,13 +49,13 @@ public abstract class MontoService {
      */
     public MontoService(
             ZMQConfiguration zmqConfig,
-            ServiceID serviceID,
+            ServiceId serviceId,
             String label,
             String description,
             List<ProductDescription> products,
             List<Dependency> dependencies) {
         this.zmqConfig = zmqConfig;
-        this.serviceID = serviceID;
+        this.serviceId = serviceId;
         this.label = label;
         this.description = description;
         this.products = products;
@@ -65,13 +65,13 @@ public abstract class MontoService {
         this.registered = false;
     }
 
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
-        this(zmqConfig, serviceID, label, description, products, dependencies);
+    public MontoService(ZMQConfiguration zmqConfig, ServiceId serviceId, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
+        this(zmqConfig, serviceId, label, description, products, dependencies);
         this.options = options;
     }
 
-    public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
-        this(zmqConfig, serviceID, label, description, Arrays.asList(new ProductDescription(product, language)), dependencies);
+    public MontoService(ZMQConfiguration zmqConfig, ServiceId serviceId, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
+        this(zmqConfig, serviceId, label, description, Arrays.asList(new ProductDescription(product, language)), dependencies);
         this.options = options;
     }
 
@@ -90,7 +90,7 @@ public abstract class MontoService {
             }
         } catch (Throwable e) {
             if (debug) {
-                System.err.printf("An error occured in the service %s\n", serviceID);
+                System.err.printf("An error occured in the service %s\n", serviceId);
                 e.printStackTrace(System.err);
             }
         }
@@ -122,7 +122,7 @@ public abstract class MontoService {
 
             configSocket = zmqConfig.getContext().createSocket(ZMQ.SUB);
             configSocket.connect(zmqConfig.getConfigurationAddress());
-            configSocket.subscribe(serviceID.toString().getBytes());
+            configSocket.subscribe(serviceId.toString().getBytes());
             configSocket.setReceiveTimeOut(500);
             configThread = new Thread() {
                 @Override
@@ -138,26 +138,26 @@ public abstract class MontoService {
                 ;
             };
             configThread.start();
-            System.out.println("connected: " + serviceID);
+            System.out.println("connected: " + serviceId);
         }
     }
 
     public void stop() throws Exception {
         if (registered == true) {
             running = false;
-            System.out.println("disconnecting: " + serviceID);
-            System.out.println("deregistering: " + serviceID);
+            System.out.println("disconnecting: " + serviceId);
+            System.out.println("deregistering: " + serviceId);
             try {
                 serviceThread.join();
                 configThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
+            registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceId)).toJSONString());
 
             // Sockets will be closed by ZContext.destroy()
 
-            System.out.println("terminated: " + serviceID);
+            System.out.println("terminated: " + serviceId);
         }
     }
 
@@ -167,10 +167,10 @@ public abstract class MontoService {
     }
 
     private void registerService() {
-        System.out.println("registering: " + serviceID + " on " + zmqConfig.getRegistrationAddress());
+        System.out.println("registering: " + serviceId + " on " + zmqConfig.getRegistrationAddress());
         registrationSocket = zmqConfig.getContext().createSocket(ZMQ.REQ);
         registrationSocket.connect(zmqConfig.getRegistrationAddress());
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceID, label, description, products, options, dependencies)).toJSONString());
+        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceId, label, description, products, options, dependencies)).toJSONString());
     }
 
     private boolean isRegisterResponseOk() {
@@ -178,11 +178,11 @@ public abstract class MontoService {
         RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
         if (decodedResponse.getResponse().equals("ok") && decodedResponse.getConnectToPort() > -1) {
             port = decodedResponse.getConnectToPort();
-            System.out.println("registered: " + serviceID + ", connecting on " + zmqConfig.getServiceAddress() + ":" + port);
+            System.out.println("registered: " + serviceId + ", connecting on " + zmqConfig.getServiceAddress() + ":" + port);
             registered = true;
             return true;
         }
-        System.out.printf("could not register service %s: %s\n", serviceID, decodedResponse.getResponse());
+        System.out.printf("could not register service %s: %s\n", serviceId, decodedResponse.getResponse());
         return false;
     }
 
@@ -190,7 +190,7 @@ public abstract class MontoService {
         return new ProductMessage(
                 versionID,
                 source,
-                getServiceID(),
+                getServiceId(),
                 product,
                 language,
                 contents,
@@ -201,7 +201,7 @@ public abstract class MontoService {
         return new ProductMessage(
                 versionID,
                 source,
-                getServiceID(),
+                getServiceId(),
                 product,
                 language,
                 contents,
@@ -220,8 +220,8 @@ public abstract class MontoService {
         // By default ignore configuration messages.
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public List<ProductDescription> getProducts() {

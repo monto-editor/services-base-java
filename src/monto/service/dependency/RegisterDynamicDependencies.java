@@ -1,6 +1,6 @@
 package monto.service.dependency;
 
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 import monto.service.types.Source;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -10,12 +10,12 @@ import java.util.Set;
 public class RegisterDynamicDependencies {
 
     private Source source;
-    private ServiceID serviceID;
+    private ServiceId serviceId;
     private Set<DynamicDependency> dependencies;
 
-    public RegisterDynamicDependencies(Source source, ServiceID serviceID, Set<DynamicDependency> dependencies) {
+    public RegisterDynamicDependencies(Source source, ServiceId serviceId, Set<DynamicDependency> dependencies) {
         this.source = source;
-        this.serviceID = serviceID;
+        this.serviceId = serviceId;
         this.dependencies = dependencies;
     }
 
@@ -23,8 +23,8 @@ public class RegisterDynamicDependencies {
         return source;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public Set<DynamicDependency> getDependencies() {
@@ -33,7 +33,7 @@ public class RegisterDynamicDependencies {
 
     public static JSONObject encode(RegisterDynamicDependencies dyndeps) {
         JSONObject obj = new JSONObject();
-        obj.put("service_id", dyndeps.getServiceID().toString());
+        obj.put("service_id", dyndeps.getServiceId().toString());
         obj.put("source", dyndeps.getSource().toString());
         JSONArray arr = new JSONArray();
         for (DynamicDependency d : dyndeps.getDependencies())
@@ -50,7 +50,7 @@ public class RegisterDynamicDependencies {
         RegisterDynamicDependencies that = (RegisterDynamicDependencies) o;
 
         if (source != null ? !source.equals(that.source) : that.source != null) return false;
-        if (serviceID != null ? !serviceID.equals(that.serviceID) : that.serviceID != null) return false;
+        if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) return false;
         return dependencies != null ? dependencies.equals(that.dependencies) : that.dependencies == null;
 
     }
@@ -58,7 +58,7 @@ public class RegisterDynamicDependencies {
     @Override
     public int hashCode() {
         int result = source != null ? source.hashCode() : 0;
-        result = 31 * result + (serviceID != null ? serviceID.hashCode() : 0);
+        result = 31 * result + (serviceId != null ? serviceId.hashCode() : 0);
         result = 31 * result + (dependencies != null ? dependencies.hashCode() : 0);
         return result;
     }

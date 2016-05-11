@@ -14,7 +14,7 @@ public class ProductMessages {
         try {
             Long versionId = (Long) message.get("id");
             Source source = new Source((String) message.get("source"));
-            ServiceID serviceID = new ServiceID((String) message.get("service_id"));
+            ServiceId serviceId = new ServiceId((String) message.get("service_id"));
             Product product = new Product((String) message.get("product"));
             Language language = new Language((String) message.get("language"));
             Object contents = message.get("contents");
@@ -22,7 +22,7 @@ public class ProductMessages {
             return new ProductMessage(
                     new LongKey(versionId),
                     source,
-                    serviceID,
+                    serviceId,
                     product,
                     language,
                     contents,
@@ -38,7 +38,7 @@ public class ProductMessages {
         JSONObject encoding = new JSONObject();
         encoding.put("id", msg.getId().longValue());
         encoding.put("source", msg.getSource().toString());
-        encoding.put("service_id", msg.getServiceID().toString());
+        encoding.put("service_id", msg.getServiceId().toString());
         encoding.put("product", msg.getProduct().toString());
         encoding.put("language", msg.getLanguage().toString());
         encoding.put("contents", msg.getContents());

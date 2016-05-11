@@ -2,19 +2,19 @@ package monto.service.dependency;
 
 import monto.service.types.Language;
 import monto.service.types.Product;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 import monto.service.types.Source;
 
 public class DynamicDependency {
 
     private Source source;
-    private ServiceID serviceID;
+    private ServiceId serviceId;
     private Product product;
     private Language language;
 
-    public DynamicDependency(Source source, ServiceID serviceID, Product product, Language language) {
+    public DynamicDependency(Source source, ServiceId serviceId, Product product, Language language) {
         this.source = source;
-        this.serviceID = serviceID;
+        this.serviceId = serviceId;
         this.product = product;
         this.language = language;
     }
@@ -23,8 +23,8 @@ public class DynamicDependency {
         return source;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public Product getProduct() {
@@ -43,7 +43,7 @@ public class DynamicDependency {
         DynamicDependency that = (DynamicDependency) o;
 
         if (source != null ? !source.equals(that.source) : that.source != null) return false;
-        if (serviceID != null ? !serviceID.equals(that.serviceID) : that.serviceID != null) return false;
+        if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
         return language != null ? language.equals(that.language) : that.language == null;
 
@@ -52,7 +52,7 @@ public class DynamicDependency {
     @Override
     public int hashCode() {
         int result = source != null ? source.hashCode() : 0;
-        result = 31 * result + (serviceID != null ? serviceID.hashCode() : 0);
+        result = 31 * result + (serviceId != null ? serviceId.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + (language != null ? language.hashCode() : 0);
         return result;

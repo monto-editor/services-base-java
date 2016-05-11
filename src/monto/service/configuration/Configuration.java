@@ -1,22 +1,22 @@
 package monto.service.configuration;
 
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class Configuration {
 
-    private ServiceID serviceID;
+    private ServiceId serviceId;
     private List<Setting> configurations;
 
-    public Configuration(ServiceID serviceID, List<Setting> configurations) {
-        this.serviceID = serviceID;
+    public Configuration(ServiceId serviceId, List<Setting> configurations) {
+        this.serviceId = serviceId;
         this.configurations = configurations;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public List<Setting> getConfigurations() {
@@ -25,6 +25,6 @@ public class Configuration {
 
     @Override
     public String toString() {
-        return String.format("ConfigurationMessage { service = %s, configurations = %s }", serviceID, configurations);
+        return String.format("ConfigurationMessage { service = %s, configurations = %s }", serviceId, configurations);
     }
 }

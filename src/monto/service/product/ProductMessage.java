@@ -10,16 +10,16 @@ public class ProductMessage implements Message {
 
     private final LongKey id;
     private final Source source;
-    private final ServiceID serviceID;
+    private final ServiceId serviceId;
     private final Product product;
     private final Language language;
     private final Object contents;
     private final long time;
 
-    public ProductMessage(LongKey id, Source source, ServiceID serviceID, Product product, Language language, Object contents, long time) {
+    public ProductMessage(LongKey id, Source source, ServiceId serviceId, Product product, Language language, Object contents, long time) {
         this.id = id;
         this.source = source;
-        this.serviceID = serviceID;
+        this.serviceId = serviceId;
         this.product = product;
         this.language = language;
         this.contents = contents;
@@ -34,8 +34,8 @@ public class ProductMessage implements Message {
         return source;
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public Product getProduct() {
@@ -59,11 +59,11 @@ public class ProductMessage implements Message {
         return String.format("{"
                 + "  vid: %s,\n"
                 + "  source: %s,\n"
-                + "  serviceID: %s,\n"
+                + "  serviceId: %s,\n"
                 + "  product: %s,\n"
                 + "  language: %s,\n"
                 + "  contents: %s,\n"
-                + "}", id, source, serviceID, product, language, contents);
+                + "}", id, source, serviceId, product, language, contents);
     }
 
     @Override

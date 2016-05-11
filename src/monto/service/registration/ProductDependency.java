@@ -2,18 +2,18 @@ package monto.service.registration;
 
 import monto.service.types.Language;
 import monto.service.types.Product;
-import monto.service.types.ServiceID;
+import monto.service.types.ServiceId;
 
 import java.util.function.Function;
 
 public class ProductDependency implements Dependency {
 
-    private ServiceID serviceID;
+    private ServiceId serviceId;
     private Language language;
     private Product product;
 
-    public ProductDependency(ServiceID serviceID, Product product, Language language) {
-        this.serviceID = serviceID;
+    public ProductDependency(ServiceId serviceId, Product product, Language language) {
+        this.serviceId = serviceId;
         this.language = language;
         this.product = product;
     }
@@ -23,8 +23,8 @@ public class ProductDependency implements Dependency {
         return f.apply(this);
     }
 
-    public ServiceID getServiceID() {
-        return serviceID;
+    public ServiceId getServiceId() {
+        return serviceId;
     }
 
     public Language getLanguage() {
