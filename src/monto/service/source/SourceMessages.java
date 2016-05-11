@@ -1,16 +1,11 @@
 package monto.service.source;
 
-import java.io.Reader;
-
+import monto.service.types.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import monto.service.types.Language;
-import monto.service.types.LongKey;
-import monto.service.types.ParseException;
-import monto.service.types.Selection;
-import monto.service.types.Source;
+import java.io.Reader;
 
 public class SourceMessages {
 
@@ -26,13 +21,13 @@ public class SourceMessages {
             final Source source = new Source((String) message.get("source"));
             final Language language = new Language((String) message.get("language"));
             final String contents = (String) message.get("contents");
-            if(message.containsKey("selection")) {
-            	final JSONObject selection = (JSONObject) message.getOrDefault("selection", new JSONArray());
-            	final Long offset = (Long) selection.get("offset");
-            	final Long length = (Long) selection.get("length");
-            	return new SourceMessage(id, source, language, contents, new Selection(offset.intValue(), length.intValue()));
+            if (message.containsKey("selection")) {
+                final JSONObject selection = (JSONObject) message.getOrDefault("selection", new JSONArray());
+                final Long offset = (Long) selection.get("offset");
+                final Long length = (Long) selection.get("length");
+                return new SourceMessage(id, source, language, contents, new Selection(offset.intValue(), length.intValue()));
             } else {
-            	return new SourceMessage(id, source, language, contents);
+                return new SourceMessage(id, source, language, contents);
             }
         } catch (Exception e) {
             throw new ParseException(e);

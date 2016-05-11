@@ -1,15 +1,14 @@
 package monto.service.request;
 
-import monto.service.types.Source;
-
-import java.util.List;
-import java.util.Optional;
-
 import monto.service.product.ProductMessage;
 import monto.service.source.SourceMessage;
 import monto.service.types.Language;
 import monto.service.types.Message;
 import monto.service.types.Product;
+import monto.service.types.Source;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * A request message is send from the broker to language services.
@@ -46,8 +45,8 @@ public class Request {
         return requirements
                 .stream()
                 .<Optional<SourceMessage>>map(msg -> msg.match(src -> source.equals(src.getSource())
-                        ? Optional.of(src)
-                        : Optional.empty(),
+                                ? Optional.of(src)
+                                : Optional.empty(),
                         prd -> Optional.empty()))
                 .filter(opt -> opt.isPresent())
                 .findFirst()

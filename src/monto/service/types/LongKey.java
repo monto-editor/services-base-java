@@ -40,7 +40,7 @@ public class LongKey implements Key {
         return key;
     }
 
-	public void increment() {
-		key++;
-	}
+    public void increment() {
+        key++;
+    }
 }

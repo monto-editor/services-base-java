@@ -1,14 +1,9 @@
 package monto.service.product;
 
-import java.util.function.Function;
-
 import monto.service.source.SourceMessage;
-import monto.service.types.Language;
-import monto.service.types.LongKey;
-import monto.service.types.Message;
-import monto.service.types.Product;
-import monto.service.types.ServiceID;
-import monto.service.types.Source;
+import monto.service.types.*;
+
+import java.util.function.Function;
 
 
 public class ProductMessage implements Message {
@@ -38,9 +33,9 @@ public class ProductMessage implements Message {
     public Source getSource() {
         return source;
     }
-    
+
     public ServiceID getServiceID() {
-    	return serviceID;
+        return serviceID;
     }
 
     public Product getProduct() {
@@ -54,9 +49,9 @@ public class ProductMessage implements Message {
     public Object getContents() {
         return contents;
     }
-    
+
     public long getTime() {
-    	return time;
+        return time;
     }
 
     @Override
@@ -71,9 +66,9 @@ public class ProductMessage implements Message {
                 + "}", id, source, serviceID, product, language, contents);
     }
 
-	@Override
-	public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
-		return g.apply(this);
-	}
+    @Override
+    public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
+        return g.apply(this);
+    }
 
 }

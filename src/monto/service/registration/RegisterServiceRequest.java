@@ -1,9 +1,9 @@
 package monto.service.registration;
 
-import java.util.List;
-
 import monto.service.configuration.Option;
 import monto.service.types.ServiceID;
+
+import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {
@@ -11,8 +11,8 @@ public class RegisterServiceRequest {
     private final ServiceID serviceID;
     private final String label;
     private final String description;
-	private final List<Option> options;
-	private final List<ProductDescription> products;
+    private final List<Option> options;
+    private final List<ProductDescription> products;
     private final List<Dependency> dependencies;
 
     public RegisterServiceRequest(ServiceID serviceID, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {

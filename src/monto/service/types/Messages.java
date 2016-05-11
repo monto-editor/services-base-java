@@ -1,10 +1,10 @@
 package monto.service.types;
 
-import java.util.List;
-
 import monto.service.configuration.Configuration;
 import monto.service.product.ProductMessage;
 import monto.service.source.SourceMessage;
+
+import java.util.List;
 
 
 public class Messages {

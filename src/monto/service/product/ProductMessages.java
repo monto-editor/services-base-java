@@ -1,14 +1,8 @@
 package monto.service.product;
 
+import monto.service.types.*;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
-import monto.service.types.Language;
-import monto.service.types.LongKey;
-import monto.service.types.ParseException;
-import monto.service.types.Product;
-import monto.service.types.ServiceID;
-import monto.service.types.Source;
 
 public class ProductMessages {
 
@@ -34,7 +28,7 @@ public class ProductMessages {
                     contents,
                     time);
         } catch (Exception e) {
-        	System.out.println(message.containsKey("time"));
+            System.out.println(message.containsKey("time"));
             throw new ParseException(e);
         }
     }

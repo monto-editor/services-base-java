@@ -5,7 +5,6 @@ import monto.service.types.Source;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.util.List;
 import java.util.Set;
 
 public class RegisterDynamicDependencies {
@@ -37,7 +36,7 @@ public class RegisterDynamicDependencies {
         obj.put("service_id", dyndeps.getServiceID().toString());
         obj.put("source", dyndeps.getSource().toString());
         JSONArray arr = new JSONArray();
-        for(DynamicDependency d : dyndeps.getDependencies())
+        for (DynamicDependency d : dyndeps.getDependencies())
             arr.add(DynamicDependencies.encode(d));
         obj.put("dependencies", arr);
         return obj;

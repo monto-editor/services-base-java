@@ -2,11 +2,11 @@ package monto.service.types;
 
 public class ServiceID implements Comparable<ServiceID> {
 
-	private String serviceID;
+    private String serviceID;
 
-	public ServiceID(String serviceID) {
-		this.serviceID = serviceID;
-	}
+    public ServiceID(String serviceID) {
+        this.serviceID = serviceID;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -27,9 +27,9 @@ public class ServiceID implements Comparable<ServiceID> {
     public int compareTo(ServiceID other) {
         return this.serviceID.compareTo(other.serviceID);
     }
-    
+
     @Override
     public String toString() {
-    	return serviceID;
+        return serviceID;
     }
 }

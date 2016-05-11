@@ -29,9 +29,9 @@ public abstract class AbstractOption<T> implements Option<T> {
     public T getDefaultValue() {
         return defaultValue;
     }
-    
+
     @Override
     public String toString() {
-    	return optionId;
+        return optionId;
     }
 }

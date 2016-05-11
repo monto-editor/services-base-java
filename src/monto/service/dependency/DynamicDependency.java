@@ -5,8 +5,6 @@ import monto.service.types.Product;
 import monto.service.types.ServiceID;
 import monto.service.types.Source;
 
-import java.util.Set;
-
 public class DynamicDependency {
 
     private Source source;

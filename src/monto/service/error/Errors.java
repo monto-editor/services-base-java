@@ -2,7 +2,6 @@ package monto.service.error;
 
 import monto.service.product.ProductMessage;
 import monto.service.types.ParseException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -14,7 +13,7 @@ import java.util.stream.Stream;
 public class Errors {
 
     public static List<Error> decode(ProductMessage message) throws ParseException {
-        return decode((JSONArray)message.getContents());
+        return decode((JSONArray) message.getContents());
     }
 
     public static List<Error> decode(JSONArray array) throws ParseException {

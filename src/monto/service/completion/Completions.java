@@ -1,20 +1,19 @@
 package monto.service.completion;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
+import monto.service.product.ProductMessage;
+import monto.service.types.ParseException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import monto.service.product.ProductMessage;
-import monto.service.types.ParseException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Completions {
 
     public static List<Completion> decode(ProductMessage message) throws ParseException {
-        return decode((JSONArray)message.getContents());
+        return decode((JSONArray) message.getContents());
     }
 
     public static List<Completion> decode(JSONArray array) throws ParseException {
@@ -36,8 +35,8 @@ public class Completions {
 
     @SuppressWarnings("unchecked")
     public static JSONArray encode(List<Completion> completions) {
-    	JSONArray array = new JSONArray();
-        for(Completion c: completions)
+        JSONArray array = new JSONArray();
+        for (Completion c : completions)
             array.add(encode(c));
         return array;
     }

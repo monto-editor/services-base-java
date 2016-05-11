@@ -11,9 +11,9 @@ public class ParseException extends Exception {
     }
 
     public ParseException(String reason, Exception e) {
-		super(reason,e);
-	}
+        super(reason, e);
+    }
 
-	private static final long serialVersionUID = -8652632901411933961L;
+    private static final long serialVersionUID = -8652632901411933961L;
 
 }

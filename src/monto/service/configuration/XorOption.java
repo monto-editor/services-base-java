@@ -16,14 +16,14 @@ public class XorOption extends AbstractOption<String> {
         return values;
     }
 
-	@Override
-	public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
-			Function<XorOption, A> i, Function<OptionGroup, A> j) {
-		return i.apply(this);
-	}
+    @Override
+    public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
+                       Function<XorOption, A> i, Function<OptionGroup, A> j) {
+        return i.apply(this);
+    }
 
-	@Override
-	public <A> A match(Function<AbstractOption<String>, A> f, Function<OptionGroup, A> g) {
-		return f.apply(this);
-	}
+    @Override
+    public <A> A match(Function<AbstractOption<String>, A> f, Function<OptionGroup, A> g) {
+        return f.apply(this);
+    }
 }

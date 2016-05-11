@@ -1,15 +1,14 @@
 package monto.service.ast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import monto.service.product.ProductMessage;
 import monto.service.region.Region;
 import monto.service.region.Regions;
 import monto.service.types.ParseException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -42,7 +41,7 @@ import monto.service.types.ParseException;
 public class ASTs {
 
     @SuppressWarnings("unchecked")
-	public static JSONArray encode(AST ast) {
+    public static JSONArray encode(AST ast) {
         Encoder encoder = new Encoder();
         ast.accept(encoder);
         if (encoder.getEncoding() instanceof JSONObject) {
@@ -58,15 +57,15 @@ public class ASTs {
 
     @SuppressWarnings("unchecked")
     public static JSONObject encode(ASTNode ast) {
-    	JSONObject obj = new JSONObject();
-    	JSONArray children = new JSONArray();
-    	obj.put("name", ast.getName());
-    	for(ASTNode child : ast.getChildren())
-    		children.add(encode(child));
-    	obj.put("children", children);
-    	obj.put("offset", ast.getOffset());
-    	obj.put("length", ast.getLength());
-    	return obj;
+        JSONObject obj = new JSONObject();
+        JSONArray children = new JSONArray();
+        obj.put("name", ast.getName());
+        for (ASTNode child : ast.getChildren())
+            children.add(encode(child));
+        obj.put("children", children);
+        obj.put("offset", ast.getOffset());
+        obj.put("length", ast.getLength());
+        return obj;
     }
 
     private static class Encoder implements ASTVisitor {
@@ -127,23 +126,23 @@ public class ASTs {
 
         return new NonTerminal(name, childs);
     }
-    
+
     public static ASTNode decodeASTNode(JSONObject arr) throws ParseException {
         try {
-        	String name = (String) arr.get("name");
-        	int offset = intValue(arr.get("offset"));
-        	int length = intValue(arr.get("length"));
-        	JSONArray chld = (JSONArray) arr.get("children");
-        	List<ASTNode> children = new ArrayList<>(chld.size());
-        	for(Object child : chld)
-        		children.add(decodeASTNode((JSONObject) child));
-        	return new ASTNode(name,children,offset,length);
+            String name = (String) arr.get("name");
+            int offset = intValue(arr.get("offset"));
+            int length = intValue(arr.get("length"));
+            JSONArray chld = (JSONArray) arr.get("children");
+            List<ASTNode> children = new ArrayList<>(chld.size());
+            for (Object child : chld)
+                children.add(decodeASTNode((JSONObject) child));
+            return new ASTNode(name, children, offset, length);
         } catch (Exception e) {
-            throw new ParseException(String.format("%s", arr),e);
+            throw new ParseException(String.format("%s", arr), e);
         }
     }
 
     private static int intValue(Object obj) {
-    	return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
+        return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
     }
 }

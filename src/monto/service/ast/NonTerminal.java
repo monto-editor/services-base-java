@@ -1,11 +1,11 @@
 package monto.service.ast;
 
+import monto.service.region.IRegion;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
-
-import monto.service.region.IRegion;
 
 public class NonTerminal implements AST, IRegion {
 
@@ -27,11 +27,11 @@ public class NonTerminal implements AST, IRegion {
     }
 
     @Override
-	public <A> A match(Function<NonTerminal, A> f, Function<Terminal, A> g) {
-		return f.apply(this);
-	}
+    public <A> A match(Function<NonTerminal, A> f, Function<Terminal, A> g) {
+        return f.apply(this);
+    }
 
-	public String getName() {
+    public String getName() {
         return name;
     }
 

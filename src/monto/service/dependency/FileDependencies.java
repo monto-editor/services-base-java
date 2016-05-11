@@ -14,7 +14,7 @@ import java.util.Set;
 public class FileDependencies {
 
     public static List<FileDependency> decode(ProductMessage message) throws ParseException {
-        return decode((JSONArray)message.getContents());
+        return decode((JSONArray) message.getContents());
     }
 
     public static List<FileDependency> decode(JSONArray array) throws ParseException {
@@ -29,7 +29,7 @@ public class FileDependencies {
                 dependencies.add(new FileDependency(
                         new Source((String) encoding.get("file_name")),
                         fileDependencies
-                        ));
+                ));
             }
             return dependencies;
         } catch (Exception e) {
@@ -40,7 +40,7 @@ public class FileDependencies {
     @SuppressWarnings("unchecked")
     public static JSONArray encode(Set<FileDependency> fileDependencies) {
         JSONArray array = new JSONArray();
-        for(FileDependency c: fileDependencies)
+        for (FileDependency c : fileDependencies)
             array.add(encode(c));
         return array;
     }

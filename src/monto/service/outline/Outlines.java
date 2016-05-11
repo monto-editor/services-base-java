@@ -4,7 +4,6 @@ import monto.service.product.ProductMessage;
 import monto.service.region.Region;
 import monto.service.region.Regions;
 import monto.service.types.ParseException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -35,11 +34,11 @@ public class Outlines {
     }
 
     public static Outline decode(ProductMessage message) throws ParseException {
-    	try {
-    		return decode((JSONObject)message.getContents());
-    	} catch (Exception e) {
-    		throw new ParseException(message.getContents().toString(),e);
-    	}
+        try {
+            return decode((JSONObject) message.getContents());
+        } catch (Exception e) {
+            throw new ParseException(message.getContents().toString(), e);
+        }
     }
 
     public static Outline decode(JSONObject encoding) throws ParseException {
@@ -51,7 +50,7 @@ public class Outlines {
             if (encoding.containsKey("icon") && !((String) encoding.get("icon")).isEmpty()) {
                 icon = new URL((String) encoding.get("icon"));
             }
-            
+
             List<Outline> children = new ArrayList<>();
             if (encoding.containsKey("children")) {
                 for (Object child : (JSONArray) encoding.get("children"))

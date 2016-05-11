@@ -21,14 +21,14 @@ public class NumberOption extends AbstractOption<Long> {
         return to;
     }
 
-	@Override
-	public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
-			Function<XorOption, A> i, Function<OptionGroup, A> j) {
-		return g.apply(this);
-	}
+    @Override
+    public <A> A match(Function<BooleanOption, A> f, Function<NumberOption, A> g, Function<TextOption, A> h,
+                       Function<XorOption, A> i, Function<OptionGroup, A> j) {
+        return g.apply(this);
+    }
 
-	@Override
-	public <A> A match(Function<AbstractOption<Long>, A> f, Function<OptionGroup, A> g) {
-		return f.apply(this);
-	}
+    @Override
+    public <A> A match(Function<AbstractOption<Long>, A> f, Function<OptionGroup, A> g) {
+        return f.apply(this);
+    }
 }

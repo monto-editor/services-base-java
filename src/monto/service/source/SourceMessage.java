@@ -1,14 +1,10 @@
 package monto.service.source;
 
+import monto.service.product.ProductMessage;
+import monto.service.types.*;
+
 import java.util.Optional;
 import java.util.function.Function;
-
-import monto.service.product.ProductMessage;
-import monto.service.types.Language;
-import monto.service.types.LongKey;
-import monto.service.types.Message;
-import monto.service.types.Selection;
-import monto.service.types.Source;
 
 public class SourceMessage implements Message {
 
@@ -19,13 +15,13 @@ public class SourceMessage implements Message {
     private final Optional<Selection> selection;
 
     public SourceMessage(LongKey id, Source source, Language language, String content) {
-    	this(id,source,language,content,Optional.empty());
+        this(id, source, language, content, Optional.empty());
     }
 
     public SourceMessage(LongKey id, Source source, Language language, String content, Selection selection) {
-    	this(id,source,language,content,Optional.of(selection));
+        this(id, source, language, content, Optional.of(selection));
     }
-    
+
     public SourceMessage(LongKey id, Source source, Language language, String content, Optional<Selection> selection) {
         this.id = id;
         this.source = source;
@@ -54,9 +50,9 @@ public class SourceMessage implements Message {
         return selection;
     }
 
-	@Override
-	public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
-		return f.apply(this);
-	}
+    @Override
+    public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
+        return f.apply(this);
+    }
 
 }

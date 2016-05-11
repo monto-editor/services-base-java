@@ -1,6 +1,6 @@
 package monto.service.discovery;
 
 public class DiscoveryRequest {
-	public DiscoveryRequest() {
-	}
+    public DiscoveryRequest() {
+    }
 }

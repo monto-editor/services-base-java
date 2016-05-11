@@ -1,6 +1,5 @@
 package monto.service.dependency;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class DynamicDependencies {

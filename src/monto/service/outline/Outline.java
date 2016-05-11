@@ -1,13 +1,13 @@
 package monto.service.outline;
 
+import monto.service.region.IRegion;
+import monto.service.region.Region;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
-import monto.service.region.IRegion;
-import monto.service.region.Region;
 
 
 public class Outline extends Region {
@@ -22,9 +22,9 @@ public class Outline extends Region {
         this.icon = Optional.ofNullable(icon);
         this.children = children;
     }
-    
-    public Outline(String label, IRegion link, URL icon, Outline ... children) {
-        this(label,link,icon,new ArrayList<>(Arrays.asList(children)));
+
+    public Outline(String label, IRegion link, URL icon, Outline... children) {
+        this(label, link, icon, new ArrayList<>(Arrays.asList(children)));
     }
 
     public void addChild(Outline outline) {

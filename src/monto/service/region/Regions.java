@@ -1,9 +1,8 @@
 package monto.service.region;
 
+import monto.service.types.ParseException;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
-import monto.service.types.ParseException;
 
 import java.io.Reader;
 
@@ -34,8 +33,8 @@ public class Regions {
             throw new ParseException(e);
         }
     }
-    
+
     private static int intValue(Object obj) {
-    	return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
+        return obj instanceof Long ? ((Long) obj).intValue() : ((Integer) obj).intValue();
     }
 }

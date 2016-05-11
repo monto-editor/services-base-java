@@ -1,36 +1,23 @@
 package monto.service;
 
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Socket;
-
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Configurations;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.product.ProductMessage;
 import monto.service.product.ProductMessages;
-import monto.service.registration.Dependency;
-import monto.service.registration.DeregisterService;
-import monto.service.registration.ProductDescription;
-import monto.service.registration.RegisterMessages;
-import monto.service.registration.RegisterServiceRequest;
-import monto.service.registration.RegisterServiceResponse;
+import monto.service.registration.*;
 import monto.service.request.Request;
 import monto.service.request.Requests;
-import monto.service.types.Language;
-import monto.service.types.LongKey;
-import monto.service.types.ParseException;
-import monto.service.types.PartialConsumer;
-import monto.service.types.PartialFunction;
-import monto.service.types.Product;
-import monto.service.types.ServiceID;
-import monto.service.types.Source;
+import monto.service.types.*;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Socket;
+
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Template for a monto service.
@@ -47,27 +34,27 @@ public abstract class MontoService {
     protected volatile String label;
     protected volatile String description;
     protected volatile List<ProductDescription> products;
-	protected volatile List<Option> options;
+    protected volatile List<Option> options;
     protected volatile List<Dependency> dependencies;
-	private Socket registrationSocket;
-	private Socket serviceSocket;
-	private Thread serviceThread;
-	private Thread configThread;
-	private Socket configSocket;
+    private Socket registrationSocket;
+    private Socket serviceSocket;
+    private Thread serviceThread;
+    private Thread configThread;
+    private Socket configSocket;
     private Socket dyndepSocket;
-	protected boolean debug = false;
+    protected boolean debug = false;
 
     /**
      * Template for a monto service.
      */
     public MontoService(
-    		ZMQConfiguration zmqConfig,
-    		ServiceID serviceID,
-    		String label,
-    		String description,
-    		List<ProductDescription> products,
-    		List<Dependency> dependencies) {
-    	this.zmqConfig = zmqConfig;
+            ZMQConfiguration zmqConfig,
+            ServiceID serviceID,
+            String label,
+            String description,
+            List<ProductDescription> products,
+            List<Dependency> dependencies) {
+        this.zmqConfig = zmqConfig;
         this.serviceID = serviceID;
         this.label = label;
         this.description = description;
@@ -79,77 +66,79 @@ public abstract class MontoService {
     }
 
     public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, List<ProductDescription> products, List<Option> options, List<Dependency> dependencies) {
-        this(zmqConfig, serviceID, label, description,  products, dependencies);
+        this(zmqConfig, serviceID, label, description, products, dependencies);
         this.options = options;
     }
 
     public MontoService(ZMQConfiguration zmqConfig, ServiceID serviceID, String label, String description, Language language, Product product, List<Option> options, List<Dependency> dependencies) {
-	this(zmqConfig, serviceID, label, description, Arrays.asList(new ProductDescription(product, language)), dependencies);
+        this(zmqConfig, serviceID, label, description, Arrays.asList(new ProductDescription(product, language)), dependencies);
         this.options = options;
     }
 
-    public <MSG,Decoded> void handleMessage(Socket socket, PartialFunction<MSG,Decoded,ParseException> decodeMessage, PartialConsumer<Decoded, ? super Exception> onMessage) {
-    	String rawMsg = socket.recvStr();
-		try {
-			// In case of subscription ignore topic and receive message body
-			if(socket.getType() == ZMQ.SUB && rawMsg != null)
-				rawMsg = socket.recvStr();
+    public <MSG, Decoded> void handleMessage(Socket socket, PartialFunction<MSG, Decoded, ParseException> decodeMessage, PartialConsumer<Decoded, ? super Exception> onMessage) {
+        String rawMsg = socket.recvStr();
+        try {
+            // In case of subscription ignore topic and receive message body
+            if (socket.getType() == ZMQ.SUB && rawMsg != null)
+                rawMsg = socket.recvStr();
 
-			if (rawMsg != null) {
-				@SuppressWarnings("unchecked")
-				MSG msg = (MSG) JSONValue.parseWithException(rawMsg);
-				Decoded decoded = decodeMessage.apply(msg);
-				onMessage.accept(decoded);
-			}
-		} catch (Throwable e) {
-			if(debug) {
-				System.err.printf("An error occured in the service %s\n", serviceID);
-				e.printStackTrace(System.err);
-			}
-		}
+            if (rawMsg != null) {
+                @SuppressWarnings("unchecked")
+                MSG msg = (MSG) JSONValue.parseWithException(rawMsg);
+                Decoded decoded = decodeMessage.apply(msg);
+                onMessage.accept(decoded);
+            }
+        } catch (Throwable e) {
+            if (debug) {
+                System.err.printf("An error occured in the service %s\n", serviceID);
+                e.printStackTrace(System.err);
+            }
+        }
     }
 
-	public void start() throws Exception {
+    public void start() throws Exception {
         registerService();
         if (isRegisterResponseOk()) {
-        	running = true;
+            running = true;
             dyndepSocket = zmqConfig.getContext().createSocket(ZMQ.PUB);
             dyndepSocket.connect(zmqConfig.getDyndepAddress());
             dyndepSocket.setReceiveTimeOut(500);
 
-        	serviceSocket = zmqConfig.getContext().createSocket(ZMQ.PAIR);
-        	serviceSocket.connect(zmqConfig.getServiceAddress() + ":" + port);
-        	serviceSocket.setReceiveTimeOut(500);
-        	MontoService that = this;
-        	serviceThread = new Thread() {
-        		@Override
-        		public void run() {
-        			while(running)
-        				that.<JSONObject,Request>handleMessage (
-        						serviceSocket,
-        						Requests::decode,
-        						request -> serviceSocket.send(ProductMessages.encode(onRequest(request)).toJSONString()));
-        		}
-        	};
-        	serviceThread.start();
-        	
-        	configSocket = zmqConfig.getContext().createSocket(ZMQ.SUB);
-        	configSocket.connect(zmqConfig.getConfigurationAddress());
-        	configSocket.subscribe(serviceID.toString().getBytes());
-        	configSocket.setReceiveTimeOut(500);
-        	configThread = new Thread() {
-        		@Override
-        		public void run() {
-        			while(running) {
-        				that.<JSONObject,Configuration>handleMessage(
-        						configSocket,
-        						Configurations::decodeConfiguration,
-        						message -> onConfigurationMessage(message));
-        			}
-        		};
-        	};
-        	configThread.start();
-        	System.out.println("connected: " + serviceID);
+            serviceSocket = zmqConfig.getContext().createSocket(ZMQ.PAIR);
+            serviceSocket.connect(zmqConfig.getServiceAddress() + ":" + port);
+            serviceSocket.setReceiveTimeOut(500);
+            MontoService that = this;
+            serviceThread = new Thread() {
+                @Override
+                public void run() {
+                    while (running)
+                        that.<JSONObject, Request>handleMessage(
+                                serviceSocket,
+                                Requests::decode,
+                                request -> serviceSocket.send(ProductMessages.encode(onRequest(request)).toJSONString()));
+                }
+            };
+            serviceThread.start();
+
+            configSocket = zmqConfig.getContext().createSocket(ZMQ.SUB);
+            configSocket.connect(zmqConfig.getConfigurationAddress());
+            configSocket.subscribe(serviceID.toString().getBytes());
+            configSocket.setReceiveTimeOut(500);
+            configThread = new Thread() {
+                @Override
+                public void run() {
+                    while (running) {
+                        that.<JSONObject, Configuration>handleMessage(
+                                configSocket,
+                                Configurations::decodeConfiguration,
+                                message -> onConfigurationMessage(message));
+                    }
+                }
+
+                ;
+            };
+            configThread.start();
+            System.out.println("connected: " + serviceID);
         }
     }
 
@@ -159,22 +148,22 @@ public abstract class MontoService {
             System.out.println("disconnecting: " + serviceID);
             System.out.println("deregistering: " + serviceID);
             try {
-				serviceThread.join();
-				configThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+                serviceThread.join();
+                configThread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceID)).toJSONString());
-            
+
             // Sockets will be closed by ZContext.destroy()
-            
+
             System.out.println("terminated: " + serviceID);
         }
     }
-    
+
     public MontoService enableDebugging() {
-    	debug = true;
-    	return this;
+        debug = true;
+        return this;
     }
 
     private void registerService() {
@@ -196,7 +185,7 @@ public abstract class MontoService {
         System.out.printf("could not register service %s: %s\n", serviceID, decodedResponse.getResponse());
         return false;
     }
-    
+
     protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Language language, Object contents) {
         return new ProductMessage(
                 versionID,
@@ -218,7 +207,7 @@ public abstract class MontoService {
                 contents,
                 time);
     }
-    
+
     /**
      * handles request messages send by the broker and return a product message.
      */
@@ -228,7 +217,7 @@ public abstract class MontoService {
      * It handles the configuration messages from the broker and determines the response.
      */
     public void onConfigurationMessage(Configuration message) throws Exception {
-    	// By default ignore configuration messages.
+        // By default ignore configuration messages.
     }
 
     public ServiceID getServiceID() {
@@ -246,17 +235,17 @@ public abstract class MontoService {
     public List<Option> getOptions() {
         return options;
     }
-    
+
     public static List<Option> options(Option... options) {
-	return Arrays.asList(options);
+        return Arrays.asList(options);
     }
-    
+
     public static List<Dependency> dependencies(Dependency... dependencies) {
-	return Arrays.asList(dependencies);
+        return Arrays.asList(dependencies);
     }
-    
+
     public URL getResource(String name) {
-    	return zmqConfig.getResourceURL(name);
+        return zmqConfig.getResourceURL(name);
     }
 
     protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {

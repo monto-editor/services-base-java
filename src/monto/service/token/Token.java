@@ -3,9 +3,9 @@ package monto.service.token;
 import monto.service.region.Region;
 
 public class Token extends Region {
-	
-	private Font font;
-	private TokenCategory category;
+
+    private Font font;
+    private TokenCategory category;
 
     public Token(int offset, int length, TokenCategory category, Font font) {
         super(offset, length);
@@ -14,14 +14,14 @@ public class Token extends Region {
     }
 
     public Font getFont() {
-    	return font;
+        return font;
     }
 
     public TokenCategory getCategory() {
-		return category;
-	}
+        return category;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return String.format("(%d,%d,%s)", getStartOffset(), getLength(), font);
     }
