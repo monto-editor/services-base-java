@@ -47,7 +47,7 @@ public class Errors {
     @SuppressWarnings("unchecked")
     public static JSONObject encode(Error error) {
         JSONObject object = new JSONObject();
-        object.put("offset", error.getOffset());
+        object.put("offset", error.getStartOffset());
         object.put("length", error.getLength());
         object.put("level", error.getLevel());
         object.put("category", error.getCategory());
