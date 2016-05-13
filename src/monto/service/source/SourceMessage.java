@@ -12,17 +12,13 @@ public class SourceMessage implements Message {
     private final Source source;
     private final String contents;
     private final Language language;
-    private final Optional<Selection> selection;
+    private final Selection selection;
 
     public SourceMessage(LongKey id, Source source, Language language, String contents) {
-        this(id, source, language, contents, Optional.empty());
+        this(id, source, language, contents, null);
     }
 
     public SourceMessage(LongKey id, Source source, Language language, String contents, Selection selection) {
-        this(id, source, language, contents, Optional.of(selection));
-    }
-
-    public SourceMessage(LongKey id, Source source, Language language, String contents, Optional<Selection> selection) {
         this.id = id;
         this.source = source;
         this.language = language;
@@ -47,7 +43,7 @@ public class SourceMessage implements Message {
     }
 
     public Optional<Selection> getSelection() {
-        return selection;
+        return Optional.ofNullable(selection);
     }
 
     @Override

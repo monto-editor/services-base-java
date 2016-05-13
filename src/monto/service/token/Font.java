@@ -1,17 +1,18 @@
 package monto.service.token;
 
+import monto.service.gson.GsonMonto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.Optional;
 
 public class Font {
-    private Optional<Color> color, bgcolor;
-    private Optional<String> family, style, variant, weight;
-    private Optional<Integer> size;
+    private Color color, bgcolor;
+    private String family, style, variant, weight;
+    private Integer size;
 
-    public Font(Optional<Color> color, Optional<Color> bgcolor, Optional<String> family, Optional<String> style,
-                Optional<String> variant, Optional<String> weight, Optional<Integer> size) {
+    public Font(Color color, Color bgcolor, String family, String style,
+                String variant, String weight, Integer size) {
         this.color = color;
         this.bgcolor = bgcolor;
         this.family = family;
@@ -22,35 +23,35 @@ public class Font {
     }
 
     public Font(Color clr) {
-        this(Optional.of(clr), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
+        this(clr, null, null, null, null, null, null);
     }
 
     public Optional<Color> getColor() {
-        return color;
+        return Optional.ofNullable(color);
     }
 
     public Optional<Color> getBgcolor() {
-        return bgcolor;
+        return Optional.ofNullable(bgcolor);
     }
 
     public Optional<String> getFamily() {
-        return family;
+        return Optional.ofNullable(family);
     }
 
     public Optional<String> getStyle() {
-        return style;
+        return Optional.ofNullable(style);
     }
 
     public Optional<String> getVariant() {
-        return variant;
+        return Optional.ofNullable(variant);
     }
 
     public Optional<String> getWeight() {
-        return weight;
+        return Optional.ofNullable(weight);
     }
 
     public Optional<Integer> getSize() {
-        return size;
+        return Optional.ofNullable(size);
     }
 
     public int hashCode() {

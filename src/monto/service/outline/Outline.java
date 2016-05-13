@@ -13,13 +13,13 @@ import java.util.Optional;
 public class Outline extends Region {
 
     private String label;
-    private Optional<URL> icon;
+    private URL icon;
     private List<Outline> children;
 
     public Outline(String label, IRegion link, URL icon, List<Outline> children) {
         super(link.getStartOffset(), link.getLength());
         this.label = label;
-        this.icon = Optional.ofNullable(icon);
+        this.icon = icon;
         this.children = children;
     }
 
@@ -36,7 +36,7 @@ public class Outline extends Region {
     }
 
     public Optional<URL> getIcon() {
-        return icon;
+        return Optional.ofNullable(icon);
     }
 
     public boolean isLeaf() {
