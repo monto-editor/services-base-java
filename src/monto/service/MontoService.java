@@ -4,8 +4,8 @@ import monto.service.configuration.Configuration;
 import monto.service.configuration.Configurations;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
+import monto.service.gson.GsonMonto;
 import monto.service.product.ProductMessage;
-import monto.service.product.ProductMessages;
 import monto.service.registration.*;
 import monto.service.request.Request;
 import monto.service.request.Requests;
@@ -115,7 +115,7 @@ public abstract class MontoService {
                         that.<JSONObject, Request>handleMessage(
                                 serviceSocket,
                                 Requests::decode,
-                                request -> serviceSocket.send(ProductMessages.encode(onRequest(request)).toJSONString()));
+                                request -> serviceSocket.send(GsonMonto.toJson(onRequest(request))));
                 }
             };
             serviceThread.start();
@@ -130,7 +130,11 @@ public abstract class MontoService {
                     while (running) {
                         that.<JSONObject, Configuration>handleMessage(
                                 configSocket,
-                                Configurations::decodeConfiguration,
+                                (jsonConfig) -> {
+                                    Configuration jsonSimple = Configurations.decodeConfiguration(jsonConfig);
+//                                    Configuration gson = GsonMonto.fromJson(jsonConfig.toJSONString(), Configuration.class);
+                                    return jsonSimple;
+                                },
                                 message -> onConfigurationMessage(message));
                     }
                 }
@@ -143,7 +147,7 @@ public abstract class MontoService {
     }
 
     public void stop() throws Exception {
-        if (registered == true) {
+        if (registered) {
             running = false;
             System.out.println("disconnecting: " + serviceId);
             System.out.println("deregistering: " + serviceId);
@@ -153,7 +157,7 @@ public abstract class MontoService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            registrationSocket.send(RegisterMessages.encode(new DeregisterService(serviceId)).toJSONString());
+            registrationSocket.send(GsonMonto.toJson(new DeregisterService(serviceId)));
 
             // Sockets will be closed by ZContext.destroy()
 
@@ -170,12 +174,15 @@ public abstract class MontoService {
         System.out.println("registering: " + serviceId + " on " + zmqConfig.getRegistrationAddress());
         registrationSocket = zmqConfig.getContext().createSocket(ZMQ.REQ);
         registrationSocket.connect(zmqConfig.getRegistrationAddress());
-        registrationSocket.send(RegisterMessages.encode(new RegisterServiceRequest(serviceId, label, description, products, options, dependencies)).toJSONString());
+        registrationSocket.send(GsonMonto.toJson(
+                new RegisterServiceRequest(serviceId, label, description, products, options, dependencies)
+        ));
     }
 
     private boolean isRegisterResponseOk() {
-        JSONObject response = (JSONObject) JSONValue.parse(registrationSocket.recvStr());
-        RegisterServiceResponse decodedResponse = RegisterMessages.decodeResponse(response);
+        RegisterServiceResponse decodedResponse = GsonMonto.fromJson(registrationSocket.recvStr(), RegisterServiceResponse.class);
+        // TODO decodedResponse.getConnectToPort() > -1 should be >= -1
+        // TODO missing decodedResponse.getConnectToPort() never happend
         if (decodedResponse.getResponse().equals("ok") && decodedResponse.getConnectToPort() > -1) {
             port = decodedResponse.getConnectToPort();
             System.out.println("registered: " + serviceId + ", connecting on " + zmqConfig.getServiceAddress() + ":" + port);
@@ -250,7 +257,7 @@ public abstract class MontoService {
 
     protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
         if (dyndepSocket != null) {
-            dyndepSocket.send(RegisterDynamicDependencies.encode(dyndeps).toJSONString());
+            dyndepSocket.send(GsonMonto.toJson(dyndeps));
         }
     }
 }

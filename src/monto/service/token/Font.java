@@ -90,6 +90,6 @@ public class Font {
 
     @Override
     public String toString() {
-        return Tokens.encodeFont(this).toJSONString();
+        return GsonMonto.toJson(this);
     }
 }

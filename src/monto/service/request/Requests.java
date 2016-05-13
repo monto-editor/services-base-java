@@ -1,7 +1,8 @@
 package monto.service.request;
 
+import monto.service.gson.GsonMonto;
 import monto.service.product.ProductMessages;
-import monto.service.source.SourceMessages;
+import monto.service.source.SourceMessage;
 import monto.service.types.Message;
 import monto.service.types.ParseException;
 import monto.service.types.Source;
@@ -30,7 +31,7 @@ public class Requests {
             if (requirement.containsKey("product"))
                 decoded.add(ProductMessages.decode(requirement));
             else
-                decoded.add(SourceMessages.decode(requirement));
+                decoded.add(GsonMonto.fromJson(requirement.toJSONString(), SourceMessage.class));
         }
         return decoded;
     }
