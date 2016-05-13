@@ -10,23 +10,23 @@ public class SourceMessage implements Message {
 
     private final LongKey id;
     private final Source source;
-    private final String content;
+    private final String contents;
     private final Language language;
     private final Optional<Selection> selection;
 
-    public SourceMessage(LongKey id, Source source, Language language, String content) {
-        this(id, source, language, content, Optional.empty());
+    public SourceMessage(LongKey id, Source source, Language language, String contents) {
+        this(id, source, language, contents, Optional.empty());
     }
 
-    public SourceMessage(LongKey id, Source source, Language language, String content, Selection selection) {
-        this(id, source, language, content, Optional.of(selection));
+    public SourceMessage(LongKey id, Source source, Language language, String contents, Selection selection) {
+        this(id, source, language, contents, Optional.of(selection));
     }
 
-    public SourceMessage(LongKey id, Source source, Language language, String content, Optional<Selection> selection) {
+    public SourceMessage(LongKey id, Source source, Language language, String contents, Optional<Selection> selection) {
         this.id = id;
         this.source = source;
         this.language = language;
-        this.content = content;
+        this.contents = contents;
         this.selection = selection;
     }
 
@@ -38,8 +38,8 @@ public class SourceMessage implements Message {
         return source;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
     public Language getLanguage() {
