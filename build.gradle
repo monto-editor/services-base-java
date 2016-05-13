@@ -28,4 +28,5 @@ dependencies {
     compile 'org.zeromq:jeromq:0.3.5'
     compile 'org.eclipse.jetty:jetty-servlet:9.3.8.v20160314'
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    compile 'com.google.code.gson:gson:2.6.2'
 }
