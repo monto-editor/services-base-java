@@ -16,9 +16,7 @@ class OutlineSerializer implements JsonSerializer<Outline> {
         src.getIcon().ifPresent(url -> json.addProperty("icon", url.toExternalForm()));
 
         if (!src.getChildren().isEmpty()) {
-            JsonArray children = new JsonArray();
-            src.getChildren().stream().forEach(child -> children.add(serialize(child, typeOfSrc, context)));
-            json.add("children", children);
+            json.add("children", context.serialize(src.getChildren()));
         }
         return json;
     }
