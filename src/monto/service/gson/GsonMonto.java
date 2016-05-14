@@ -1,9 +1,6 @@
 package monto.service.gson;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import monto.service.outline.Outline;
 import monto.service.product.ProductMessage;
 import monto.service.types.*;
@@ -56,33 +53,24 @@ public final class GsonMonto {
         return gson;
     }
 
-    public static String toJson(Object src) {
-        return gson.toJson(src);
-    }
-
-    public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson(json, classOfT);
+    public static JsonElement toJsonTree(Object src) {
+        return gson.toJsonTree(src);
     }
 
     public static <T> T fromJson(ProductMessage productMessage, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson((String) productMessage.getContents(), classOfT);
+        return gson.fromJson(productMessage.getContents(), classOfT);
     }
 
     /**
      * Use it like this:<br>
      * <code>
-     * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(json, Completion[].class);
+     * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(message, Completion[].class);
      * </code>
      *
      * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
      */
-    public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
-        T[] jsonToObject = new Gson().fromJson(json, aClass);
-        return Arrays.asList(jsonToObject);
-    }
-
     public static <T> List<T> fromJsonArray(ProductMessage productMessage, Class<T[]> aClass) {
-        T[] jsonToObject = new Gson().fromJson((String) productMessage.getContents(), aClass);
+        T[] jsonToObject = gson.fromJson(productMessage.getContents(), aClass);
         return Arrays.asList(jsonToObject);
     }
 }
