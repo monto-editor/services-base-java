@@ -136,7 +136,7 @@ public class ASTs {
             List<ASTNode> children = new ArrayList<>(chld.size());
             for (Object child : chld)
                 children.add(decodeASTNode((JSONObject) child));
-            return new ASTNode(name, children, offset, length);
+            return new ASTNode(name, offset, length, children);
         } catch (Exception e) {
             throw new ParseException(String.format("%s", arr), e);
         }

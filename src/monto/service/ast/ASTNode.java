@@ -10,7 +10,7 @@ public class ASTNode implements IRegion {
     private int offset;
     private int length;
 
-    public ASTNode(String name, List<ASTNode> children, int offset, int length) {
+    public ASTNode(String name, int offset, int length, List<ASTNode> children) {
         this.name = name;
         this.children = children;
         this.offset = offset;
