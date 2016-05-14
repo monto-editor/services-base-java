@@ -1,5 +1,6 @@
 package monto.service.product;
 
+import com.google.gson.JsonElement;
 import monto.service.source.SourceMessage;
 import monto.service.types.*;
 
@@ -13,10 +14,10 @@ public class ProductMessage implements Message {
     private final ServiceId serviceId;
     private final Product product;
     private final Language language;
-    private final Object contents;
+    private final JsonElement contents;
     private final long time;
 
-    public ProductMessage(LongKey id, Source source, ServiceId serviceId, Product product, Language language, Object contents, long time) {
+    public ProductMessage(LongKey id, Source source, ServiceId serviceId, Product product, Language language, JsonElement contents, long time) {
         this.id = id;
         this.source = source;
         this.serviceId = serviceId;
@@ -46,7 +47,7 @@ public class ProductMessage implements Message {
         return language;
     }
 
-    public Object getContents() {
+    public JsonElement getContents() {
         return contents;
     }
 

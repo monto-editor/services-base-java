@@ -90,6 +90,6 @@ public class Font {
 
     @Override
     public String toString() {
-        return GsonMonto.toJson(this);
+        return GsonMonto.getGson().toJson(this);
     }
 }
