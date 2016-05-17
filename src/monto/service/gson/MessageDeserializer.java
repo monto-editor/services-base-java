@@ -7,7 +7,7 @@ import monto.service.types.Message;
 
 import java.lang.reflect.Type;
 
-public class MessageDeserializer implements JsonDeserializer<Message> {
+class MessageDeserializer implements JsonDeserializer<Message> {
     @Override
     public Message deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         if (!json.isJsonObject()) {
