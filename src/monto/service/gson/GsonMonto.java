@@ -1,6 +1,8 @@
 package monto.service.gson;
 
 import com.google.gson.*;
+import monto.service.ast.AST;
+import monto.service.ast.NonTerminal;
 import monto.service.outline.Outline;
 import monto.service.product.ProductMessage;
 import monto.service.types.*;
@@ -42,6 +44,11 @@ public final class GsonMonto {
                 // If a Json property is null, no Deserializer is called by Gson. The Optional gets set to null.
                 // If you want to have a Optional<T> field property t, make the field of type T and in the getter
                 // return Optional.ofNullable(t)
+
+                .registerTypeAdapter(AST.class, new ASTDeserializer())
+                // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
+                // no idea why, but that's why ASTNonTerminalSerializer is necessary
+                .registerTypeAdapter(NonTerminal.class, new ASTNonTerminalSerializer())
 
                 .create();
     }
