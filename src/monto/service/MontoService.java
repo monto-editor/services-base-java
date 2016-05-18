@@ -112,8 +112,8 @@ public abstract class MontoService {
                     while (running)
                         that.<String, Request>handleMessage(
                                 serviceSocket,
-                                requestJsonString -> GsonMonto.getGson().fromJson(requestJsonString, Request.class),
-                                request -> serviceSocket.send(GsonMonto.getGson().toJson(onRequest(request))));
+                                requestJsonString -> GsonMonto.fromJson(requestJsonString, Request.class),
+                                request -> serviceSocket.send(GsonMonto.toJson(onRequest(request))));
                 }
             };
             serviceThread.start();
@@ -128,7 +128,7 @@ public abstract class MontoService {
                     while (running) {
                         that.<String, Configuration>handleMessage(
                                 configSocket,
-                                configJsonString -> GsonMonto.getGson().fromJson(configJsonString, Configuration.class),
+                                configJsonString -> GsonMonto.fromJson(configJsonString, Configuration.class),
                                 message -> onConfigurationMessage(message));
                     }
                 }
@@ -149,7 +149,7 @@ public abstract class MontoService {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            registrationSocket.send(GsonMonto.getGson().toJson(new DeregisterService(serviceId)));
+            registrationSocket.send(GsonMonto.toJson(new DeregisterService(serviceId)));
 
             // Sockets will be closed by ZContext.destroy()
 
@@ -166,13 +166,13 @@ public abstract class MontoService {
         System.out.println("registering: " + serviceId + " on " + zmqConfig.getRegistrationAddress());
         registrationSocket = zmqConfig.getContext().createSocket(ZMQ.REQ);
         registrationSocket.connect(zmqConfig.getRegistrationAddress());
-        registrationSocket.send(GsonMonto.getGson().toJson(
+        registrationSocket.send(GsonMonto.toJson(
                 new RegisterServiceRequest(serviceId, label, description, products, options, dependencies)
         ));
     }
 
     private boolean isRegisterResponseOk() {
-        RegisterServiceResponse decodedResponse = GsonMonto.getGson().fromJson(registrationSocket.recvStr(), RegisterServiceResponse.class);
+        RegisterServiceResponse decodedResponse = GsonMonto.fromJson(registrationSocket.recvStr(), RegisterServiceResponse.class);
         // TODO decodedResponse.getConnectToPort() > -1 should be >= -1
         // TODO missing decodedResponse.getConnectToPort() never happend
         if (decodedResponse.getResponse().equals("ok") && decodedResponse.getConnectToPort() > -1) {
@@ -249,7 +249,7 @@ public abstract class MontoService {
 
     protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
         if (dyndepSocket != null) {
-            dyndepSocket.send(GsonMonto.getGson().toJson(dyndeps));
+            dyndepSocket.send(GsonMonto.toJson(dyndeps));
         }
     }
 }

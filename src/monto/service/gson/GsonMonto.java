@@ -64,6 +64,14 @@ public final class GsonMonto {
         return gson.toJsonTree(src);
     }
 
+    public static String toJson(Object src) {
+        return gson.toJson(src);
+    }
+
+    public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
+        return gson.fromJson(json, classOfT);
+    }
+
     public static <T> T fromJson(ProductMessage productMessage, Class<T> classOfT) throws JsonSyntaxException {
         return gson.fromJson(productMessage.getContents(), classOfT);
     }
@@ -80,4 +88,18 @@ public final class GsonMonto {
         T[] jsonToObject = gson.fromJson(productMessage.getContents(), aClass);
         return Arrays.asList(jsonToObject);
     }
+
+    /**
+     * Use it like this:<br>
+     * <code>
+     * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(completionJsonString, Completion[].class);
+     * </code>
+     *
+     * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
+     */
+    public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
+        T[] jsonToObject = gson.fromJson(json, aClass);
+        return Arrays.asList(jsonToObject);
+    }
+
 }
