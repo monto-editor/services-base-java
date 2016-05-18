@@ -3,6 +3,8 @@ package monto.service.gson;
 import com.google.gson.*;
 import monto.service.ast.AST;
 import monto.service.ast.NonTerminal;
+import monto.service.configuration.Option;
+import monto.service.configuration.OptionGroup;
 import monto.service.outline.Outline;
 import monto.service.product.ProductMessage;
 import monto.service.types.*;
@@ -20,6 +22,9 @@ public final class GsonMonto {
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 
                 .registerTypeAdapter(Message.class, new MessageDeserializer())
+
+                .registerTypeAdapter(Option.class, new OptionDeserializer())
+                .registerTypeAdapter(OptionGroup.class, new OptionGroupSerializer())
 
                 .registerTypeAdapter(ServiceId.class, toStringSerializer)
                 .registerTypeAdapter(ServiceId.class, new ServiceIdDeserializer())
