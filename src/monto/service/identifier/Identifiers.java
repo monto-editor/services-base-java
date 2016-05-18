@@ -13,7 +13,7 @@ public final class Identifiers {
     public static JSONObject encode(Identifier identifier) {
         JSONObject json = new JSONObject();
         json.put("identifier", identifier.getIdentifier());
-        json.put("type", identifier.getType().name());
+        json.put("type", identifier.getType());
         return json;
     }
 
@@ -33,7 +33,7 @@ public final class Identifiers {
     public static Identifier decode(JSONObject json) {
         return new Identifier(
                 (String) json.get("identifier"),
-                Identifier.IdentifierType.valueOf(Identifier.IdentifierType.class, (String) json.get("type"))
+                (String) json.get("type")
         );
     }
 
