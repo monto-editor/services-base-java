@@ -1,14 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: servies-base-java
-Bundle-SymbolicName: servies-base-java
-Bundle-Version: 1.0.0.qualifier
-Bundle-ClassPath: servies-base-java.jar,
- lib/gson-2.6.2.jar,
- lib/json-simple-1.1.1.jar,
- lib/jeromq-0.3.4.jar,
- lib/commons-lang3-3.4.jar
-Export-Package: monto.service,
+Bundle-Name: services-base-java
+Bundle-SymbolicName: services-base-java
+Bundle-Version: 1.0.0
+Export-Package: com.google.gson,
+ monto.service,
  monto.service.ast,
  monto.service.benchmark,
  monto.service.completion,
@@ -17,6 +13,7 @@ Export-Package: monto.service,
  monto.service.discovery,
  monto.service.error,
  monto.service.gson,
+ monto.service.identifier,
  monto.service.outline,
  monto.service.product,
  monto.service.region,
@@ -29,6 +26,11 @@ Export-Package: monto.service,
  org.eclipse.jetty.http2.api,
  org.json.simple,
  org.json.simple.parser,
- org.zeromq,
- zmq
+ org.zeromq
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/commons-lang3-3.4.jar,
+ lib/gson-2.6.2.jar,
+ lib/javax.servlet-api-3.1.0.jar,
+ lib/jeromq-0.3.5.jar,
+ lib/jetty-all-9.3.9.v20160517-uber.jar,
+ lib/json-simple-1.1.1.jar
