@@ -6,7 +6,6 @@ Bundle-Version: 1.0.0
 Export-Package: com.google.gson,
  monto.service,
  monto.service.ast,
- monto.service.benchmark,
  monto.service.completion,
  monto.service.configuration,
  monto.service.dependency,
@@ -23,9 +22,7 @@ Export-Package: com.google.gson,
  monto.service.source,
  monto.service.token,
  monto.service.types,
- org.eclipse.jetty.http2.api,
  org.json.simple,
- org.json.simple.parser,
  org.zeromq
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/commons-lang3-3.4.jar,
