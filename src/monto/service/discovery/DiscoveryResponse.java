@@ -12,4 +12,9 @@ public class DiscoveryResponse {
     public List<ServiceDescription> getServices() {
         return services;
     }
+
+	@Override
+	public String toString() {
+		return services.toString();
+	}
 }

@@ -34,4 +34,9 @@ public class ServiceDescription {
     public String getLabel() {
         return label;
     }
+
+	@Override
+	public String toString() {
+		return String.format("ServiceDescription{%s, %s, %s, %s}", serviceId.toString(), options.toString(), description, label);
+	}
 }
