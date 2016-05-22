@@ -8,23 +8,23 @@ import java.util.List;
 public class Configuration {
 
     private ServiceId serviceId;
-    private List<Setting> configurations;
+    private List<Setting> settings;
 
-    public Configuration(ServiceId serviceId, List<Setting> configurations) {
+    public Configuration(ServiceId serviceId, List<Setting> settings) {
         this.serviceId = serviceId;
-        this.configurations = configurations;
+        this.settings = settings;
     }
 
     public ServiceId getServiceId() {
         return serviceId;
     }
 
-    public List<Setting> getConfigurations() {
-        return configurations;
+    public List<Setting> getSettings() {
+        return settings;
     }
 
     @Override
     public String toString() {
-        return String.format("ConfigurationMessage { service = %s, configurations = %s }", serviceId, configurations);
+        return String.format("ConfigurationMessage { service = %s, settings = %s }", serviceId, settings);
     }
 }

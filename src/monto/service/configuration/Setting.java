@@ -2,16 +2,16 @@ package monto.service.configuration;
 
 public class Setting<T> {
 
-    private String optionID;
+    private String optionId;
     private T value;
 
-    public Setting(String optionID, T value) {
-        this.optionID = optionID;
+    public Setting(String optionId, T value) {
+        this.optionId = optionId;
         this.value = value;
     }
 
-    public String getOptionID() {
-        return optionID;
+    public String getOptionId() {
+        return optionId;
     }
 
     public T getValue() {
