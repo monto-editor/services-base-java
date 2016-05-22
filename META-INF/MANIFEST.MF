@@ -23,12 +23,10 @@ Export-Package: com.google.gson,
  monto.service.source,
  monto.service.token,
  monto.service.types,
- org.json.simple,
  org.zeromq
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib-eclipse-editor/commons-lang3-3.4.jar,
  lib-eclipse-editor/gson-2.6.2.jar,
  lib-eclipse-editor/javax.servlet-api-3.1.0.jar,
  lib-eclipse-editor/jeromq-0.3.5.jar,
- lib-eclipse-editor/jetty-all-9.3.9.v20160517-uber.jar,
- lib-eclipse-editor/json-simple-1.1.1.jar
+ lib-eclipse-editor/jetty-all-9.3.9.v20160517-uber.jar
