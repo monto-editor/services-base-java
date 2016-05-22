@@ -5,6 +5,7 @@ import monto.service.configuration.*;
 
 import java.lang.reflect.Type;
 
+@SuppressWarnings("rawtypes")
 class OptionDeserializer implements JsonDeserializer<Option> {
     @Override
     public Option deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
