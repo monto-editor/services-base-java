@@ -5,7 +5,6 @@ import monto.service.ast.AST;
 import monto.service.ast.NonTerminal;
 import monto.service.configuration.Option;
 import monto.service.discovery.DiscoveryResponse;
-import monto.service.outline.Outline;
 import monto.service.product.ProductMessage;
 import monto.service.types.*;
 
@@ -38,9 +37,6 @@ public final class GsonMonto {
 
                 .registerTypeAdapter(LongKey.class, new LongKeySerializer())
                 .registerTypeAdapter(LongKey.class, new LongKeyDeserializer())
-
-                .registerTypeAdapter(Outline.class, new OutlineSerializer())
-                // OutlineDeserializer not yet implemented
 
                 .registerTypeAdapter(AST.class, new ASTDeserializer())
                 // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
