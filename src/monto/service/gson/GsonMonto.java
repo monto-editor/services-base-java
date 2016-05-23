@@ -24,9 +24,6 @@ public final class GsonMonto {
 
                 .registerTypeAdapter(DiscoveryResponse.class, new DiscoveryResponseDeserializer())
 
-                .registerTypeAdapter(Option.class, new OptionDeserializer())
-                .registerTypeAdapter(Option.class, new OptionSerializer())
-
                 .registerTypeAdapter(ServiceId.class, toStringSerializer)
                 .registerTypeAdapter(ServiceId.class, new ServiceIdDeserializer())
 
@@ -49,6 +46,10 @@ public final class GsonMonto {
                 // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
                 // no idea why, but that's why ASTNonTerminalSerializer is necessary
                 .registerTypeAdapter(NonTerminal.class, new ASTNonTerminalSerializer())
+
+                .registerTypeAdapter(Option.class, new OptionDeserializer())
+                .registerTypeAdapter(Option.class, new OptionSerializer())
+                // see comment of ASTDeserializer, same applies for Option
 
                 .create();
     }
