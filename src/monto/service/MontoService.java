@@ -1,6 +1,7 @@
 package monto.service;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
@@ -193,6 +194,20 @@ public abstract class MontoService {
         serviceSocket.send(GsonMonto.toJson(
                 new ProductMessage(versionID, source, getServiceId(), product, language, contents, time)
         ));
+    }
+
+    protected void sendProductMessageNotAvailable(LongKey versionID, Source source, Product product, Language language, Exception exception, long time) {
+        JsonObject contents = new JsonObject();
+        String reason = null;
+        if (exception != null) {
+            reason = exception.getClass().getName() + ": " + exception.getMessage();
+        }
+        contents.addProperty("notAvailable", reason);
+        if (debug) {
+            System.err.printf("%s is sending a notAvailable ProductMessage for %s %s %s:%n%s",
+                    getServiceId(), source, product, language, reason);
+        }
+        sendProductMessage(versionID, source, product, language, contents, time);
     }
 
     /**

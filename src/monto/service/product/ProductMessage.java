@@ -1,6 +1,7 @@
 package monto.service.product;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import monto.service.source.SourceMessage;
 import monto.service.types.*;
 
@@ -72,4 +73,7 @@ public class ProductMessage implements Message {
         return g.apply(this);
     }
 
+    public boolean isAvailable() {
+        return contents.isJsonObject() && !((JsonObject) contents).has("notAvailable");
+    }
 }
