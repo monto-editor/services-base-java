@@ -11,7 +11,6 @@ import monto.service.types.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 public final class GsonMonto {
     private static Gson gson;
@@ -45,12 +44,6 @@ public final class GsonMonto {
 
                 .registerTypeAdapter(Outline.class, new OutlineSerializer())
                 // OutlineDeserializer not yet implemented
-
-                .registerTypeAdapter(Optional.class, new OptionalSerializer<>())
-                // OptionalDeserializer is tricky, because OptionalSerializer returns null for Optional.empty()s.
-                // If a Json property is null, no Deserializer is called by Gson. The Optional gets set to null.
-                // If you want to have a Optional<T> field property t, make the field of type T and in the getter
-                // return Optional.ofNullable(t)
 
                 .registerTypeAdapter(AST.class, new ASTDeserializer())
                 // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
