@@ -113,7 +113,7 @@ public abstract class MontoService {
                         that.<String, Request>handleMessage(
                                 serviceSocket,
                                 requestJsonString -> GsonMonto.fromJson(requestJsonString, Request.class),
-                                request -> serviceSocket.send(GsonMonto.toJson(onRequest(request))));
+                                request -> onRequest(request));
                 }
             };
             serviceThread.start();
@@ -185,32 +185,20 @@ public abstract class MontoService {
         return false;
     }
 
-    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Language language, JsonElement contents) {
-        return new ProductMessage(
-                versionID,
-                source,
-                getServiceId(),
-                product,
-                language,
-                contents,
-                0);
+    protected void sendProductMessage(LongKey versionID, Source source, Product product, Language language, JsonElement contents) {
+        sendProductMessage(versionID, source, product, language, contents, 0);
     }
 
-    protected ProductMessage productMessage(LongKey versionID, Source source, Product product, Language language, JsonElement contents, long time) {
-        return new ProductMessage(
-                versionID,
-                source,
-                getServiceId(),
-                product,
-                language,
-                contents,
-                time);
+    protected void sendProductMessage(LongKey versionID, Source source, Product product, Language language, JsonElement contents, long time) {
+        serviceSocket.send(GsonMonto.toJson(
+                new ProductMessage(versionID, source, getServiceId(), product, language, contents, time)
+        ));
     }
 
     /**
-     * handles request messages send by the broker and return a product message.
+     * Handles request messages send by the broker and usually sends a product message.
      */
-    public abstract ProductMessage onRequest(Request request) throws Exception;
+    public abstract void onRequest(Request request) throws Exception;
 
     /**
      * It handles the configuration messages from the broker and determines the response.
