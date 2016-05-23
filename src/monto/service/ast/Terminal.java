@@ -38,10 +38,6 @@ public class Terminal implements AST, IRegion {
                 && getStartOffset() + getLength() <= region.getStartOffset() + region.getLength();
     }
 
-    public String getText(String document) {
-        return document.substring(getStartOffset(), getEndOffset());
-    }
-
     @Override
     public String toString() {
         return String.format("{offset: %d, length: %d}", offset, length);
