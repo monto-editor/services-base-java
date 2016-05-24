@@ -9,13 +9,12 @@ import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Benchmark {
 
-    protected String filetype;
+    protected String fileType;
 
     protected void setup() throws Exception {
     }
@@ -28,49 +27,45 @@ public abstract class Benchmark {
         measure(source, contents);
     }
 
-
     protected void premeasure(Source source, String contents) throws Exception {
     }
 
     protected abstract long measure(Source source, String contents) throws Exception;
 
-    public void runBenchmark(Path corpus, Path csvOutput, int repititions, long interval) throws Exception {
-        long[] overall = new long[repititions];
-        long[] productiveTime = new long[repititions];
+    public void runBenchmark(Path corpus, Path csvOutput, int repetitions, long interval, int warmUpRounds) throws Exception {
+        long[] overall = new long[repetitions];
+        long[] productiveTime = new long[repetitions];
         setup();
 
         try {
-//			{
-//				int i = 1;
-//				int files = new File(corpus.toString()).listFiles().length;
-//				for(Path file: Files.newDirectoryStream(corpus, "*.java")) {
-//					System.out.printf("warmup [%d/%d]: %s\n", i++, files, file);
-//					try{
-//						warmup(new Source(file.toString()), new String(Files.readAllBytes(file), StandardCharsets.UTF_8));
-//					} catch(Exception e) {
-//						System.err.println(e);
-//						restart();
-//					}
-//				}
-////			}
-            final Duration timeout = Duration.ofSeconds(10);
-            ExecutorService executor = Executors.newSingleThreadExecutor();
+            List<Path> files = Files.walk(corpus)
+                    .filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith("." + fileType))
+                    .collect(Collectors.toList());
 
-            boolean started = false;
+            int warmUpCount = 1;
+            for (int i = 1; i <= warmUpRounds; i++) {
+                for (Path file : files) {
+                    System.out.printf("warmup [%d/%d]: %s\n", warmUpCount++, files.size() * warmUpRounds, file);
+                    try {
+                        warmup(new Source(file.toString()), new String(Files.readAllBytes(file), StandardCharsets.UTF_8));
+                    } catch (Exception e) {
+                        System.err.println(e);
+                        restart();
+                    }
+                }
+            }
             try (PrintWriter csv = new PrintWriter(Files.newBufferedWriter(csvOutput), true)) {
                 csv.println("file,bytes,overall,productive");
 
-                for (Path file : Files.newDirectoryStream(corpus, filetype)) {
-
+                for (Path file : files) {
                     String contents = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
                     int lines = countLineNumbers(contents);
 
+                    System.out.printf("file: %s\nlines: %d\n", file.getFileName(), lines);
+
                     Thread.sleep(100);
-//					
-//					while(true) {
-//						try {
-//							final Future<Void> future = executor.submit(() -> {
-                    for (int i = 0; i < repititions; i++) {
+                    for (int i = 0; i < repetitions; i++) {
                         try {
                             Source source = new Source(file.toString());
                             premeasure(source, contents);
@@ -86,22 +81,10 @@ public abstract class Benchmark {
                             i = -1;
                         }
                     }
-//								return null;
-//							});
-//							future.get(timeout.toMillis(), TimeUnit.MILLISECONDS);
-//							break;
-//						} catch(Throwable e) {
-//							System.err.println("timeout");
-//							restart();
-//						}
-//					}
-
-                    for (int i = 0; i < repititions; i++)
+                    for (int i = 0; i < repetitions; i++)
                         csv.printf("%s,%d,%d,%d\n", file.getFileName(), contents.length(), overall[i], productiveTime[i]);
-                    System.out.printf("file: %s\nlines: %d\n%s\n\n",
-                            file.getFileName(),
-                            lines,
-                            statistics(overall));
+                    System.out.println(statistics(overall));
+                    System.out.println();
                 }
             }
         } finally {
