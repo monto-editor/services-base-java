@@ -35,6 +35,10 @@ public class DynamicDependency {
         return language;
     }
 
+    public static DynamicDependency sourceDependency(Source source, Language language) {
+        return new DynamicDependency(source, new ServiceId("source"), new Product("source"), language);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
