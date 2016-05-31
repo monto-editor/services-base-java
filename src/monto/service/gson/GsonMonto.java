@@ -73,6 +73,10 @@ public final class GsonMonto {
         return gson.fromJson(productMessage.getContents(), classOfT);
     }
 
+    public static <T> T fromJson(JsonElement json, Class<T> classOfT) throws JsonSyntaxException {
+        return gson.fromJson(json, classOfT);
+    }
+
     /**
      * Use it like this:<br>
      * <code>
