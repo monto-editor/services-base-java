@@ -1,4 +1,4 @@
-package monto.service.token;
+package monto.service.highlighting;
 
 import monto.service.gson.GsonMonto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -30,28 +30,56 @@ public class Font {
         return Optional.ofNullable(color);
     }
 
+    public Font setColor(Color color) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
+    }
+
     public Optional<Color> getBgcolor() {
         return Optional.ofNullable(bgcolor);
+    }
+
+    public Font setBgcolor(Color bgcolor) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
     }
 
     public Optional<String> getFamily() {
         return Optional.ofNullable(family);
     }
 
+    public Font setFamily(String family) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
+    }
+
     public Optional<String> getStyle() {
         return Optional.ofNullable(style);
+    }
+
+    public Font setStyle(String style) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
     }
 
     public Optional<String> getVariant() {
         return Optional.ofNullable(variant);
     }
 
+    public Font setVariant(String variant) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
+    }
+
     public Optional<String> getWeight() {
         return Optional.ofNullable(weight);
     }
 
+    public Font setWeight(String weight) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
+    }
+
     public Optional<Integer> getSize() {
         return Optional.ofNullable(size);
+    }
+
+    public Font setSize(int size) {
+	return new Font(color,bgcolor,family,style,variant,weight,size);
     }
 
     public int hashCode() {
@@ -81,6 +109,7 @@ public class Font {
                 .appendSuper(super.equals(obj))
                 .append(color, other.color)
                 .append(bgcolor, other.bgcolor)
+                .append(family, other.family)
                 .append(style, other.style)
                 .append(variant, other.variant)
                 .append(weight, other.weight)

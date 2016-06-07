@@ -7,23 +7,23 @@ import java.util.function.Function;
 @SuppressWarnings("rawtypes")
 public class OptionGroup implements Option<Void> {
 
-    private String requiredOption;
+    private String label;
     private List<Option> members;
 
-    public OptionGroup(String requiredOption, List<Option> members) {
-        this.requiredOption = requiredOption;
+    public OptionGroup(String label, List<Option> members) {
+        this.label = label;
         this.members = members;
     }
 
-    public OptionGroup(String requireOption, Option... members) {
-        this(requireOption, Arrays.asList(members));
+    public OptionGroup(String label, Option... members) {
+        this(label, Arrays.asList(members));
     }
 
-    public String getRequiredOption() {
-        return requiredOption;
-    }
+    public String getLabel() {
+		return label;
+	}
 
-    public List<Option> getMembers() {
+	public List<Option> getMembers() {
         return members;
     }
 
@@ -40,6 +40,6 @@ public class OptionGroup implements Option<Void> {
 
     @Override
     public String toString() {
-        return "OptionGroup " + requiredOption;
+        return "OptionGroup " + label;
     }
 }

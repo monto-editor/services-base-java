@@ -12,7 +12,7 @@ class OptionSerializer implements JsonSerializer<Option> {
         if (src instanceof OptionGroup) {
             OptionGroup optionGroup = (OptionGroup) src;
             JsonObject json = new JsonObject();
-            json.addProperty("required_option", optionGroup.getRequiredOption());
+            json.addProperty("label", optionGroup.getLabel());
             json.add("members", context.serialize(optionGroup.getMembers()));
             return json;
         } else if (src instanceof TextOption) {

@@ -37,9 +37,6 @@ public abstract class MontoService {
     private Socket registrationSocket;
     private Socket serviceSocket;
     private Thread serviceThread;
-    private Thread configThread;
-    private Socket configSocket;
-    private Socket dyndepSocket;
     protected boolean debug = false;
 
     /**
@@ -73,18 +70,12 @@ public abstract class MontoService {
         this.options = options;
     }
 
-    public <MSG, Decoded> void handleMessage(Socket socket, PartialFunction<MSG, Decoded, ParseException> decodeMessage, PartialConsumer<Decoded, ? super Exception> onMessage) {
-        String rawMsg = socket.recvStr();
+    public <Decoded> void handleMessage(Socket socket, PartialFunction<String, Decoded, ParseException> decodeMessage, PartialConsumer<Decoded, ? super Exception> onMessage) {
         try {
-            // In case of subscription ignore topic and receive message body
-            if (socket.getType() == ZMQ.SUB && rawMsg != null)
-                rawMsg = socket.recvStr();
-
+		String rawMsg = socket.recvStr();
             if (rawMsg != null) {
-                // TODO remove MSG generic and replace with String?
                 @SuppressWarnings("unchecked")
-                MSG msg = (MSG) rawMsg;
-                Decoded decoded = decodeMessage.apply(msg);
+                Decoded decoded = decodeMessage.apply(rawMsg);
                 onMessage.accept(decoded);
             }
         } catch (Throwable e) {
@@ -99,9 +90,6 @@ public abstract class MontoService {
         registerService();
         if (isRegisterResponseOk()) {
             running = true;
-            dyndepSocket = zmqConfig.getContext().createSocket(ZMQ.PUB);
-            dyndepSocket.connect(zmqConfig.getDyndepAddress());
-            dyndepSocket.setReceiveTimeOut(500);
 
             serviceSocket = zmqConfig.getContext().createSocket(ZMQ.PAIR);
             serviceSocket.connect(zmqConfig.getServiceAddress() + ":" + port);
@@ -111,31 +99,13 @@ public abstract class MontoService {
                 @Override
                 public void run() {
                     while (running)
-                        that.<String, Request>handleMessage(
+                        that.<Request>handleMessage(
                                 serviceSocket,
                                 requestJsonString -> GsonMonto.fromJson(requestJsonString, Request.class),
                                 request -> onRequest(request));
                 }
             };
             serviceThread.start();
-
-            configSocket = zmqConfig.getContext().createSocket(ZMQ.SUB);
-            configSocket.connect(zmqConfig.getConfigurationAddress());
-            configSocket.subscribe(serviceId.toString().getBytes());
-            configSocket.setReceiveTimeOut(500);
-            configThread = new Thread() {
-                @Override
-                public void run() {
-                    while (running) {
-                        that.<String, Configuration>handleMessage(
-                                configSocket,
-                                configJsonString -> GsonMonto.fromJson(configJsonString, Configuration.class),
-                                message -> onConfigurationMessage(message));
-                    }
-                }
-            };
-            configThread.start();
-            System.out.println("connected: " + serviceId);
         }
     }
 
@@ -146,7 +116,6 @@ public abstract class MontoService {
             System.out.println("deregistering: " + serviceId);
             try {
                 serviceThread.join();
-                configThread.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -191,9 +160,9 @@ public abstract class MontoService {
     }
 
     protected void sendProductMessage(LongKey versionID, Source source, Product product, Language language, JsonElement contents, long time) {
-        serviceSocket.send(GsonMonto.toJson(
-                new ProductMessage(versionID, source, getServiceId(), product, language, contents, time)
-        ));
+        serviceSocket.send(GsonMonto.toJson(ServiceSend.product(
+          new ProductMessage(versionID, source, getServiceId(), product, language, contents, time)
+        )));
     }
 
     protected void sendProductMessageNotAvailable(LongKey versionID, Source source, Product product, Language language, Exception exception, long time) {
@@ -251,8 +220,8 @@ public abstract class MontoService {
     }
 
     protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
-        if (dyndepSocket != null) {
-            dyndepSocket.send(GsonMonto.toJson(dyndeps));
+        if (serviceSocket != null) {
+            serviceSocket.send(GsonMonto.toJson(ServiceSend.dyndep(dyndeps)));
         }
     }
 }

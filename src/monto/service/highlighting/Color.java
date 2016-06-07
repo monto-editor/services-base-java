@@ -1,4 +1,4 @@
-package monto.service.token;
+package monto.service.highlighting;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,6 +22,18 @@ public class Color {
 
     public int getBlue() {
         return blue;
+    }
+
+    public Color setRed(int red) {
+	return new Color(red,this.green,this.blue);
+    }
+
+    public Color setGreen(int green) {
+	return new Color(this.red,green,this.blue);
+    }
+
+    public Color setBlue(int blue) {
+	return new Color(this.red,this.green,blue);
     }
 
     public int hashCode() {
