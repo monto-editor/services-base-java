@@ -1,21 +1,32 @@
 package monto.service;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.gson.GsonMonto;
 import monto.service.product.ProductMessage;
-import monto.service.registration.*;
+import monto.service.registration.Dependency;
+import monto.service.registration.DeregisterService;
+import monto.service.registration.ProductDescription;
+import monto.service.registration.RegisterServiceRequest;
+import monto.service.registration.RegisterServiceResponse;
 import monto.service.request.Request;
-import monto.service.types.*;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Product;
+import monto.service.types.ServiceId;
+import monto.service.types.Source;
+import monto.service.types.UnrecongizedMessageException;
+
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
 
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 /**
  * Template for a monto service.
@@ -70,22 +81,6 @@ public abstract class MontoService {
         this.options = options;
     }
 
-    public <Decoded> void handleMessage(Socket socket, PartialFunction<String, Decoded, ParseException> decodeMessage, PartialConsumer<Decoded, ? super Exception> onMessage) {
-        try {
-		String rawMsg = socket.recvStr();
-            if (rawMsg != null) {
-                @SuppressWarnings("unchecked")
-                Decoded decoded = decodeMessage.apply(rawMsg);
-                onMessage.accept(decoded);
-            }
-        } catch (Throwable e) {
-            if (debug) {
-                System.err.printf("An error occured in the service %s\n", serviceId);
-                e.printStackTrace(System.err);
-            }
-        }
-    }
-
     public void start() throws Exception {
         registerService();
         if (isRegisterResponseOk()) {
@@ -98,11 +93,24 @@ public abstract class MontoService {
             serviceThread = new Thread() {
                 @Override
                 public void run() {
-                    while (running)
-                        that.<Request>handleMessage(
-                                serviceSocket,
-                                requestJsonString -> GsonMonto.fromJson(requestJsonString, Request.class),
-                                request -> onRequest(request));
+                    while (running) {
+                        try {
+                    		String rawMsg = serviceSocket.recvStr();
+                            if (rawMsg != null) {
+                            	GsonMonto.fromJson(rawMsg, ServiceReceive.class).<Exception>matchExc(
+                            			req -> that.onRequest(req),
+                            			conf -> that.onConfigurationMessage(conf));
+                            }
+                        } catch (UnrecongizedMessageException ex) {
+                        	System.err.println(ex.getMessage());
+                        	ex.printStackTrace(System.err);
+                        } catch (Throwable e) {
+                            if (debug) {
+                            	System.err.printf("An error occured in the service %s\n", serviceId);
+                            	e.printStackTrace(System.err);
+                            }
+                        }
+                    }
                 }
             };
             serviceThread.start();
