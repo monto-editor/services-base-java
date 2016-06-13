@@ -4,6 +4,7 @@ Bundle-Name: services-base-java
 Bundle-SymbolicName: services-base-java
 Bundle-Version: 1.0.0
 Export-Package: com.google.gson,
+ monto.ide,
  monto.service,
  monto.service.ast,
  monto.service.benchmark,
