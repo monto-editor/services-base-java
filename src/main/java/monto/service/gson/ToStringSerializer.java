@@ -8,8 +8,8 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 
 class ToStringSerializer implements JsonSerializer<Object> {
-    @Override
-    public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.toString());
-    }
+  @Override
+  public JsonElement serialize(Object src, Type typeOfSrc, JsonSerializationContext context) {
+    return new JsonPrimitive(src.toString());
+  }
 }

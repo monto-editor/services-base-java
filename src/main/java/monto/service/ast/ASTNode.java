@@ -5,53 +5,53 @@ import monto.service.region.IRegion;
 import java.util.List;
 
 public class ASTNode implements IRegion {
-    private String name;
-    private List<ASTNode> children;
-    private int offset;
-    private int length;
+  private String name;
+  private List<ASTNode> children;
+  private int offset;
+  private int length;
 
-    public ASTNode(String name, int offset, int length, List<ASTNode> children) {
-        this.name = name;
-        this.children = children;
-        this.offset = offset;
-        this.length = length;
-    }
+  public ASTNode(String name, int offset, int length, List<ASTNode> children) {
+    this.name = name;
+    this.children = children;
+    this.offset = offset;
+    this.length = length;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public List<ASTNode> getChildren() {
-        return children;
-    }
+  public List<ASTNode> getChildren() {
+    return children;
+  }
 
-    public int getOffset() {
-        return offset;
-    }
+  public int getOffset() {
+    return offset;
+  }
 
-    public int getLength() {
-        return length;
-    }
+  public int getLength() {
+    return length;
+  }
 
-    public void addChild(ASTNode node) {
-        children.add(node);
-    }
+  public void addChild(ASTNode node) {
+    children.add(node);
+  }
 
-    @Override
-    public String toString() {
-        return String.format("%s%s", name, children);
-    }
+  @Override
+  public String toString() {
+    return String.format("%s%s", name, children);
+  }
 
-    public ASTNode getChild(int i) {
-        return children.get(i);
-    }
+  public ASTNode getChild(int i) {
+    return children.get(i);
+  }
 
-    @Override
-    public int getStartOffset() {
-        return getOffset();
-    }
+  @Override
+  public int getStartOffset() {
+    return getOffset();
+  }
 
-    public void accept(ASTNodeVisitor visitor) {
-        visitor.visit(this);
-    }
+  public void accept(ASTNodeVisitor visitor) {
+    visitor.visit(this);
+  }
 }

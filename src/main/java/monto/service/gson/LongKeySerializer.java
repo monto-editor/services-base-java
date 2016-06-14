@@ -9,8 +9,8 @@ import monto.service.types.LongKey;
 import java.lang.reflect.Type;
 
 class LongKeySerializer implements JsonSerializer<LongKey> {
-    @Override
-    public JsonElement serialize(LongKey src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(src.longValue());
-    }
+  @Override
+  public JsonElement serialize(LongKey src, Type typeOfSrc, JsonSerializationContext context) {
+    return new JsonPrimitive(src.longValue());
+  }
 }

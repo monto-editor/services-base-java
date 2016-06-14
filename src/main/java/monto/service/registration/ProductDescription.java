@@ -4,19 +4,19 @@ import monto.service.types.Language;
 import monto.service.types.Product;
 
 public class ProductDescription {
-    private Product product;
-    private Language language;
+  private Product product;
+  private Language language;
 
-    public ProductDescription(Product product, Language language) {
-        this.product = product;
-        this.language = language;
-    }
+  public ProductDescription(Product product, Language language) {
+    this.product = product;
+    this.language = language;
+  }
 
-    public Product getProduct() {
-        return product;
-    }
+  public Product getProduct() {
+    return product;
+  }
 
-    public Language getLanguage() {
-        return language;
-    }
+  public Language getLanguage() {
+    return language;
+  }
 }

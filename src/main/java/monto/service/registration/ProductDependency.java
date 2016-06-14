@@ -8,31 +8,30 @@ import java.util.function.Function;
 
 public class ProductDependency implements Dependency {
 
-    private ServiceId serviceId;
-    private Language language;
-    private Product product;
+  private ServiceId serviceId;
+  private Language language;
+  private Product product;
 
-    public ProductDependency(ServiceId serviceId, Product product, Language language) {
-        this.serviceId = serviceId;
-        this.language = language;
-        this.product = product;
-    }
+  public ProductDependency(ServiceId serviceId, Product product, Language language) {
+    this.serviceId = serviceId;
+    this.language = language;
+    this.product = product;
+  }
 
-    @Override
-    public <A> A match(Function<ProductDependency, A> f, Function<SourceDependency, A> g) {
-        return f.apply(this);
-    }
+  @Override
+  public <A> A match(Function<ProductDependency, A> f, Function<SourceDependency, A> g) {
+    return f.apply(this);
+  }
 
-    public ServiceId getServiceId() {
-        return serviceId;
-    }
+  public ServiceId getServiceId() {
+    return serviceId;
+  }
 
-    public Language getLanguage() {
-        return language;
-    }
+  public Language getLanguage() {
+    return language;
+  }
 
-    public Product getProduct() {
-        return product;
-    }
-
+  public Product getProduct() {
+    return product;
+  }
 }

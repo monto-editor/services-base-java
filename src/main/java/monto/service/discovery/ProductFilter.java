@@ -6,19 +6,19 @@ import java.util.function.Function;
 
 public class ProductFilter implements Filter {
 
-    private Product product;
+  private Product product;
 
-    public ProductFilter(Product product) {
-        this.product = product;
-    }
+  public ProductFilter(Product product) {
+    this.product = product;
+  }
 
-    @Override
-    public <A> A match(Function<ServiceIdFilter, A> f, Function<ProductFilter, A> g, Function<LanguageFilter, A> h) {
-        return g.apply(this);
-    }
+  @Override
+  public <A> A match(
+      Function<ServiceIdFilter, A> f, Function<ProductFilter, A> g, Function<LanguageFilter, A> h) {
+    return g.apply(this);
+  }
 
-    public Product getProduct() {
-        return product;
-    }
-
+  public Product getProduct() {
+    return product;
+  }
 }

@@ -1,41 +1,39 @@
 package monto.service.region;
 
 public interface IRegion {
-    int getStartOffset();
+  int getStartOffset();
 
-    default int getLength() {
-        return getEndOffset() - getStartOffset();
+  default int getLength() {
+    return getEndOffset() - getStartOffset();
+  }
+
+  default int getEndOffset() {
+    return getStartOffset() + getLength();
+  }
+
+  /**
+   * a.inRange(b) tests if a is in range of b.
+   */
+  default boolean inRange(IRegion whole) {
+    try {
+      return this.getStartOffset() >= whole.getStartOffset()
+          && this.getEndOffset() <= whole.getEndOffset();
+    } catch (Exception e) {
+      return false;
     }
+  }
 
-    default int getEndOffset() {
-        return getStartOffset() + getLength();
-    }
+  /**
+   * a.encloses(b) tests if b is in range of a.
+   */
+  default boolean encloses(IRegion part) {
+    return part.inRange(this);
+  }
 
-
-    /**
-     * a.inRange(b) tests if a is in range of b.
-     */
-    default boolean inRange(IRegion whole) {
-        try {
-            return this.getStartOffset() >= whole.getStartOffset()
-                    && this.getEndOffset() <= whole.getEndOffset();
-        } catch (Exception e) {
-            return false;
-        }
-
-    }
-
-    /**
-     * a.encloses(b) tests if b is in range of a.
-     */
-    default boolean encloses(IRegion part) {
-        return part.inRange(this);
-    }
-
-    /**
-     * Extract a region of text from the given string.
-     */
-    default String extract(String str) {
-        return str.substring(getStartOffset(), getEndOffset());
-    }
+  /**
+   * Extract a region of text from the given string.
+   */
+  default String extract(String str) {
+    return str.substring(getStartOffset(), getEndOffset());
+  }
 }

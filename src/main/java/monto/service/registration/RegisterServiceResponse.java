@@ -4,25 +4,26 @@ import com.google.gson.annotations.SerializedName;
 
 public class RegisterServiceResponse {
 
-    private final String response;
-    @SerializedName("bind_on_port")
-    private final int connectToPort;
+  private final String response;
 
-    public RegisterServiceResponse(String response) {
-        this.response = response;
-        connectToPort = -1;
-    }
+  @SerializedName("bind_on_port")
+  private final int connectToPort;
 
-    public RegisterServiceResponse(String response, int bindOnPort) {
-        this.response = response;
-        this.connectToPort = bindOnPort;
-    }
+  public RegisterServiceResponse(String response) {
+    this.response = response;
+    connectToPort = -1;
+  }
 
-    public String getResponse() {
-        return response;
-    }
+  public RegisterServiceResponse(String response, int bindOnPort) {
+    this.response = response;
+    this.connectToPort = bindOnPort;
+  }
 
-    public int getConnectToPort() {
-        return connectToPort;
-    }
+  public String getResponse() {
+    return response;
+  }
+
+  public int getConnectToPort() {
+    return connectToPort;
+  }
 }

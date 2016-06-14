@@ -9,11 +9,11 @@ import monto.service.ast.NonTerminal;
 import java.lang.reflect.Type;
 
 class ASTNonTerminalSerializer implements JsonSerializer<NonTerminal> {
-    @Override
-    public JsonElement serialize(NonTerminal src, Type typeOfSrc, JsonSerializationContext context) {
-        JsonObject json = new JsonObject();
-        json.addProperty("name", src.getName());
-        json.add("children", context.serialize(src.getChildren()));
-        return json;
-    }
+  @Override
+  public JsonElement serialize(NonTerminal src, Type typeOfSrc, JsonSerializationContext context) {
+    JsonObject json = new JsonObject();
+    json.addProperty("name", src.getName());
+    json.add("children", context.serialize(src.getChildren()));
+    return json;
+  }
 }

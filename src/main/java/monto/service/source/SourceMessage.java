@@ -10,37 +10,36 @@ import java.util.function.Function;
 
 public class SourceMessage implements Message {
 
-    private final LongKey id;
-    private final Source source;
-    private final String contents;
-    private final Language language;
+  private final LongKey id;
+  private final Source source;
+  private final String contents;
+  private final Language language;
 
-    public SourceMessage(LongKey id, Source source, Language language, String contents) {
-        this.id = id;
-        this.source = source;
-        this.language = language;
-        this.contents = contents;
-    }
+  public SourceMessage(LongKey id, Source source, Language language, String contents) {
+    this.id = id;
+    this.source = source;
+    this.language = language;
+    this.contents = contents;
+  }
 
-    public LongKey getId() {
-        return id;
-    }
+  public LongKey getId() {
+    return id;
+  }
 
-    public Source getSource() {
-        return source;
-    }
+  public Source getSource() {
+    return source;
+  }
 
-    public String getContents() {
-        return contents;
-    }
+  public String getContents() {
+    return contents;
+  }
 
-    public Language getLanguage() {
-        return language;
-    }
+  public Language getLanguage() {
+    return language;
+  }
 
-    @Override
-    public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
-        return f.apply(this);
-    }
-
+  @Override
+  public <A> A match(Function<SourceMessage, A> f, Function<ProductMessage, A> g) {
+    return f.apply(this);
+  }
 }

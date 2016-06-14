@@ -7,27 +7,28 @@ import monto.service.gson.GsonMonto;
 import monto.service.product.ProductMessage;
 
 public class ServiceSend {
-	private String tag;
-	private JsonElement contents;
-	private ServiceSend(String tag, JsonElement contents) {
-		super();
-		this.tag = tag;
-		this.contents = contents;
-	}
+  private String tag;
+  private JsonElement contents;
 
-	public static ServiceSend product(ProductMessage msg) {
-		return new ServiceSend("product", GsonMonto.toJsonTree(msg));
-	}
+  private ServiceSend(String tag, JsonElement contents) {
+    super();
+    this.tag = tag;
+    this.contents = contents;
+  }
 
-	public static ServiceSend dyndep(RegisterDynamicDependencies msg) {
-		return new ServiceSend("dependency",GsonMonto.toJsonTree(msg));
-	}
+  public static ServiceSend product(ProductMessage msg) {
+    return new ServiceSend("product", GsonMonto.toJsonTree(msg));
+  }
 
-	public String getTag() {
-		return tag;
-	}
+  public static ServiceSend dyndep(RegisterDynamicDependencies msg) {
+    return new ServiceSend("dependency", GsonMonto.toJsonTree(msg));
+  }
 
-	public Object getContents() {
-		return contents;
-	}
+  public String getTag() {
+    return tag;
+  }
+
+  public Object getContents() {
+    return contents;
+  }
 }

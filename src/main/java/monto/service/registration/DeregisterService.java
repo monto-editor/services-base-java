@@ -4,13 +4,13 @@ import monto.service.types.ServiceId;
 
 public class DeregisterService {
 
-    private final ServiceId deregisterServiceId;
+  private final ServiceId deregisterServiceId;
 
-    public DeregisterService(ServiceId deregisterServiceId) {
-        this.deregisterServiceId = deregisterServiceId;
-    }
+  public DeregisterService(ServiceId deregisterServiceId) {
+    this.deregisterServiceId = deregisterServiceId;
+  }
 
-    public ServiceId getDeregisterServiceId() {
-        return deregisterServiceId;
-    }
+  public ServiceId getDeregisterServiceId() {
+    return deregisterServiceId;
+  }
 }

@@ -12,95 +12,86 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class GsonMonto {
-    private static Gson gson;
+  private static Gson gson;
 
-    static {
-        ToStringSerializer toStringSerializer = new ToStringSerializer();
-        gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+  static {
+    ToStringSerializer toStringSerializer = new ToStringSerializer();
+    gson =
+        new GsonBuilder()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .registerTypeAdapter(Message.class, new MessageDeserializer())
+            .registerTypeAdapter(DiscoveryResponse.class, new DiscoveryResponseDeserializer())
+            .registerTypeAdapter(ServiceId.class, toStringSerializer)
+            .registerTypeAdapter(ServiceId.class, new ServiceIdDeserializer())
+            .registerTypeAdapter(Product.class, toStringSerializer)
+            .registerTypeAdapter(Product.class, new ProductDeserializer())
+            .registerTypeAdapter(Language.class, toStringSerializer)
+            .registerTypeAdapter(Language.class, new LanguageDeserializer())
+            .registerTypeAdapter(Source.class, toStringSerializer)
+            .registerTypeAdapter(Source.class, new SourceDeserializer())
+            .registerTypeAdapter(LongKey.class, new LongKeySerializer())
+            .registerTypeAdapter(LongKey.class, new LongKeyDeserializer())
+            .registerTypeAdapter(AST.class, new ASTDeserializer())
+            // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
+            // no idea why, but that's why ASTNonTerminalSerializer is necessary
+            .registerTypeAdapter(NonTerminal.class, new ASTNonTerminalSerializer())
+            .registerTypeAdapter(Option.class, new OptionDeserializer())
+            .registerTypeAdapter(Option.class, new OptionSerializer())
+            // see comment of ASTDeserializer, same applies for Option
 
-                .registerTypeAdapter(Message.class, new MessageDeserializer())
+            .create();
+  }
 
-                .registerTypeAdapter(DiscoveryResponse.class, new DiscoveryResponseDeserializer())
+  private GsonMonto() {}
 
-                .registerTypeAdapter(ServiceId.class, toStringSerializer)
-                .registerTypeAdapter(ServiceId.class, new ServiceIdDeserializer())
+  public static Gson getGson() {
+    return gson;
+  }
 
-                .registerTypeAdapter(Product.class, toStringSerializer)
-                .registerTypeAdapter(Product.class, new ProductDeserializer())
+  public static JsonElement toJsonTree(Object src) {
+    return gson.toJsonTree(src);
+  }
 
-                .registerTypeAdapter(Language.class, toStringSerializer)
-                .registerTypeAdapter(Language.class, new LanguageDeserializer())
+  public static String toJson(Object src) {
+    return gson.toJson(src);
+  }
 
-                .registerTypeAdapter(Source.class, toStringSerializer)
-                .registerTypeAdapter(Source.class, new SourceDeserializer())
+  public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
+    return gson.fromJson(json, classOfT);
+  }
 
-                .registerTypeAdapter(LongKey.class, new LongKeySerializer())
-                .registerTypeAdapter(LongKey.class, new LongKeyDeserializer())
+  public static <T> T fromJson(ProductMessage productMessage, Class<T> classOfT)
+      throws JsonSyntaxException {
+    return gson.fromJson(productMessage.getContents(), classOfT);
+  }
 
-                .registerTypeAdapter(AST.class, new ASTDeserializer())
-                // when registering the ASTDeserializer, serializing the children of a NonTerminal doesn't work any more
-                // no idea why, but that's why ASTNonTerminalSerializer is necessary
-                .registerTypeAdapter(NonTerminal.class, new ASTNonTerminalSerializer())
+  public static <T> T fromJson(JsonElement json, Class<T> classOfT) throws JsonSyntaxException {
+    return gson.fromJson(json, classOfT);
+  }
 
-                .registerTypeAdapter(Option.class, new OptionDeserializer())
-                .registerTypeAdapter(Option.class, new OptionSerializer())
-                // see comment of ASTDeserializer, same applies for Option
+  /**
+   * Use it like this:<br>
+   * <code>
+   * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(message, Completion[].class);
+   * </code>
+   *
+   * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
+   */
+  public static <T> List<T> fromJsonArray(ProductMessage productMessage, Class<T[]> aClass) {
+    T[] jsonToObject = gson.fromJson(productMessage.getContents(), aClass);
+    return Arrays.asList(jsonToObject);
+  }
 
-                .create();
-    }
-
-    private GsonMonto() {
-    }
-
-    public static Gson getGson() {
-        return gson;
-    }
-
-    public static JsonElement toJsonTree(Object src) {
-        return gson.toJsonTree(src);
-    }
-
-    public static String toJson(Object src) {
-        return gson.toJson(src);
-    }
-
-    public static <T> T fromJson(String json, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson(json, classOfT);
-    }
-
-    public static <T> T fromJson(ProductMessage productMessage, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson(productMessage.getContents(), classOfT);
-    }
-
-    public static <T> T fromJson(JsonElement json, Class<T> classOfT) throws JsonSyntaxException {
-        return gson.fromJson(json, classOfT);
-    }
-
-    /**
-     * Use it like this:<br>
-     * <code>
-     * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(message, Completion[].class);
-     * </code>
-     *
-     * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
-     */
-    public static <T> List<T> fromJsonArray(ProductMessage productMessage, Class<T[]> aClass) {
-        T[] jsonToObject = gson.fromJson(productMessage.getContents(), aClass);
-        return Arrays.asList(jsonToObject);
-    }
-
-    /**
-     * Use it like this:<br>
-     * <code>
-     * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(completionJsonString, Completion[].class);
-     * </code>
-     *
-     * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
-     */
-    public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
-        T[] jsonToObject = gson.fromJson(json, aClass);
-        return Arrays.asList(jsonToObject);
-    }
-
+  /**
+   * Use it like this:<br>
+   * <code>
+   * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(completionJsonString, Completion[].class);
+   * </code>
+   *
+   * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
+   */
+  public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
+    T[] jsonToObject = gson.fromJson(json, aClass);
+    return Arrays.asList(jsonToObject);
+  }
 }

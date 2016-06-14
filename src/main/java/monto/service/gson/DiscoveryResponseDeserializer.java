@@ -12,12 +12,16 @@ import java.util.Arrays;
 import java.util.List;
 
 class DiscoveryResponseDeserializer implements JsonDeserializer<DiscoveryResponse> {
-    @Override
-    public DiscoveryResponse deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        if (!json.isJsonArray()) {
-            throw new JsonParseException("JsonElement of a DiscoveryResponse object must be a Json array");
-        }
-        List<ServiceDescription> serviceDescriptions = Arrays.asList(context.deserialize(json, ServiceDescription[].class));
-        return new DiscoveryResponse(serviceDescriptions);
+  @Override
+  public DiscoveryResponse deserialize(
+      JsonElement json, Type typeOfT, JsonDeserializationContext context)
+      throws JsonParseException {
+    if (!json.isJsonArray()) {
+      throw new JsonParseException(
+          "JsonElement of a DiscoveryResponse object must be a Json array");
     }
+    List<ServiceDescription> serviceDescriptions =
+        Arrays.asList(context.deserialize(json, ServiceDescription[].class));
+    return new DiscoveryResponse(serviceDescriptions);
+  }
 }
