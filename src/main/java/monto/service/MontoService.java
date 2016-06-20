@@ -8,6 +8,8 @@ import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.gson.GsonMonto;
+import monto.service.gson.MessageToService;
+import monto.service.gson.MessageFromService;
 import monto.service.product.ProductMessage;
 import monto.service.registration.Dependency;
 import monto.service.registration.DeregisterService;
@@ -119,7 +121,7 @@ public abstract class MontoService {
                 try {
                   String rawMsg = serviceSocket.recvStr();
                   if (rawMsg != null) {
-                    GsonMonto.fromJson(rawMsg, ServiceReceive.class)
+                    GsonMonto.fromJson(rawMsg, MessageToService.class)
                         .<Exception>matchExc(
                             req -> that.onRequest(req), conf -> that.onConfigurationMessage(conf));
                   }
@@ -208,7 +210,7 @@ public abstract class MontoService {
       long time) {
     serviceSocket.send(
         GsonMonto.toJson(
-            ServiceSend.product(
+            MessageFromService.product(
                 new ProductMessage(
                     versionID, source, getServiceId(), product, language, contents, time))));
   }
@@ -280,7 +282,7 @@ public abstract class MontoService {
 
   protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
     if (serviceSocket != null) {
-      serviceSocket.send(GsonMonto.toJson(ServiceSend.dyndep(dyndeps)));
+      serviceSocket.send(GsonMonto.toJson(MessageFromService.dyndep(dyndeps)));
     }
   }
 }

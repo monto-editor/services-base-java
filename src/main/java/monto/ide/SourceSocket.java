@@ -5,13 +5,13 @@ import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
 
 import monto.service.gson.GsonMonto;
-import monto.service.source.SourceMessage;
+import monto.service.gson.MessageFromIde;
 
-public class IDESource {
+public class SourceSocket {
   private Socket socket;
   private String address;
 
-  public IDESource(Context ctx, String address) {
+  public SourceSocket(Context ctx, String address) {
     this.address = address;
     this.socket = ctx.socket(ZMQ.PAIR);
     socket.setLinger(2000); // 2 seconds
@@ -21,7 +21,7 @@ public class IDESource {
     socket.connect(address);
   }
 
-  public void sendSource(SourceMessage message) {
+  public void send(MessageFromIde message) {
     try {
       socket.send(GsonMonto.toJson(message));
     } catch (Exception e) {

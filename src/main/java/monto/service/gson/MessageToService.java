@@ -1,66 +1,64 @@
-package monto.ide;
+package monto.service.gson;
 
 import java.util.function.Consumer;
 
-import monto.service.discovery.DiscoveryResponse;
-import monto.service.gson.GsonMonto;
-import monto.service.product.ProductMessage;
+import com.google.gson.JsonElement;
+
+import monto.service.configuration.Configuration;
+import monto.service.request.Request;
 import monto.service.types.PartialConsumer;
 import monto.service.types.PartialFunction;
 import monto.service.types.UnrecongizedMessageException;
 
-import com.google.gson.JsonElement;
-
-public class IDEReceive {
+public class MessageToService {
   private String tag;
   private JsonElement contents;
 
-  private IDEReceive(String tag, JsonElement contents) {
+  private MessageToService(String tag, JsonElement contents) {
     super();
     this.tag = tag;
     this.contents = contents;
   }
 
   public <A, E extends Exception> A match(
-      PartialFunction<ProductMessage, A, E> onProduct,
-      PartialFunction<DiscoveryResponse, A, E> onDiscovery)
+      PartialFunction<Request, A, E> onRequest,
+      PartialFunction<Configuration, A, E> onConfiguration)
       throws UnrecongizedMessageException, E {
     switch (tag) {
-      case "product":
-        return onProduct.apply(GsonMonto.fromJson(contents, ProductMessage.class));
+      case "request":
+        return onRequest.apply(GsonMonto.fromJson(contents, Request.class));
       case "configuration":
-        return onDiscovery.apply(GsonMonto.fromJson(contents, DiscoveryResponse.class));
+        return onConfiguration.apply(GsonMonto.fromJson(contents, Configuration.class));
       default:
         throw new RuntimeException(String.format("unrecognized message type %s\n", tag));
     }
   }
 
-  public void matchVoid(Consumer<ProductMessage> onProduct, Consumer<DiscoveryResponse> onDiscovery)
+  public void matchVoid(Consumer<Request> onRequest, Consumer<Configuration> onConfiguration)
       throws UnrecongizedMessageException {
     this
         .<Void, UnrecongizedMessageException>match(
             req -> {
-              onProduct.accept(req);
+              onRequest.accept(req);
               return null;
             },
             conf -> {
-              onDiscovery.accept(conf);
+              onConfiguration.accept(conf);
               return null;
             });
   }
 
   public <E extends Exception> void matchExc(
-      PartialConsumer<ProductMessage, E> onProduct,
-      PartialConsumer<DiscoveryResponse, E> onDiscovery)
+      PartialConsumer<Request, E> onRequest, PartialConsumer<Configuration, E> onConfiguration)
       throws UnrecongizedMessageException, E {
     this
         .<Void, E>match(
             req -> {
-              onProduct.accept(req);
+              onRequest.accept(req);
               return null;
             },
             conf -> {
-              onDiscovery.accept(conf);
+              onConfiguration.accept(conf);
               return null;
             });
   }

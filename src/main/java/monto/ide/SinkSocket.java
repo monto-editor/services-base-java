@@ -2,6 +2,7 @@ package monto.ide;
 
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.gson.GsonMonto;
+import monto.service.gson.MessageToIde;
 import monto.service.product.ProductMessage;
 import monto.service.types.MessageUnavailableException;
 import monto.service.types.PartialFunction;
@@ -11,11 +12,11 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
 
-public class Sink {
+public class SinkSocket {
   private Socket socket;
   private String address;
 
-  public Sink(Context ctx, String address) {
+  public SinkSocket(Context ctx, String address) {
     this.socket = ctx.socket(ZMQ.PAIR);
     this.address = address;
   }
@@ -25,13 +26,13 @@ public class Sink {
   }
 
   public <A, E extends Exception> A receive(
-      PartialFunction<ProductMessage, A, E> onProductMessages,
+      PartialFunction<ProductMessage, A, E> onProductMessage,
       PartialFunction<DiscoveryResponse, A, E> onDiscovery)
       throws UnrecongizedMessageException, MessageUnavailableException, E {
     String rawMsg = socket.recvStr();
     if (rawMsg != null) {
-      return GsonMonto.fromJson(rawMsg, IDEReceive.class)
-          .<A, E>match(prod -> onProductMessages.apply(prod), disc -> onDiscovery.apply(disc));
+      return GsonMonto.fromJson(rawMsg, MessageToIde.class)
+          .<A, E>match(prod -> onProductMessage.apply(prod), disc -> onDiscovery.apply(disc));
     } else {
       throw new MessageUnavailableException();
     }
