@@ -16,7 +16,7 @@ public class MessageFromIde {
   }
 
   public static MessageFromIde source(SourceMessage msg) {
-    return new MessageFromIde("product", GsonMonto.toJsonTree(msg));
+    return new MessageFromIde("source", GsonMonto.toJsonTree(msg));
   }
 
   public static MessageFromIde config(Configuration config) {

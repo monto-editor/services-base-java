@@ -26,7 +26,7 @@ public class MessageToIde {
     switch (tag) {
       case "product":
         return onProduct.apply(GsonMonto.fromJson(contents, ProductMessage.class));
-      case "configuration":
+      case "discovery":
         return onDiscovery.apply(GsonMonto.fromJson(contents, DiscoveryResponse.class));
       default:
         throw new RuntimeException(String.format("unrecognized message type %s\n", tag));
