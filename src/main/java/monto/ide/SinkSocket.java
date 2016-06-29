@@ -1,16 +1,17 @@
 package monto.ide;
 
+import java.util.function.Consumer;
+
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Context;
+import org.zeromq.ZMQ.Socket;
+
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageToIde;
 import monto.service.product.ProductMessage;
 import monto.service.types.MessageUnavailableException;
-import monto.service.types.PartialFunction;
 import monto.service.types.UnrecongizedMessageException;
-
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Context;
-import org.zeromq.ZMQ.Socket;
 
 public class SinkSocket {
   private Socket socket;
@@ -25,14 +26,12 @@ public class SinkSocket {
     socket.connect(address);
   }
 
-  public <A, E extends Exception> A receive(
-      PartialFunction<ProductMessage, A, E> onProductMessage,
-      PartialFunction<DiscoveryResponse, A, E> onDiscovery)
-      throws UnrecongizedMessageException, MessageUnavailableException, E {
+  public void receive(
+      Consumer<ProductMessage> onProductMessage, Consumer<DiscoveryResponse> onDiscovery)
+      throws UnrecongizedMessageException, MessageUnavailableException {
     String rawMsg = socket.recvStr();
     if (rawMsg != null) {
-      return GsonMonto.fromJson(rawMsg, MessageToIde.class)
-          .<A, E>match(prod -> onProductMessage.apply(prod), disc -> onDiscovery.apply(disc));
+      GsonMonto.fromJson(rawMsg, MessageToIde.class).matchVoid(onProductMessage, onDiscovery);
     } else {
       throw new MessageUnavailableException();
     }
