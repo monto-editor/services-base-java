@@ -17,4 +17,9 @@ public class Setting<T> {
   public T getValue() {
     return value;
   }
+
+  @Override
+  public String toString() {
+    return String.format("Setting {%s, %s}", optionId, value);
+  }
 }
