@@ -1,5 +1,7 @@
 package monto.service.gson;
 
+import java.util.List;
+
 import com.google.gson.JsonElement;
 
 import monto.service.configuration.Configuration;
@@ -19,7 +21,7 @@ public class MessageFromIde {
     return new MessageFromIde("source", GsonMonto.toJsonTree(msg));
   }
 
-  public static MessageFromIde config(Configuration config) {
+  public static MessageFromIde config(List<Configuration> config) {
     return new MessageFromIde("configuration", GsonMonto.toJsonTree(config));
   }
 
