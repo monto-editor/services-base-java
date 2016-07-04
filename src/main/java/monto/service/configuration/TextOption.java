@@ -1,5 +1,6 @@
 package monto.service.configuration;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class TextOption extends AbstractOption<String> {
@@ -17,16 +18,31 @@ public class TextOption extends AbstractOption<String> {
 
   @Override
   public <A> A match(
-      Function<BooleanOption, A> f,
-      Function<NumberOption, A> g,
-      Function<TextOption, A> h,
-      Function<XorOption, A> i,
-      Function<OptionGroup, A> j) {
-    return h.apply(this);
+      Function<BooleanOption, A> bo,
+      Function<NumberOption, A> no,
+      Function<TextOption, A> to,
+      Function<XorOption, A> xo,
+      Function<OptionGroup, A> og) {
+    return to.apply(this);
   }
 
   @Override
-  public <A> A match(Function<AbstractOption<String>, A> f, Function<OptionGroup, A> g) {
-    return f.apply(this);
+  public <A> A match(Function<AbstractOption<String>, A> ao, Function<OptionGroup, A> og) {
+    return ao.apply(this);
+  }
+
+  @Override
+  public void matchVoid(
+      Consumer<BooleanOption> bo,
+      Consumer<NumberOption> no,
+      Consumer<TextOption> to,
+      Consumer<XorOption> xo,
+      Consumer<OptionGroup> og) {
+    to.accept(this);
+  }
+
+  @Override
+  public void matchVoid(Consumer<AbstractOption<String>> ao, Consumer<OptionGroup> og) {
+    ao.accept(this);
   }
 }
