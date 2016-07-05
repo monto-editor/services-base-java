@@ -21,8 +21,8 @@ public class MessageFromIde {
     return new MessageFromIde("source", GsonMonto.toJsonTree(msg));
   }
 
-  public static MessageFromIde config(List<Configuration> config) {
-    return new MessageFromIde("configuration", GsonMonto.toJsonTree(config));
+  public static MessageFromIde config(List<Configuration> configs) {
+    return new MessageFromIde("configurations", GsonMonto.toJsonTree(configs));
   }
 
   public static MessageFromIde discover(DiscoveryRequest request) {
