@@ -11,7 +11,7 @@ import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageToIde;
 import monto.service.product.ProductMessage;
 import monto.service.types.MessageUnavailableException;
-import monto.service.types.UnrecongizedMessageException;
+import monto.service.types.UnrecognizedMessageException;
 
 public class SinkSocket {
   private Socket socket;
@@ -28,7 +28,7 @@ public class SinkSocket {
 
   public void receive(
       Consumer<ProductMessage> onProductMessage, Consumer<DiscoveryResponse> onDiscovery)
-      throws UnrecongizedMessageException, MessageUnavailableException {
+      throws UnrecognizedMessageException, MessageUnavailableException {
     String rawMsg = socket.recvStr();
     if (rawMsg != null) {
       GsonMonto.fromJson(rawMsg, MessageToIde.class).matchVoid(onProductMessage, onDiscovery);

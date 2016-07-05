@@ -1,6 +1,6 @@
 package monto.service.types;
 
-public class UnrecongizedMessageException extends Exception {
+public class UnrecognizedMessageException extends Exception {
 
   /**
    *

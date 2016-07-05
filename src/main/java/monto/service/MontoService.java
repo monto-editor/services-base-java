@@ -22,13 +22,13 @@ import monto.service.types.LongKey;
 import monto.service.types.Product;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
-import monto.service.types.UnrecongizedMessageException;
 
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import monto.service.types.UnrecognizedMessageException;
 
 /**
  * Template for a monto service.
@@ -122,10 +122,10 @@ public abstract class MontoService {
                   String rawMsg = serviceSocket.recvStr();
                   if (rawMsg != null) {
                     GsonMonto.fromJson(rawMsg, MessageToService.class)
-                        .<Exception>matchExc(
-                            req -> that.onRequest(req), conf -> that.onConfigurationMessage(conf));
+                        .matchExc(
+                            that::onRequest, that::onConfigurationMessage, that::onCommandMessage);
                   }
-                } catch (UnrecongizedMessageException ex) {
+                } catch (UnrecognizedMessageException ex) {
                   System.err.println(ex.getMessage());
                   ex.printStackTrace(System.err);
                 } catch (Throwable e) {

@@ -6,7 +6,7 @@ import monto.service.discovery.DiscoveryResponse;
 import monto.service.product.ProductMessage;
 import monto.service.types.PartialConsumer;
 import monto.service.types.PartialFunction;
-import monto.service.types.UnrecongizedMessageException;
+import monto.service.types.UnrecognizedMessageException;
 
 import com.google.gson.JsonElement;
 
@@ -22,7 +22,7 @@ public class MessageToIde {
   public <A, E extends Exception> A match(
       PartialFunction<ProductMessage, A, E> onProduct,
       PartialFunction<DiscoveryResponse, A, E> onDiscovery)
-      throws UnrecongizedMessageException, E {
+      throws UnrecognizedMessageException, E {
     switch (tag) {
       case "product":
         return onProduct.apply(GsonMonto.fromJson(contents, ProductMessage.class));
@@ -34,9 +34,9 @@ public class MessageToIde {
   }
 
   public void matchVoid(Consumer<ProductMessage> onProduct, Consumer<DiscoveryResponse> onDiscovery)
-      throws UnrecongizedMessageException {
+      throws UnrecognizedMessageException {
     this
-        .<Void, UnrecongizedMessageException>match(
+        .<Void, UnrecognizedMessageException>match(
             req -> {
               onProduct.accept(req);
               return null;
@@ -50,7 +50,7 @@ public class MessageToIde {
   public <E extends Exception> void matchExc(
       PartialConsumer<ProductMessage, E> onProduct,
       PartialConsumer<DiscoveryResponse, E> onDiscovery)
-      throws UnrecongizedMessageException, E {
+      throws UnrecognizedMessageException, E {
     this
         .<Void, E>match(
             req -> {

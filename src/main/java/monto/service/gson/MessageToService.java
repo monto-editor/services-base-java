@@ -8,7 +8,7 @@ import monto.service.configuration.Configuration;
 import monto.service.request.Request;
 import monto.service.types.PartialConsumer;
 import monto.service.types.PartialFunction;
-import monto.service.types.UnrecongizedMessageException;
+import monto.service.types.UnrecognizedMessageException;
 
 public class MessageToService {
   private String tag;
@@ -23,7 +23,7 @@ public class MessageToService {
   public <A, E extends Exception> A match(
       PartialFunction<Request, A, E> onRequest,
       PartialFunction<Configuration, A, E> onConfiguration)
-      throws UnrecongizedMessageException, E {
+      throws UnrecognizedMessageException, E {
     switch (tag) {
       case "request":
         return onRequest.apply(GsonMonto.fromJson(contents, Request.class));
@@ -35,9 +35,9 @@ public class MessageToService {
   }
 
   public void matchVoid(Consumer<Request> onRequest, Consumer<Configuration> onConfiguration)
-      throws UnrecongizedMessageException {
+      throws UnrecognizedMessageException {
     this
-        .<Void, UnrecongizedMessageException>match(
+        .<Void, UnrecognizedMessageException>match(
             req -> {
               onRequest.accept(req);
               return null;
@@ -50,7 +50,7 @@ public class MessageToService {
 
   public <E extends Exception> void matchExc(
       PartialConsumer<Request, E> onRequest, PartialConsumer<Configuration, E> onConfiguration)
-      throws UnrecongizedMessageException, E {
+      throws UnrecognizedMessageException, E {
     this
         .<Void, E>match(
             req -> {
