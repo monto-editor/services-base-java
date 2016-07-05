@@ -1,9 +1,9 @@
 package monto.service.gson;
 
-import java.util.List;
-
 import com.google.gson.JsonElement;
 
+import java.util.List;
+import monto.service.command.CommandMessage;
 import monto.service.configuration.Configuration;
 import monto.service.discovery.DiscoveryRequest;
 import monto.service.source.SourceMessage;
@@ -27,6 +27,10 @@ public class MessageFromIde {
 
   public static MessageFromIde discover(DiscoveryRequest request) {
     return new MessageFromIde("discovery", GsonMonto.toJsonTree(request));
+  }
+
+  public static MessageFromIde command(CommandMessage commandMessage) {
+    return new MessageFromIde("command", GsonMonto.toJsonTree(commandMessage));
   }
 
   public String getTag() {

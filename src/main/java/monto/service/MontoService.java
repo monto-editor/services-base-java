@@ -1,15 +1,21 @@
 package monto.service;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Socket;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-
+import monto.service.command.CommandMessage;
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.gson.GsonMonto;
-import monto.service.gson.MessageToService;
 import monto.service.gson.MessageFromService;
+import monto.service.gson.MessageToService;
 import monto.service.product.ProductMessage;
 import monto.service.registration.Dependency;
 import monto.service.registration.DeregisterService;
@@ -22,12 +28,6 @@ import monto.service.types.LongKey;
 import monto.service.types.Product;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
-
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Socket;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import monto.service.types.UnrecognizedMessageException;
 
 /**
@@ -250,6 +250,13 @@ public abstract class MontoService {
    */
   public void onConfigurationMessage(Configuration message) throws Exception {
     // By default ignore configuration messages.
+  }
+
+  /**
+   * Interactive services use this method to handle commands sent from the IDE.
+   */
+  public void onCommandMessage(CommandMessage commandMessage) {
+    // Ignore by default
   }
 
   public ServiceId getServiceId() {
