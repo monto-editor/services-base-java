@@ -1,14 +1,14 @@
 package monto.service.request;
 
+import java.util.List;
+import java.util.Optional;
 import monto.service.product.ProductMessage;
 import monto.service.source.SourceMessage;
 import monto.service.types.Language;
 import monto.service.types.Message;
+import monto.service.types.Messages;
 import monto.service.types.Product;
 import monto.service.types.Source;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * A request message is send from the broker to language services.
@@ -33,59 +33,18 @@ public class Request {
   }
 
   public Optional<SourceMessage> getSourceMessage() {
-    return requirements
-        .stream()
-        .<Optional<SourceMessage>>map(
-            msg -> msg.match(src -> Optional.of(src), prd -> Optional.empty()))
-        .filter(opt -> opt.isPresent())
-        .findFirst()
-        .flatMap(r -> r);
+    return Messages.getSourceMessage(requirements);
   }
 
   public Optional<SourceMessage> getSourceMessage(Source source) {
-    return requirements
-        .stream()
-        .<Optional<SourceMessage>>map(
-            msg
-                -> msg.match(
-                    src -> source.equals(src.getSource()) ? Optional.of(src) : Optional.empty(),
-                    prd -> Optional.empty()))
-        .filter(opt -> opt.isPresent())
-        .findFirst()
-        .flatMap(r -> r);
+    return Messages.getSourceMessage(requirements, source);
   }
 
   public Optional<ProductMessage> getProductMessage(Product product, Language lang) {
-    return requirements
-        .stream()
-        .<Optional<ProductMessage>>map(
-            msg
-                -> msg.match(
-                    src -> Optional.empty(),
-                    prd
-                        -> prd.getProduct().equals(product) && prd.getLanguage().equals(lang)
-                            ? Optional.of(prd)
-                            : Optional.empty()))
-        .filter(opt -> opt.isPresent())
-        .findFirst()
-        .flatMap(r -> r);
+    return Messages.getProductMessage(requirements, product, lang);
   }
 
   public Optional<ProductMessage> getProductMessage(Source source, Product product, Language lang) {
-    return requirements
-        .stream()
-        .<Optional<ProductMessage>>map(
-            msg
-                -> msg.match(
-                    src -> Optional.empty(),
-                    prd
-                        -> prd.getProduct().equals(product)
-                                && prd.getLanguage().equals(lang)
-                                && prd.getSource().equals(source)
-                            ? Optional.of(prd)
-                            : Optional.empty()))
-        .filter(opt -> opt.isPresent())
-        .findFirst()
-        .flatMap(r -> r);
+    return Messages.getProductMessage(requirements, source, product, lang);
   }
 }

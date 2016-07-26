@@ -20,6 +20,7 @@ public class SinkSocket {
   public SinkSocket(Context ctx, String address) {
     this.socket = ctx.socket(ZMQ.PAIR);
     this.address = address;
+    // TODO: socket should have a receive timeout, so thread doesn't get blocked forever, if no message is sent
   }
 
   public void connect() {

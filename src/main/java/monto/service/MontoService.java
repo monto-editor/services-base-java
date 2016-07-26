@@ -12,6 +12,7 @@ import java.util.List;
 import monto.service.command.CommandMessage;
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
+import monto.service.dependency.RegisterCommandMessageDependencies;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageFromService;
@@ -243,7 +244,9 @@ public abstract class MontoService {
   /**
    * Handles request messages send by the broker and usually sends a product message.
    */
-  public abstract void onRequest(Request request) throws Exception;
+  public void onRequest(Request request) throws Exception {
+    // Ignore by default
+  }
 
   /**
    * It handles the configuration messages from the broker and determines the response.
@@ -287,9 +290,17 @@ public abstract class MontoService {
     return zmqConfig.getResourceURL(name);
   }
 
-  protected void registerDynamicDependencies(RegisterDynamicDependencies dyndeps) {
+  protected void registerDynamicDependencies(RegisterDynamicDependencies dependencies) {
     if (serviceSocket != null) {
-      serviceSocket.send(GsonMonto.toJson(MessageFromService.dyndep(dyndeps)));
+      serviceSocket.send(GsonMonto.toJson(MessageFromService.dynamicDependencies(dependencies)));
+    }
+  }
+
+  protected void registerCommandMessageDependencies(
+      RegisterCommandMessageDependencies dependencies) {
+    if (serviceSocket != null) {
+      serviceSocket.send(
+          GsonMonto.toJson(MessageFromService.commandMessageDependencies(dependencies)));
     }
   }
 }
