@@ -61,4 +61,14 @@ public class DynamicDependency {
     result = 31 * result + (language != null ? language.hashCode() : 0);
     return result;
   }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "DynamicDependency { source: %s, serviceId: %s, product: %s, language: %s }",
+        source,
+        serviceId,
+        product,
+        language);
+  }
 }
