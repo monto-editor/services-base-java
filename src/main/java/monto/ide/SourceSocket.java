@@ -14,7 +14,9 @@ public class SourceSocket {
   public SourceSocket(Context ctx, String address) {
     this.address = address;
     this.socket = ctx.socket(ZMQ.PAIR);
-    socket.setLinger(2000); // 2 seconds
+    socket.setLinger(1000);
+    // linger = # of ms, that should be waited after closing,
+    // while trying to send messages in memory buffer
   }
 
   public void connect() {

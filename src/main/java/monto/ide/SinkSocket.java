@@ -20,7 +20,7 @@ public class SinkSocket {
   public SinkSocket(Context ctx, String address) {
     this.socket = ctx.socket(ZMQ.PAIR);
     this.address = address;
-    // TODO: socket should have a receive timeout, so thread doesn't get blocked forever, if no message is sent
+    this.socket.setReceiveTimeOut(1000);
   }
 
   public void connect() {
@@ -29,12 +29,10 @@ public class SinkSocket {
 
   public void receive(
       Consumer<ProductMessage> onProductMessage, Consumer<DiscoveryResponse> onDiscovery)
-      throws UnrecognizedMessageException, MessageUnavailableException {
+      throws UnrecognizedMessageException {
     String rawMsg = socket.recvStr();
     if (rawMsg != null) {
       GsonMonto.fromJson(rawMsg, MessageToIde.class).matchVoid(onProductMessage, onDiscovery);
-    } else {
-      throw new MessageUnavailableException();
     }
   }
 
