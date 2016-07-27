@@ -1,13 +1,12 @@
 package monto.service.command;
 
-import com.google.gson.JsonElement;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import monto.service.gson.GsonMonto;
+
+import com.google.gson.JsonElement;
+
 import monto.service.product.ProductMessage;
-import monto.service.region.Region;
 import monto.service.source.SourceMessage;
 import monto.service.types.Language;
 import monto.service.types.Message;
@@ -17,8 +16,6 @@ import monto.service.types.ServiceId;
 import monto.service.types.Source;
 
 public class CommandMessage {
-  public static final String TAG_SOURCE_POSITION = "sourcePosition";
-
   private int id;
   private int session;
   private ServiceId serviceId;
@@ -39,6 +36,16 @@ public class CommandMessage {
     this.tag = tag;
     this.contents = contents;
     this.requirements = requirements;
+  }
+
+  public CommandMessage(
+      int id, int session, ServiceId serviceId, String tag, JsonElement contents) {
+    this.id = id;
+    this.session = session;
+    this.serviceId = serviceId;
+    this.tag = tag;
+    this.contents = contents;
+    this.requirements = new ArrayList<>();
   }
 
   public int getId() {
@@ -79,21 +86,6 @@ public class CommandMessage {
 
   public Optional<ProductMessage> getProductMessage(Source source, Product product, Language lang) {
     return Messages.getProductMessage(requirements, source, product, lang);
-  }
-
-  public static CommandMessage createSourcePosition(
-      int id, int session, ServiceId serviceId, Source source, Region selection) {
-    return new CommandMessage(
-        id,
-        session,
-        serviceId,
-        TAG_SOURCE_POSITION,
-        GsonMonto.toJsonTree(new SourcePositionContent(source, selection)),
-        new ArrayList<>());
-  }
-
-  public SourcePositionContent asSourcePosition() {
-    return GsonMonto.fromJson(contents, SourcePositionContent.class);
   }
 
   @Override

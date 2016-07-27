@@ -10,7 +10,6 @@ import monto.service.discovery.DiscoveryResponse;
 import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageToIde;
 import monto.service.product.ProductMessage;
-import monto.service.types.MessageUnavailableException;
 import monto.service.types.UnrecognizedMessageException;
 
 public class SinkSocket {
