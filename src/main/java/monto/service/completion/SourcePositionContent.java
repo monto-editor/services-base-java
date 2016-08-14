@@ -1,12 +1,13 @@
-package monto.service.command;
+package monto.service.completion;
 
+import monto.service.command.CommandMessage;
 import monto.service.gson.GsonMonto;
 import monto.service.region.Region;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
 
 public class SourcePositionContent {
-  public static final String TAG_SOURCE_POSITION = "sourcePosition";
+  public static final String TAG = "sourcePosition";
 
   private Source source;
   private Region selection;
@@ -25,12 +26,12 @@ public class SourcePositionContent {
   }
 
   public static CommandMessage createCommandMessage(
-      int id, int session, ServiceId serviceId, Source source, Region selection) {
+      int session, int id, ServiceId serviceId, Source source, Region selection) {
     return new CommandMessage(
-        id,
         session,
+        id,
         serviceId,
-        SourcePositionContent.TAG_SOURCE_POSITION,
+        SourcePositionContent.TAG,
         GsonMonto.toJsonTree(new SourcePositionContent(source, selection)));
   }
 

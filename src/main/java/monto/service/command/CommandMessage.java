@@ -16,22 +16,22 @@ import monto.service.types.ServiceId;
 import monto.service.types.Source;
 
 public class CommandMessage {
-  private int id;
   private int session;
+  private int id;
   private ServiceId serviceId;
   private String tag;
   private JsonElement contents;
   private List<Message> requirements;
 
   public CommandMessage(
-      int id,
       int session,
+      int id,
       ServiceId serviceId,
       String tag,
       JsonElement contents,
       List<Message> requirements) {
-    this.id = id;
     this.session = session;
+    this.id = id;
     this.serviceId = serviceId;
     this.tag = tag;
     this.contents = contents;
@@ -39,21 +39,21 @@ public class CommandMessage {
   }
 
   public CommandMessage(
-      int id, int session, ServiceId serviceId, String tag, JsonElement contents) {
-    this.id = id;
+      int session, int id, ServiceId serviceId, String tag, JsonElement contents) {
     this.session = session;
+    this.id = id;
     this.serviceId = serviceId;
     this.tag = tag;
     this.contents = contents;
     this.requirements = new ArrayList<>();
   }
 
-  public int getId() {
-    return id;
-  }
-
   public int getSession() {
     return session;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public ServiceId getServiceId() {
@@ -91,9 +91,9 @@ public class CommandMessage {
   @Override
   public String toString() {
     return String.format(
-        "CommandMessage { id: %d, session: %d, serviceId: %s, tag: %s, contents: %s, requirements: %s }",
-        id,
+        "CommandMessage { session: %d, id: %d, serviceId: %s, tag: %s, contents: %s, requirements: %s }",
         session,
+        id,
         serviceId,
         tag,
         contents,
