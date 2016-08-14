@@ -30,7 +30,7 @@ public class MessageFromIde {
   }
 
   public static MessageFromIde command(CommandMessage commandMessage) {
-    return new MessageFromIde("command", GsonMonto.toJsonTree(commandMessage));
+    return new MessageFromIde("commandMessage", GsonMonto.toJsonTree(commandMessage));
   }
 
   public String getTag() {

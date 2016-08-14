@@ -2,6 +2,7 @@ package monto.service.gson;
 
 import com.google.gson.JsonElement;
 
+import monto.service.command.CommandUpdate;
 import monto.service.dependency.RegisterCommandMessageDependencies;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.product.ProductMessage;
@@ -20,12 +21,16 @@ public class MessageFromService {
   }
 
   public static MessageFromService dynamicDependencies(RegisterDynamicDependencies msg) {
-    return new MessageFromService("dyndep", GsonMonto.toJsonTree(msg));
+    return new MessageFromService("dynDep", GsonMonto.toJsonTree(msg));
   }
 
   public static MessageFromService commandMessageDependencies(
       RegisterCommandMessageDependencies msg) {
-    return new MessageFromService("cmddep", GsonMonto.toJsonTree(msg));
+    return new MessageFromService("cmdDep", GsonMonto.toJsonTree(msg));
+  }
+
+  public static MessageFromService commandUpdate(CommandUpdate msg) {
+    return new MessageFromService("commandUpdate", GsonMonto.toJsonTree(msg));
   }
 
   public String getTag() {
