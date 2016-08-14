@@ -1,15 +1,24 @@
 package monto.service.gson;
 
-import com.google.gson.*;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
+
+import java.util.Arrays;
+import java.util.List;
 import monto.service.ast.AST;
 import monto.service.ast.NonTerminal;
 import monto.service.configuration.Option;
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.product.ProductMessage;
-import monto.service.types.*;
-
-import java.util.Arrays;
-import java.util.List;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Message;
+import monto.service.types.Product;
+import monto.service.types.ServiceId;
+import monto.service.types.Source;
 
 public final class GsonMonto {
   private static Gson gson;
@@ -38,7 +47,7 @@ public final class GsonMonto {
             .registerTypeAdapter(Option.class, new OptionDeserializer())
             .registerTypeAdapter(Option.class, new OptionSerializer())
             // see comment of ASTDeserializer, same applies for Option
-
+            .registerTypeAdapter(byte[].class, new ByteArrayDeSerializer())
             .create();
   }
 
@@ -74,7 +83,6 @@ public final class GsonMonto {
    * <code>
    * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(message, Completion[].class);
    * </code>
-   *
    * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
    */
   public static <T> List<T> fromJsonArray(ProductMessage productMessage, Class<T[]> aClass) {
@@ -83,11 +91,8 @@ public final class GsonMonto {
   }
 
   /**
-   * Use it like this:<br>
-   * <code>
-   * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(completionJsonString, Completion[].class);
-   * </code>
-   *
+   * Use it like this:<br> <code> List&lt;Completion&gt; completions =
+   * GsonMonto.fromJsonArray(completionJsonString, Completion[].class); </code>
    * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
    */
   public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
