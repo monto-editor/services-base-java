@@ -8,6 +8,10 @@ public class Source {
     this.source = source;
   }
 
+  public String getSource() {
+    return source;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (obj != null && obj.hashCode() == this.hashCode() && obj instanceof Source) {
