@@ -6,17 +6,16 @@ public class Completion {
 
   private String description;
   private String replacement;
+  private int deleteBeginOffset;
+  private int deleteLength;
   private URL icon;
-  private int insertionOffset;
 
-  public Completion(String description, String replacement, URL icon) {
-    this(description, replacement, 0, icon);
-  }
-
-  public Completion(String description, String replacement, int insertionOffset, URL icon) {
+  public Completion(
+      String description, String replacement, int deleteBeginOffset, int deleteLength, URL icon) {
     this.description = description;
     this.replacement = replacement;
-    this.insertionOffset = insertionOffset;
+    this.deleteBeginOffset = deleteBeginOffset;
+    this.deleteLength = deleteLength;
     this.icon = icon;
   }
 
@@ -32,8 +31,12 @@ public class Completion {
     return icon;
   }
 
-  public int getInsertionOffset() {
-    return insertionOffset;
+  public int getDeleteBeginOffset() {
+    return deleteBeginOffset;
+  }
+
+  public int getDeleteLength() {
+    return deleteLength;
   }
 
   @Override
