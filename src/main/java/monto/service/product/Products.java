@@ -11,4 +11,5 @@ public class Products {
   public static final Product FILE_DEPENDENCIES = new Product("filedependencies");
   public static final Product FILE_GRAPH = new Product("filegraph");
   public static final Product IDENTIFIER = new Product("identifier");
+  public static final Product STREAM_OUTPUT = new Product("streamOutput");
 }

@@ -2,19 +2,25 @@ package monto.service.run;
 
 public class StreamOutput {
   private SourceStream sourceStream;
-  private byte[] data;
+  private String data;
+  private int session;
 
-  public StreamOutput(SourceStream sourceStream, byte[] data) {
+  public StreamOutput(SourceStream sourceStream, String data, int session) {
     this.sourceStream = sourceStream;
     this.data = data;
+    this.session = session;
   }
 
   public SourceStream getSourceStream() {
     return sourceStream;
   }
 
-  public byte[] getData() {
+  public String getData() {
     return data;
+  }
+
+  public int getSession() {
+    return session;
   }
 
   public enum SourceStream {
