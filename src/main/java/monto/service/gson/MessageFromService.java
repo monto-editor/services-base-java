@@ -20,12 +20,12 @@ public class MessageFromService {
   }
 
   public static MessageFromService dynamicDependencies(RegisterDynamicDependencies msg) {
-    return new MessageFromService("dyndep", GsonMonto.toJsonTree(msg));
+    return new MessageFromService("dynDep", GsonMonto.toJsonTree(msg));
   }
 
   public static MessageFromService commandMessageDependencies(
       RegisterCommandMessageDependencies msg) {
-    return new MessageFromService("cmddep", GsonMonto.toJsonTree(msg));
+    return new MessageFromService("cmdDep", GsonMonto.toJsonTree(msg));
   }
 
   public String getTag() {
