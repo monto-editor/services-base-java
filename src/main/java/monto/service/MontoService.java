@@ -10,7 +10,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import monto.service.command.CommandMessage;
-import monto.service.command.CommandUpdate;
 import monto.service.configuration.Configuration;
 import monto.service.configuration.Option;
 import monto.service.dependency.RegisterCommandMessageDependencies;
@@ -240,18 +239,6 @@ public abstract class MontoService {
           reason);
     }
     sendProductMessage(versionID, source, product, language, contents, time);
-  }
-
-  protected void sendCommandMessageUpdate(
-      CommandMessage commandMessage, String tag, JsonElement contents) {
-    serviceSocket.send(
-        GsonMonto.toJson(
-            new CommandUpdate(
-                commandMessage.getSession(),
-                commandMessage.getId(),
-                commandMessage.getServiceId(),
-                tag,
-                contents)));
   }
 
   /**

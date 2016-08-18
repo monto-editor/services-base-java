@@ -6,7 +6,6 @@ import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
 
-import monto.service.command.CommandUpdate;
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageToIde;
@@ -28,14 +27,11 @@ public class SinkSocket {
   }
 
   public void receive(
-      Consumer<ProductMessage> onProductMessage,
-      Consumer<CommandUpdate> onCommandUpdate,
-      Consumer<DiscoveryResponse> onDiscovery)
+      Consumer<ProductMessage> onProductMessage, Consumer<DiscoveryResponse> onDiscovery)
       throws UnrecognizedMessageException {
     String rawMsg = socket.recvStr();
     if (rawMsg != null) {
-      GsonMonto.fromJson(rawMsg, MessageToIde.class)
-          .matchVoid(onProductMessage, onCommandUpdate, onDiscovery);
+      GsonMonto.fromJson(rawMsg, MessageToIde.class).matchVoid(onProductMessage, onDiscovery);
     }
   }
 

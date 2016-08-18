@@ -31,7 +31,7 @@ public class MessageToService {
         return onRequest.apply(GsonMonto.fromJson(contents, Request.class));
       case "configuration":
         return onConfiguration.apply(GsonMonto.fromJson(contents, Configuration.class));
-      case "commandMessage":
+      case "command":
         return onCommandMessage.apply(GsonMonto.fromJson(contents, CommandMessage.class));
       default:
         throw new RuntimeException(String.format("unrecognized message type %s\n", tag));
