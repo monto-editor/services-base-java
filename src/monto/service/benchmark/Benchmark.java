@@ -23,16 +23,19 @@ public abstract class Benchmark {
     }
 
     protected void warmup(Source source, String contents) throws Exception {
-        premeasure(source, contents);
+        preMeasure(source, contents);
         measure(source, contents);
+        postMeasure();
     }
 
-    protected void premeasure(Source source, String contents) throws Exception {
+    protected void preMeasure(Source source, String contents) throws Exception {
     }
 
     protected abstract long measure(Source source, String contents) throws Exception;
 
-    public void runBenchmark(Path corpus, Path csvOutput, int repetitions, long interval, int warmUpRounds) throws Exception {
+    protected void postMeasure() throws Exception {}
+
+	public void runBenchmark(Path corpus, Path csvOutput, int warmUpRounds, int repetitions) throws Exception {
         long[] overall = new long[repetitions];
         long[] productiveTime = new long[repetitions];
         setup();
@@ -43,44 +46,41 @@ public abstract class Benchmark {
                     .filter(path -> path.toString().endsWith("." + fileType))
                     .collect(Collectors.toList());
 
-            int warmUpCount = 1;
-            for (int i = 1; i <= warmUpRounds; i++) {
-                for (Path file : files) {
-                    System.out.printf("warmup [%d/%d]: %s\n", warmUpCount++, files.size() * warmUpRounds, file);
-                    try {
-                        warmup(new Source(file.toString()), new String(Files.readAllBytes(file), StandardCharsets.UTF_8));
-                    } catch (Exception e) {
-                        System.err.println(e);
-                        restart();
-                    }
-                }
-            }
             try (PrintWriter csv = new PrintWriter(Files.newBufferedWriter(csvOutput), true)) {
                 csv.println("file,bytes,overall,productive");
 
                 for (Path file : files) {
                     String contents = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
-                    int lines = countLineNumbers(contents);
 
+                    int lines = countLineNumbers(contents);
+                    Source source = new Source(file.toString());
                     System.out.printf("file: %s\nlines: %d\n", file.getFileName(), lines);
 
-                    Thread.sleep(100);
+                    for (int i = 1; i <= warmUpRounds; i++) {
+			try {
+				warmup(source, new String(Files.readAllBytes(file), StandardCharsets.UTF_8));
+			} catch (Exception e) {
+				System.err.println(e);
+				restart();
+			}
+                    }
+
                     for (int i = 0; i < repetitions; i++) {
                         try {
-                            Source source = new Source(file.toString());
-                            premeasure(source, contents);
-                            Thread.sleep(interval);
+                            preMeasure(source, contents);
                             long start = System.nanoTime();
                             long productive = measure(source, contents);
                             long end = System.nanoTime();
                             overall[i] = end - start;
                             productiveTime[i] = productive;
+                            postMeasure();
                         } catch (Throwable e) {
                             System.err.println(e);
                             restart();
                             i = -1;
                         }
                     }
+
                     for (int i = 0; i < repetitions; i++)
                         csv.printf("%s,%d,%d,%d\n", file.getFileName(), contents.length(), overall[i], productiveTime[i]);
                     System.out.println(statistics(overall));
