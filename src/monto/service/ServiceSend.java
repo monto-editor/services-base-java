@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.gson.GsonMonto;
 import monto.service.product.ProductMessage;
+import monto.service.source.SourceMessage;
 
 public class ServiceSend {
 	private String tag;
@@ -13,6 +14,10 @@ public class ServiceSend {
 		super();
 		this.tag = tag;
 		this.contents = contents;
+	}
+
+	public static ServiceSend source(SourceMessage msg) {
+		return new ServiceSend("source", GsonMonto.toJsonTree(msg));
 	}
 
 	public static ServiceSend product(ProductMessage msg) {

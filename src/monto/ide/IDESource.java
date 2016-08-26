@@ -6,6 +6,7 @@ import org.zeromq.ZMQ.Socket;
 
 import monto.service.gson.GsonMonto;
 import monto.service.source.SourceMessage;
+import monto.service.ServiceSend;
 
 public class IDESource {
 	private Socket socket;
@@ -23,7 +24,7 @@ public class IDESource {
 
     public void sendSource(SourceMessage message) {
         try {
-            socket.send(GsonMonto.toJson(message));
+            socket.send(GsonMonto.toJson(ServiceSend.source(message)));
         } catch (Exception e) {
             System.err.print(e);
         }
