@@ -27,4 +27,9 @@ public class StreamOutput {
     OUT,
     ERR
   }
+
+  @Override
+  public String toString() {
+    return String.format("StreamOutput {%s (%d): %s}\n", sourceStream, session, data);
+  }
 }
