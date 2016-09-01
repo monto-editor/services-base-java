@@ -82,7 +82,7 @@ public abstract class Benchmark {
                     }
 
                     for (int i = 0; i < repetitions; i++)
-                        csv.printf("%s,%d,%d,%d\n", file.getFileName(), contents.length(), overall[i], productiveTime[i]);
+                        csv.printf("%s,%d,%d,%d\n", file.toAbsolutePath().toString(), contents.length(), overall[i], productiveTime[i]);
                     System.out.println(statistics(overall));
                     System.out.println();
                 }
