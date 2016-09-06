@@ -53,27 +53,6 @@ public abstract class MontoService {
   private Thread serviceThread;
   protected boolean debug = false;
 
-  /**
-   * Template for a monto service.
-   */
-  public MontoService(
-      ZMQConfiguration zmqConfig,
-      ServiceId serviceId,
-      String label,
-      String description,
-      List<ProductDescription> products,
-      List<Dependency> dependencies) {
-    this.zmqConfig = zmqConfig;
-    this.serviceId = serviceId;
-    this.label = label;
-    this.description = description;
-    this.products = products;
-    this.options = options();
-    this.dependencies = dependencies;
-    this.running = true;
-    this.registered = false;
-  }
-
   public MontoService(
       ZMQConfiguration zmqConfig,
       ServiceId serviceId,
@@ -82,8 +61,16 @@ public abstract class MontoService {
       List<ProductDescription> products,
       List<Option> options,
       List<Dependency> dependencies) {
-    this(zmqConfig, serviceId, label, description, products, dependencies);
+
+    this.zmqConfig = zmqConfig;
+    this.serviceId = serviceId;
+    this.label = label;
+    this.description = description;
+    this.products = products;
     this.options = options;
+    this.dependencies = dependencies;
+    this.running = true;
+    this.registered = false;
   }
 
   public MontoService(
@@ -101,8 +88,8 @@ public abstract class MontoService {
         label,
         description,
         Arrays.asList(new ProductDescription(product, language)),
+        options,
         dependencies);
-    this.options = options;
   }
 
   public void start() throws Exception {
