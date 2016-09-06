@@ -1,34 +1,50 @@
 package monto.service.types;
 
+import java.util.Optional;
+
 public class Source {
 
-  private String source;
+  private String physicalName;
+  private String logicalName;
 
-  public Source(String source) {
-    this.source = source;
+  public Source(String physicalName) {
+    this(physicalName, null);
   }
 
-  public String getSource() {
-    return source;
+  public Source(String physicalName, String logicalName) {
+    this.physicalName = physicalName;
+    this.logicalName = logicalName;
+  }
+
+  public String getPhysicalName() {
+    return physicalName;
+  }
+
+  public Optional<String> getLogicalName() {
+    return Optional.ofNullable(logicalName);
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (obj != null && obj.hashCode() == this.hashCode() && obj instanceof Source) {
-      Source other = (Source) obj;
-      return this.source.equals(other.source);
-    } else {
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Source)) {
       return false;
     }
+
+    Source source = (Source) o;
+
+    return physicalName.equals(source.physicalName);
   }
 
   @Override
   public int hashCode() {
-    return source.hashCode();
+    return physicalName.hashCode();
   }
 
   @Override
   public String toString() {
-    return source;
+    return String.format("Source {physicalName: %s, logicalName: %s}", physicalName, logicalName);
   }
 }

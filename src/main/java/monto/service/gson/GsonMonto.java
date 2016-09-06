@@ -36,8 +36,6 @@ public final class GsonMonto {
             .registerTypeAdapter(Product.class, new ProductDeserializer())
             .registerTypeAdapter(Language.class, toStringSerializer)
             .registerTypeAdapter(Language.class, new LanguageDeserializer())
-            .registerTypeAdapter(Source.class, toStringSerializer)
-            .registerTypeAdapter(Source.class, new SourceDeserializer())
             .registerTypeAdapter(LongKey.class, new LongKeySerializer())
             .registerTypeAdapter(LongKey.class, new LongKeyDeserializer())
             .registerTypeAdapter(AST.class, new ASTDeserializer())
