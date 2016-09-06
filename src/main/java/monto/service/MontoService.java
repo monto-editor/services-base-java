@@ -189,7 +189,7 @@ public abstract class MontoService {
     sendProductMessage(versionID, source, product, language, contents, 0);
   }
 
-  protected void sendProductMessage(
+  protected synchronized void sendProductMessage(
       LongKey versionID,
       Source source,
       Product product,
@@ -277,13 +277,13 @@ public abstract class MontoService {
     return zmqConfig.getResourceURL(name);
   }
 
-  protected void registerDynamicDependencies(RegisterDynamicDependencies dependencies) {
+  protected synchronized void registerDynamicDependencies(RegisterDynamicDependencies dependencies) {
     if (serviceSocket != null) {
       serviceSocket.send(GsonMonto.toJson(MessageFromService.dynamicDependencies(dependencies)));
     }
   }
 
-  protected void registerCommandMessageDependencies(
+  protected synchronized void registerCommandMessageDependencies(
       RegisterCommandMessageDependencies dependencies) {
     if (serviceSocket != null) {
       serviceSocket.send(
