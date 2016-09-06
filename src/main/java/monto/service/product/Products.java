@@ -12,5 +12,6 @@ public class Products {
   public static final Product FILE_GRAPH = new Product("filegraph");
   public static final Product IDENTIFIER = new Product("identifier");
   public static final Product STREAM_OUTPUT = new Product("streamOutput");
+  public static final Product PROCESS_TERMINATED = new Product("processTerminated");
   public static final Product LOGICAL_SOURCE_NAME = new Product("logicalSourceName");
 }
