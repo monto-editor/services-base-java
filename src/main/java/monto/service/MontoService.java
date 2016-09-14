@@ -277,7 +277,8 @@ public abstract class MontoService {
     return zmqConfig.getResourceURL(name);
   }
 
-  protected synchronized void registerDynamicDependencies(RegisterDynamicDependencies dependencies) {
+  protected synchronized void registerDynamicDependencies(
+      RegisterDynamicDependencies dependencies) {
     if (serviceSocket != null) {
       serviceSocket.send(GsonMonto.toJson(MessageFromService.dynamicDependencies(dependencies)));
     }

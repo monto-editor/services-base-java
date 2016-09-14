@@ -1,9 +1,8 @@
 package monto.service.dependency;
 
+import java.util.Set;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
-
-import java.util.Set;
 
 public class RegisterDynamicDependencies {
 
@@ -32,14 +31,21 @@ public class RegisterDynamicDependencies {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
 
     RegisterDynamicDependencies that = (RegisterDynamicDependencies) o;
 
-    if (source != null ? !source.equals(that.source) : that.source != null) return false;
-    if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null)
+    if (source != null ? !source.equals(that.source) : that.source != null) {
       return false;
+    }
+    if (serviceId != null ? !serviceId.equals(that.serviceId) : that.serviceId != null) {
+      return false;
+    }
     return dependencies != null
         ? dependencies.equals(that.dependencies)
         : that.dependencies == null;
@@ -51,5 +57,14 @@ public class RegisterDynamicDependencies {
     result = 31 * result + (serviceId != null ? serviceId.hashCode() : 0);
     result = 31 * result + (dependencies != null ? dependencies.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return String.format(
+        "RegisterDynamicDependencies {source: %s, serviceId: %s, dependencies: %s}",
+        source,
+        serviceId,
+        dependencies);
   }
 }
