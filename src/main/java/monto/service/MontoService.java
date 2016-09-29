@@ -189,18 +189,19 @@ public abstract class MontoService {
     sendProductMessage(versionID, source, product, language, contents, 0);
   }
 
-  protected synchronized void sendProductMessage(
+  protected void sendProductMessage(
       LongKey versionID,
       Source source,
       Product product,
       Language language,
       JsonElement contents,
       long time) {
-    serviceSocket.send(
-        GsonMonto.toJson(
-            MessageFromService.product(
-                new ProductMessage(
-                    versionID, source, getServiceId(), product, language, contents, time))));
+    sendProductMessage(
+        new ProductMessage(versionID, source, getServiceId(), product, language, contents, time));
+  }
+
+  protected synchronized void sendProductMessage(ProductMessage productMessage) {
+    serviceSocket.send(GsonMonto.toJson(MessageFromService.product(productMessage)));
   }
 
   protected void sendProductMessageNotAvailable(
