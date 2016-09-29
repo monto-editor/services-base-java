@@ -6,13 +6,13 @@ import monto.service.region.Region;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
 
-public class SourcePositionContent {
+public class CompletionRequest {
   public static final String TAG = "sourcePosition";
 
   private Source source;
   private Region selection;
 
-  public SourcePositionContent(Source source, Region selection) {
+  public CompletionRequest(Source source, Region selection) {
     this.source = source;
     this.selection = selection;
   }
@@ -31,11 +31,11 @@ public class SourcePositionContent {
         session,
         id,
         serviceId,
-        SourcePositionContent.TAG,
-        GsonMonto.toJsonTree(new SourcePositionContent(source, selection)));
+        CompletionRequest.TAG,
+        GsonMonto.toJsonTree(new CompletionRequest(source, selection)));
   }
 
-  public static SourcePositionContent fromCommandMessage(CommandMessage commandMessage) {
-    return GsonMonto.fromJson(commandMessage.getContents(), SourcePositionContent.class);
+  public static CompletionRequest fromCommandMessage(CommandMessage commandMessage) {
+    return GsonMonto.fromJson(commandMessage.getContents(), CompletionRequest.class);
   }
 }
