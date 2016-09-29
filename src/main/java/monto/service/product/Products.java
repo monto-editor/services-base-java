@@ -14,4 +14,5 @@ public class Products {
   public static final Product STREAM_OUTPUT = new Product("streamOutput");
   public static final Product PROCESS_TERMINATED = new Product("processTerminated");
   public static final Product LOGICAL_SOURCE_NAME = new Product("logicalSourceName");
+  public static final Product HIT_BREAKPOINT = new Product("hitBreakpoint");
 }
