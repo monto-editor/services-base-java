@@ -1,4 +1,4 @@
-package monto.service.run;
+package monto.service.launching;
 
 public class StreamOutput {
   private SourceStream sourceStream;

@@ -1,4 +1,4 @@
-package monto.service.run;
+package monto.service.launching;
 
 import monto.service.command.CommandMessage;
 import monto.service.gson.GsonMonto;
@@ -8,8 +8,8 @@ import monto.service.types.Source;
 public class LaunchConfiguration {
   public static final String TAG = "launchConfig";
 
-  private String mode;
-  private Source mainClassSource;
+  private final String mode;
+  private final Source mainClassSource;
   // TODO: future fields: arguments, env vars, working dir, language specific configs as JsonElement
 
   public LaunchConfiguration(String mode, Source mainClassSource) {

@@ -23,7 +23,7 @@ Export-Package: com.google.gson,
  monto.service.registration,
  monto.service.request,
  monto.service.resources,
- monto.service.run,
+ monto.service.launching,
  monto.service.source,
  monto.service.types,
  org.zeromq

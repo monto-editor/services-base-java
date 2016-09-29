@@ -1,4 +1,4 @@
-package monto.service.run;
+package monto.service.launching;
 
 import monto.service.command.CommandMessage;
 import monto.service.gson.GsonMonto;
@@ -12,7 +12,6 @@ public class TerminateProcess {
         session, id, serviceId, TerminateProcess.TAG, GsonMonto.toJsonTree(null));
   }
 
-  public static TerminateProcess fromCommandMessage(CommandMessage commandMessage) {
-    return GsonMonto.fromJson(commandMessage.getContents(), TerminateProcess.class);
-  }
+  // fromCommandMessage() method is not necessary, because TerminateProcess doesn't hold any
+  // information, that need to be parsed by Gson
 }
