@@ -3,12 +3,10 @@ package monto.service.launching;
 public class StreamOutput {
   private SourceStream sourceStream;
   private String data;
-  private int session;
 
-  public StreamOutput(SourceStream sourceStream, String data, int session) {
+  public StreamOutput(SourceStream sourceStream, String data) {
     this.sourceStream = sourceStream;
     this.data = data;
-    this.session = session;
   }
 
   public SourceStream getSourceStream() {
@@ -19,10 +17,6 @@ public class StreamOutput {
     return data;
   }
 
-  public int getSession() {
-    return session;
-  }
-
   public enum SourceStream {
     OUT,
     ERR
@@ -30,6 +24,6 @@ public class StreamOutput {
 
   @Override
   public String toString() {
-    return String.format("StreamOutput {%s (%d): %s}\n", sourceStream, session, data);
+    return String.format("StreamOutput {%s: %s}\n", sourceStream, data);
   }
 }
