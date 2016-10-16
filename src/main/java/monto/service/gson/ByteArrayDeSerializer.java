@@ -11,7 +11,7 @@ import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.Base64;
 
-public class ByteArrayDeSerializer implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
+class ByteArrayDeSerializer implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
   @Override
   public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException {
