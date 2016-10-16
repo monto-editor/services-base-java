@@ -65,6 +65,8 @@ public class ProductMessage implements Message {
       return false;
     }
 
+    // todo replace with matching on sourcename
+
     return "session".equals(parts[0])
         && mode.equals(parts[1])
         && String.valueOf(sessionId).equals(parts[2]);
