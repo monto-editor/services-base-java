@@ -13,6 +13,7 @@ import monto.service.ast.NonTerminal;
 import monto.service.configuration.Option;
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.product.ProductMessage;
+import monto.service.types.Command;
 import monto.service.types.Language;
 import monto.service.types.LongKey;
 import monto.service.types.Message;
@@ -36,6 +37,8 @@ public final class GsonMonto {
             .registerTypeAdapter(Product.class, new ProductDeserializer())
             .registerTypeAdapter(Language.class, toStringSerializer)
             .registerTypeAdapter(Language.class, new LanguageDeserializer())
+            .registerTypeAdapter(Command.class, toStringSerializer)
+            .registerTypeAdapter(Command.class, new CommandDeserializer())
             .registerTypeAdapter(LongKey.class, new LongKeySerializer())
             .registerTypeAdapter(LongKey.class, new LongKeyDeserializer())
             .registerTypeAdapter(AST.class, new ASTDeserializer())
