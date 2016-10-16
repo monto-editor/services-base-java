@@ -18,6 +18,7 @@ import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageFromService;
 import monto.service.gson.MessageToService;
 import monto.service.product.ProductMessage;
+import monto.service.registration.CommandDescription;
 import monto.service.registration.Dependency;
 import monto.service.registration.DeregisterService;
 import monto.service.registration.ProductDescription;
@@ -34,7 +35,6 @@ import monto.service.types.UnrecognizedMessageException;
 /**
  * Template for a monto service.
  */
-@SuppressWarnings("rawtypes")
 public abstract class MontoService {
 
   private ZMQConfiguration zmqConfig;
@@ -48,6 +48,7 @@ public abstract class MontoService {
   protected volatile List<ProductDescription> products;
   protected volatile List<Option> options;
   protected volatile List<Dependency> dependencies;
+  protected volatile List<CommandDescription> commands;
   private Socket registrationSocket;
   private Socket serviceSocket;
   private Thread serviceThread;
@@ -60,7 +61,8 @@ public abstract class MontoService {
       String description,
       List<ProductDescription> products,
       List<Option> options,
-      List<Dependency> dependencies) {
+      List<Dependency> dependencies,
+      List<CommandDescription> commands) {
 
     this.zmqConfig = zmqConfig;
     this.serviceId = serviceId;
@@ -69,27 +71,9 @@ public abstract class MontoService {
     this.products = products;
     this.options = options;
     this.dependencies = dependencies;
+    this.commands = commands;
     this.running = true;
     this.registered = false;
-  }
-
-  public MontoService(
-      ZMQConfiguration zmqConfig,
-      ServiceId serviceId,
-      String label,
-      String description,
-      Language language,
-      Product product,
-      List<Option> options,
-      List<Dependency> dependencies) {
-    this(
-        zmqConfig,
-        serviceId,
-        label,
-        description,
-        Arrays.asList(new ProductDescription(product, language)),
-        options,
-        dependencies);
   }
 
   public void start() throws Exception {
@@ -159,7 +143,7 @@ public abstract class MontoService {
     registrationSocket.send(
         GsonMonto.toJson(
             new RegisterServiceRequest(
-                serviceId, label, description, products, options, dependencies)));
+                serviceId, label, description, products, options, dependencies, commands)));
   }
 
   private boolean isRegisterResponseOk() {
@@ -270,8 +254,17 @@ public abstract class MontoService {
     return Arrays.asList(options);
   }
 
+  public static List<ProductDescription> productDescriptions(
+      ProductDescription... productDescriptions) {
+    return Arrays.asList(productDescriptions);
+  }
+
   public static List<Dependency> dependencies(Dependency... dependencies) {
     return Arrays.asList(dependencies);
+  }
+
+  public static List<CommandDescription> commands(CommandDescription... commands) {
+    return Arrays.asList(commands);
   }
 
   public URL getResource(String name) {
