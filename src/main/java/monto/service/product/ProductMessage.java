@@ -1,12 +1,17 @@
 package monto.service.product;
 
+import java.util.function.Function;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import monto.service.source.SourceMessage;
-import monto.service.types.*;
 
-import java.util.Optional;
-import java.util.function.Function;
+import monto.service.source.SourceMessage;
+import monto.service.types.Language;
+import monto.service.types.LongKey;
+import monto.service.types.Message;
+import monto.service.types.Product;
+import monto.service.types.ServiceId;
+import monto.service.types.Source;
 
 public class ProductMessage implements Message {
 
@@ -41,35 +46,6 @@ public class ProductMessage implements Message {
 
   public Source getSource() {
     return source;
-  }
-
-  public Optional<Integer> getSessionIdFromFakeSource() {
-    String[] parts = source.getPhysicalName().split(":");
-    if (parts.length != 3) {
-      return Optional.empty();
-    }
-    return Optional.of(Integer.valueOf(parts[2]));
-  }
-
-  public Optional<String> getModeFromFakeSource() {
-    String[] parts = source.getPhysicalName().split(":");
-    if (parts.length != 3) {
-      return Optional.empty();
-    }
-    return Optional.of(parts[1]);
-  }
-
-  public boolean matchesFakeSource(String mode, int sessionId) {
-    String[] parts = source.getPhysicalName().split(":");
-    if (parts.length != 3) {
-      return false;
-    }
-
-    // todo replace with matching on sourcename
-
-    return "session".equals(parts[0])
-        && mode.equals(parts[1])
-        && String.valueOf(sessionId).equals(parts[2]);
   }
 
   public ServiceId getServiceId() {

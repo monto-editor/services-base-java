@@ -34,7 +34,7 @@ public class Source {
     }
 
     Source source = (Source) o;
-
+    // TODO: also include logical name?
     return physicalName.equals(source.physicalName);
   }
 
