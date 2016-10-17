@@ -35,6 +35,7 @@ import monto.service.types.UnrecognizedMessageException;
 /**
  * Template for a monto service.
  */
+@SuppressWarnings("rawtypes")
 public abstract class MontoService {
 
   private ZMQConfiguration zmqConfig;

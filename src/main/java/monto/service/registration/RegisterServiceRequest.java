@@ -4,6 +4,7 @@ import java.util.List;
 import monto.service.configuration.Option;
 import monto.service.types.ServiceId;
 
+@SuppressWarnings("rawtypes")
 public class RegisterServiceRequest {
 
   private final ServiceId serviceId;
