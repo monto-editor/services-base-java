@@ -23,4 +23,25 @@ public class Breakpoint {
   public String toString() {
     return String.format("Breakpoint {source: %s, lineNumber: %d}\n", source, lineNumber);
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Breakpoint that = (Breakpoint) o;
+
+    return lineNumber == that.lineNumber && source.equals(that.source);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = source.hashCode();
+    result = 31 * result + lineNumber;
+    return result;
+  }
 }
