@@ -16,4 +16,5 @@ public class Products {
   public static final Product LOGICAL_SOURCE_NAME = new Product("logicalSourceName");
   public static final Product HIT_BREAKPOINT = new Product("hitBreakpoint");
   public static final Product THREADS_RESUMED = new Product("threadsResumed");
+  public static final Product THREAD_STEPPED = new Product("threadStepped");
 }
