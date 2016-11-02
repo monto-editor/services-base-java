@@ -28,7 +28,6 @@ public interface Either<A, B> {
 
     public Left(A a) {
       this.a = a;
-
     }
 
     @Override

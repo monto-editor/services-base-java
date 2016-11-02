@@ -5,7 +5,7 @@ public class StepRequest {
   private final StepRange range;
 
   public StepRequest(Thread thread, StepRange range) {
-    this.thread= thread;
+    this.thread = thread;
     this.range = range;
   }
 
@@ -18,6 +18,8 @@ public class StepRequest {
   }
 
   public enum StepRange {
-    OVER, INTO, OUT
+    OVER,
+    INTO,
+    OUT
   }
 }

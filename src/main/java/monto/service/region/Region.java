@@ -31,12 +31,12 @@ public class Region implements IRegion {
 
   public static Region fromLineNumber(String document, int startLine, int endLine) {
     int[] offsets = getLineOffsets(document);
-    return fromLineNumberColumn(offsets, startLine, 0, endLine,
-        offsets[endLine] - offsets[endLine - 1] - 1);
+    return fromLineNumberColumn(
+        offsets, startLine, 0, endLine, offsets[endLine] - offsets[endLine - 1] - 1);
   }
 
-  public static Region fromLineNumberColumn(int[] offsets, int startLine, int startColumn,
-      int endLine, int endColumn) {
+  public static Region fromLineNumberColumn(
+      int[] offsets, int startLine, int startColumn, int endLine, int endColumn) {
     try {
       int startOffset = offsets[startLine - 1] + startColumn - 1;
       int endOffset;
@@ -47,8 +47,8 @@ public class Region implements IRegion {
       }
       return new Region(startOffset, endOffset - startOffset + 1);
     } catch (ArrayIndexOutOfBoundsException e) {
-      throw new RuntimeException(String.format("%d, %s", offsets.length, Arrays.toString(offsets)),
-          e);
+      throw new RuntimeException(
+          String.format("%d, %s", offsets.length, Arrays.toString(offsets)), e);
     }
   }
 

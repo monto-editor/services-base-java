@@ -8,8 +8,8 @@ public class Thread {
   private final List<StackFrame> stackFrames;
   private final Breakpoint suspendingBreakpoint;
 
-  public Thread(long id, String name, List<StackFrame> stackFrames,
-                Breakpoint suspendingBreakpoint) {
+  public Thread(
+      long id, String name, List<StackFrame> stackFrames, Breakpoint suspendingBreakpoint) {
     this.id = id;
     this.name = name;
     this.stackFrames = stackFrames;
@@ -35,8 +35,11 @@ public class Thread {
   @Override
   public String toString() {
     return String.format(
-        "Thread {id: %d, name: %s, stackFrames: %s, suspendingBreakpoint: %s}\n", id, name,
-        stackFrames, suspendingBreakpoint);
+        "Thread {id: %d, name: %s, stackFrames: %s, suspendingBreakpoint: %s}\n",
+        id,
+        name,
+        stackFrames,
+        suspendingBreakpoint);
   }
 
   @Override
@@ -49,17 +52,11 @@ public class Thread {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
+    if (this == obj) return true;
+    if (obj == null) return false;
+    if (getClass() != obj.getClass()) return false;
     Thread other = (Thread) obj;
-    if (id != other.id)
-      return false;
+    if (id != other.id) return false;
     return true;
   }
-  
-  
 }
