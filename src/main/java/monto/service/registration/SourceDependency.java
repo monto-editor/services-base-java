@@ -1,8 +1,7 @@
 package monto.service.registration;
 
-import monto.service.types.Language;
-
 import java.util.function.Function;
+import monto.service.types.Language;
 
 public class SourceDependency implements Dependency {
   private Language language;

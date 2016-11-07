@@ -1,9 +1,8 @@
 package monto.service.gson;
 
 import com.google.gson.*;
-import monto.service.types.ServiceId;
-
 import java.lang.reflect.Type;
+import monto.service.types.ServiceId;
 
 class ServiceIdDeserializer implements JsonDeserializer<ServiceId> {
   @Override

@@ -4,9 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import monto.service.ast.NonTerminal;
-
 import java.lang.reflect.Type;
+import monto.service.ast.NonTerminal;
 
 class ASTNonTerminalSerializer implements JsonSerializer<NonTerminal> {
   @Override

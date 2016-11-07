@@ -2,10 +2,6 @@ package monto.service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Socket;
-
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +27,10 @@ import monto.service.types.Product;
 import monto.service.types.ServiceId;
 import monto.service.types.Source;
 import monto.service.types.UnrecognizedMessageException;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Socket;
 
-/**
- * Template for a monto service.
- */
+/** Template for a monto service. */
 @SuppressWarnings("rawtypes")
 public abstract class MontoService {
 
@@ -205,32 +201,22 @@ public abstract class MontoService {
     if (debug) {
       System.err.printf(
           "%s is sending a notAvailable ProductMessage for %s %s %s:%n%s",
-          getServiceId(),
-          source,
-          product,
-          language,
-          reason);
+          getServiceId(), source, product, language, reason);
     }
     sendProductMessage(versionID, source, product, language, contents, time);
   }
 
-  /**
-   * Handles request messages send by the broker and usually sends a product message.
-   */
+  /** Handles request messages send by the broker and usually sends a product message. */
   public void onRequest(Request request) throws Exception {
     // Ignore by default
   }
 
-  /**
-   * It handles the configuration messages from the broker and determines the response.
-   */
+  /** It handles the configuration messages from the broker and determines the response. */
   public void onConfigurationMessage(Configuration message) throws Exception {
     // By default ignore configuration messages.
   }
 
-  /**
-   * Interactive services use this method to handle commands sent from the IDE.
-   */
+  /** Interactive services use this method to handle commands sent from the IDE. */
   public void onCommandMessage(CommandMessage commandMessage) {
     // Ignore by default
   }

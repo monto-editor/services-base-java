@@ -1,8 +1,7 @@
 package monto.service.discovery;
 
-import monto.service.types.ServiceId;
-
 import java.util.function.Function;
+import monto.service.types.ServiceId;
 
 public class ServiceIdFilter implements Filter {
 

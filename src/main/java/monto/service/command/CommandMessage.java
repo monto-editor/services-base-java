@@ -1,7 +1,6 @@
 package monto.service.command;
 
 import com.google.gson.JsonElement;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -91,11 +90,6 @@ public class CommandMessage {
   public String toString() {
     return String.format(
         "CommandMessage { session: %d, id: %d, command: %s, language: %s, contents: %s, requirements: %s }",
-        session,
-        id,
-        command,
-        language,
-        contents,
-        requirements);
+        session, id, command, language, contents, requirements);
   }
 }

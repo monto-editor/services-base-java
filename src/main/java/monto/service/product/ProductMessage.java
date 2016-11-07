@@ -1,10 +1,8 @@
 package monto.service.product;
 
-import java.util.function.Function;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
+import java.util.function.Function;
 import monto.service.source.SourceMessage;
 import monto.service.types.Language;
 import monto.service.types.LongKey;
@@ -79,12 +77,7 @@ public class ProductMessage implements Message {
             + "  language: %s,\n"
             + "  contents: %s,\n"
             + "}",
-        id,
-        source,
-        serviceId,
-        product,
-        language,
-        contents);
+        id, source, serviceId, product, language, contents);
   }
 
   @Override

@@ -1,14 +1,12 @@
 package monto.service.gson;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
-
+import java.util.Arrays;
+import java.util.List;
 import monto.service.ast.AST;
 import monto.service.ast.NonTerminal;
 import monto.service.configuration.Option;
@@ -85,7 +83,9 @@ public final class GsonMonto {
    * <code>
    * List&lt;Completion&gt; completions = GsonMonto.fromJsonArray(message, Completion[].class);
    * </code>
-   * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
+   *
+   * @see <a
+   *     href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
    */
   public static <T> List<T> fromJsonArray(ProductMessage productMessage, Class<T[]> aClass) {
     T[] jsonToObject = gson.fromJson(productMessage.getContents(), aClass);
@@ -93,9 +93,12 @@ public final class GsonMonto {
   }
 
   /**
-   * Use it like this:<br> <code> List&lt;Completion&gt; completions =
+   * Use it like this:<br>
+   * <code> List&lt;Completion&gt; completions =
    * GsonMonto.fromJsonArray(completionJsonString, Completion[].class); </code>
-   * @see <a href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
+   *
+   * @see <a
+   *     href="http://stackoverflow.com/a/28805158/2634932">http://stackoverflow.com/a/28805158/2634932</a>
    */
   public static <T> List<T> fromJsonArray(String json, Class<T[]> aClass) {
     T[] jsonToObject = gson.fromJson(json, aClass);

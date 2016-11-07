@@ -66,9 +66,6 @@ public class DynamicDependency {
   public String toString() {
     return String.format(
         "DynamicDependency { source: %s, serviceId: %s, product: %s, language: %s }",
-        source,
-        serviceId,
-        product,
-        language);
+        source, serviceId, product, language);
   }
 }

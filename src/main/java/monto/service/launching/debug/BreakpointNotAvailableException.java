@@ -5,8 +5,7 @@ public class BreakpointNotAvailableException extends Exception {
     super(
         String.format(
             "Breakpoint in %s:%d isn't available",
-            breakpoint.getSource(),
-            breakpoint.getLineNumber()));
+            breakpoint.getSource(), breakpoint.getLineNumber()));
   }
 
   public BreakpointNotAvailableException(String message) {

@@ -1,14 +1,12 @@
 package monto.service.gson;
 
+import com.google.gson.JsonElement;
 import java.util.function.Consumer;
-
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.product.ProductMessage;
 import monto.service.types.PartialConsumer;
 import monto.service.types.PartialFunction;
 import monto.service.types.UnrecognizedMessageException;
-
-import com.google.gson.JsonElement;
 
 public class MessageToIde {
   private String tag;
@@ -35,32 +33,30 @@ public class MessageToIde {
 
   public void matchVoid(Consumer<ProductMessage> onProduct, Consumer<DiscoveryResponse> onDiscovery)
       throws UnrecognizedMessageException {
-    this
-        .<Void, UnrecognizedMessageException>match(
-            req -> {
-              onProduct.accept(req);
-              return null;
-            },
-            conf -> {
-              onDiscovery.accept(conf);
-              return null;
-            });
+    this.<Void, UnrecognizedMessageException>match(
+        req -> {
+          onProduct.accept(req);
+          return null;
+        },
+        conf -> {
+          onDiscovery.accept(conf);
+          return null;
+        });
   }
 
   public <E extends Exception> void matchExc(
       PartialConsumer<ProductMessage, E> onProduct,
       PartialConsumer<DiscoveryResponse, E> onDiscovery)
       throws UnrecognizedMessageException, E {
-    this
-        .<Void, E>match(
-            req -> {
-              onProduct.accept(req);
-              return null;
-            },
-            conf -> {
-              onDiscovery.accept(conf);
-              return null;
-            });
+    this.<Void, E>match(
+        req -> {
+          onProduct.accept(req);
+          return null;
+        },
+        conf -> {
+          onDiscovery.accept(conf);
+          return null;
+        });
   }
 
   public String getTag() {

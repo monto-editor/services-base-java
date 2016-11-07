@@ -1,7 +1,6 @@
 package monto.service.gson;
 
 import com.google.gson.JsonElement;
-
 import monto.service.dependency.RegisterCommandMessageDependencies;
 import monto.service.dependency.RegisterDynamicDependencies;
 import monto.service.product.ProductMessage;

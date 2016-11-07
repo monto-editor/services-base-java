@@ -1,10 +1,9 @@
 package monto.service.registration;
 
+import java.util.function.Function;
 import monto.service.types.Language;
 import monto.service.types.Product;
 import monto.service.types.ServiceId;
-
-import java.util.function.Function;
 
 public class ProductDependency implements Dependency {
 

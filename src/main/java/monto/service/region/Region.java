@@ -3,8 +3,8 @@ package monto.service.region;
 import java.util.Arrays;
 
 public class Region implements IRegion {
-  final protected int offset;
-  final protected int length;
+  protected final int offset;
+  protected final int length;
 
   public Region(int offset, int length) {
     this.offset = offset;

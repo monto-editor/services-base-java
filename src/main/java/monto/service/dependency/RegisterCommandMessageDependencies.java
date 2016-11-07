@@ -26,7 +26,6 @@ public class RegisterCommandMessageDependencies {
   public String toString() {
     return String.format(
         "RegisterCommandMessageDependencies { commandMessage: %s, dependencies: %s }",
-        commandMessage,
-        dependencies);
+        commandMessage, dependencies);
   }
 }

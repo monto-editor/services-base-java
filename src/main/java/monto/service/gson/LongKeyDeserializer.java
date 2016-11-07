@@ -1,9 +1,8 @@
 package monto.service.gson;
 
 import com.google.gson.*;
-import monto.service.types.LongKey;
-
 import java.lang.reflect.Type;
+import monto.service.types.LongKey;
 
 class LongKeyDeserializer implements JsonDeserializer<LongKey> {
   @Override

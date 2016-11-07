@@ -31,10 +31,6 @@ public class Error extends Region {
   public String toString() {
     return String.format(
         "Error { offset = %d, length = %d, level = \"%s\", category = \"%s\", description = \"%s\" }",
-        super.getStartOffset(),
-        super.getLength(),
-        level,
-        category,
-        description);
+        super.getStartOffset(), super.getLength(), level, category, description);
   }
 }

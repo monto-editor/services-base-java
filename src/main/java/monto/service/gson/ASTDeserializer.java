@@ -1,11 +1,10 @@
 package monto.service.gson;
 
 import com.google.gson.*;
+import java.lang.reflect.Type;
 import monto.service.ast.AST;
 import monto.service.ast.NonTerminal;
 import monto.service.ast.Terminal;
-
-import java.lang.reflect.Type;
 
 class ASTDeserializer implements JsonDeserializer<AST> {
   @Override

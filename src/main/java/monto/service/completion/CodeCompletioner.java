@@ -12,8 +12,6 @@ import monto.service.MontoService;
 import monto.service.ZMQConfiguration;
 import monto.service.command.CommandMessage;
 import monto.service.command.Commands;
-import monto.service.completion.Completion;
-import monto.service.completion.CompletionRequest;
 import monto.service.dependency.DynamicDependency;
 import monto.service.dependency.RegisterCommandMessageDependencies;
 import monto.service.gson.GsonMonto;
@@ -96,8 +94,8 @@ public class CodeCompletioner extends MontoService {
                 .stream()
                 .filter(identifier -> identifier.getIdentifier().startsWith(toBeCompleted))
                 .map(
-                    identifier
-                        -> new Completion(
+                    identifier ->
+                        new Completion(
                             identifier.getIdentifier(),
                             identifier.getIdentifier(),
                             deleteBeginOffset,

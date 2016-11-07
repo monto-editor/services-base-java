@@ -63,8 +63,6 @@ public class RegisterDynamicDependencies {
   public String toString() {
     return String.format(
         "RegisterDynamicDependencies {source: %s, serviceId: %s, dependencies: %s}",
-        source,
-        serviceId,
-        dependencies);
+        source, serviceId, dependencies);
   }
 }

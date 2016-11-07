@@ -6,8 +6,6 @@ public class HasNoChildrenException extends RuntimeException {
     super(name);
   }
 
-  /**
-   *
-   */
+  /** */
   private static final long serialVersionUID = 5223951248241286861L;
 }

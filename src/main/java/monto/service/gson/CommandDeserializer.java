@@ -5,10 +5,8 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
-
 import java.lang.reflect.Type;
 import monto.service.types.Command;
-import monto.service.types.Product;
 
 class CommandDeserializer implements JsonDeserializer<Command> {
   @Override

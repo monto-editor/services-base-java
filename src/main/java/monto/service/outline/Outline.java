@@ -1,13 +1,12 @@
 package monto.service.outline;
 
-import monto.service.region.IRegion;
-import monto.service.region.Region;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import monto.service.region.IRegion;
+import monto.service.region.Region;
 
 public class Outline extends Region {
 

@@ -1,11 +1,10 @@
 package monto.ide;
 
+import monto.service.gson.GsonMonto;
+import monto.service.gson.MessageFromIde;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Context;
 import org.zeromq.ZMQ.Socket;
-
-import monto.service.gson.GsonMonto;
-import monto.service.gson.MessageFromIde;
 
 public class SourceSocket {
   private Socket socket;

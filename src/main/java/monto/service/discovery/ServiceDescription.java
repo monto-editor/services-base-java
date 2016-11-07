@@ -1,9 +1,8 @@
 package monto.service.discovery;
 
+import java.util.List;
 import monto.service.configuration.Option;
 import monto.service.types.ServiceId;
-
-import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class ServiceDescription {
@@ -40,9 +39,6 @@ public class ServiceDescription {
   public String toString() {
     return String.format(
         "ServiceDescription{%s, %s, %s, %s}",
-        serviceId.toString(),
-        options.toString(),
-        description,
-        label);
+        serviceId.toString(), options.toString(), description, label);
   }
 }

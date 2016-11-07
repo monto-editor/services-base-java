@@ -11,9 +11,7 @@ public interface IRegion {
     return getStartOffset() + getLength();
   }
 
-  /**
-   * a.inRange(b) tests if a is in range of b.
-   */
+  /** a.inRange(b) tests if a is in range of b. */
   default boolean inRange(IRegion whole) {
     try {
       return this.getStartOffset() >= whole.getStartOffset()
@@ -23,16 +21,12 @@ public interface IRegion {
     }
   }
 
-  /**
-   * a.encloses(b) tests if b is in range of a.
-   */
+  /** a.encloses(b) tests if b is in range of a. */
   default boolean encloses(IRegion part) {
     return part.inRange(this);
   }
 
-  /**
-   * Extract a region of text from the given string.
-   */
+  /** Extract a region of text from the given string. */
   default String extract(String str) {
     return str.substring(getStartOffset(), getEndOffset());
   }

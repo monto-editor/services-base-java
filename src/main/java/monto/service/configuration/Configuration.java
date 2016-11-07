@@ -1,8 +1,7 @@
 package monto.service.configuration;
 
-import monto.service.types.ServiceId;
-
 import java.util.List;
+import monto.service.types.ServiceId;
 
 @SuppressWarnings("rawtypes")
 public class Configuration {

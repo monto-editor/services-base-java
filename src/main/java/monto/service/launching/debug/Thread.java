@@ -36,10 +36,7 @@ public class Thread {
   public String toString() {
     return String.format(
         "Thread {id: %d, name: %s, stackFrames: %s, suspendingBreakpoint: %s}\n",
-        id,
-        name,
-        stackFrames,
-        suspendingBreakpoint);
+        id, name, stackFrames, suspendingBreakpoint);
   }
 
   @Override

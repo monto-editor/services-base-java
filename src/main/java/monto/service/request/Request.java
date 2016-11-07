@@ -11,9 +11,8 @@ import monto.service.types.Product;
 import monto.service.types.Source;
 
 /**
- * A request message is send from the broker to language services.
- * It contains the source for which the service should produce
- * its result and all necessary source and product messages.
+ * A request message is send from the broker to language services. It contains the source for which
+ * the service should produce its result and all necessary source and product messages.
  */
 public class Request {
   private Source source;

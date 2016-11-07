@@ -4,12 +4,11 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import monto.service.discovery.DiscoveryResponse;
-import monto.service.discovery.ServiceDescription;
-
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
+import monto.service.discovery.DiscoveryResponse;
+import monto.service.discovery.ServiceDescription;
 
 class DiscoveryResponseDeserializer implements JsonDeserializer<DiscoveryResponse> {
   @Override

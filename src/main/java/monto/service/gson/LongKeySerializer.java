@@ -4,9 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import monto.service.types.LongKey;
-
 import java.lang.reflect.Type;
+import monto.service.types.LongKey;
 
 class LongKeySerializer implements JsonSerializer<LongKey> {
   @Override

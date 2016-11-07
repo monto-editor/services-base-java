@@ -1,8 +1,7 @@
 package monto.service.discovery;
 
-import monto.service.types.Language;
-
 import java.util.function.Function;
+import monto.service.types.Language;
 
 public class LanguageFilter implements Filter {
 

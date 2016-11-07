@@ -1,11 +1,10 @@
 package monto.service.gson;
 
 import com.google.gson.*;
+import java.lang.reflect.Type;
 import monto.service.product.ProductMessage;
 import monto.service.source.SourceMessage;
 import monto.service.types.Message;
-
-import java.lang.reflect.Type;
 
 class MessageDeserializer implements JsonDeserializer<Message> {
   @Override

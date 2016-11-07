@@ -1,7 +1,6 @@
 package monto.service.gson;
 
 import com.google.gson.JsonElement;
-
 import java.util.function.Consumer;
 import monto.service.command.CommandMessage;
 import monto.service.configuration.Configuration;
@@ -43,20 +42,19 @@ public class MessageToService {
       Consumer<Configuration> onConfiguration,
       Consumer<CommandMessage> onCommandMessage)
       throws UnrecognizedMessageException {
-    this
-        .<Void, UnrecognizedMessageException>match(
-            req -> {
-              onRequest.accept(req);
-              return null;
-            },
-            conf -> {
-              onConfiguration.accept(conf);
-              return null;
-            },
-            cmdMsg -> {
-              onCommandMessage.accept(cmdMsg);
-              return null;
-            });
+    this.<Void, UnrecognizedMessageException>match(
+        req -> {
+          onRequest.accept(req);
+          return null;
+        },
+        conf -> {
+          onConfiguration.accept(conf);
+          return null;
+        },
+        cmdMsg -> {
+          onCommandMessage.accept(cmdMsg);
+          return null;
+        });
   }
 
   public <E extends Exception> void matchExc(
@@ -64,20 +62,19 @@ public class MessageToService {
       PartialConsumer<Configuration, E> onConfiguration,
       PartialConsumer<CommandMessage, E> onCommandMessage)
       throws UnrecognizedMessageException, E {
-    this
-        .<Void, E>match(
-            req -> {
-              onRequest.accept(req);
-              return null;
-            },
-            conf -> {
-              onConfiguration.accept(conf);
-              return null;
-            },
-            cmdMsg -> {
-              onCommandMessage.accept(cmdMsg);
-              return null;
-            });
+    this.<Void, E>match(
+        req -> {
+          onRequest.accept(req);
+          return null;
+        },
+        conf -> {
+          onConfiguration.accept(conf);
+          return null;
+        },
+        cmdMsg -> {
+          onCommandMessage.accept(cmdMsg);
+          return null;
+        });
   }
 
   public String getTag() {

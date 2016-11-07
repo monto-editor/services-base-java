@@ -1,9 +1,8 @@
 package monto.service.gson;
 
 import com.google.gson.*;
-import monto.service.configuration.*;
-
 import java.lang.reflect.Type;
+import monto.service.configuration.*;
 
 @SuppressWarnings("rawtypes")
 class OptionSerializer implements JsonSerializer<Option> {

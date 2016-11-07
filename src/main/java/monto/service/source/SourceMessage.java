@@ -1,12 +1,11 @@
 package monto.service.source;
 
+import java.util.function.Function;
 import monto.service.product.ProductMessage;
 import monto.service.types.Language;
 import monto.service.types.LongKey;
 import monto.service.types.Message;
 import monto.service.types.Source;
-
-import java.util.function.Function;
 
 public class SourceMessage implements Message {
 

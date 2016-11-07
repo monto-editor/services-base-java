@@ -1,10 +1,9 @@
 package monto.service.highlighting;
 
+import java.util.Optional;
 import monto.service.gson.GsonMonto;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import java.util.Optional;
 
 public class Font {
   private Color color, bgcolor;

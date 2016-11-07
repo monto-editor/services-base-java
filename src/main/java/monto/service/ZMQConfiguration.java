@@ -1,9 +1,8 @@
 package monto.service;
 
-import org.zeromq.ZContext;
-
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.zeromq.ZContext;
 
 public class ZMQConfiguration {
   private ZContext context;
@@ -50,8 +49,6 @@ public class ZMQConfiguration {
             + "  Service Address: %s\n"
             + "  Registration Address: %s\n"
             + "  Resource Port: %d",
-        getServiceAddress(),
-        getRegistrationAddress(),
-        getResourcePort());
+        getServiceAddress(), getRegistrationAddress(), getResourcePort());
   }
 }

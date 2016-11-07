@@ -1,9 +1,8 @@
 package monto.service.gson;
 
 import com.google.gson.*;
-import monto.service.types.Language;
-
 import java.lang.reflect.Type;
+import monto.service.types.Language;
 
 class LanguageDeserializer implements JsonDeserializer<Language> {
   @Override

@@ -1,7 +1,6 @@
 package monto.service.ast;
 
 import java.util.function.Function;
-
 import monto.service.region.Region;
 
 public class Terminal extends Region implements AST {

@@ -1,7 +1,5 @@
 package monto.service.benchmark;
 
-import monto.service.types.Source;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
+import monto.service.types.Source;
 
 public abstract class Benchmark {
 
@@ -87,10 +86,7 @@ public abstract class Benchmark {
           for (int i = 0; i < repetitions; i++)
             csv.printf(
                 "%s,%d,%d,%d\n",
-                file.getFileName(),
-                contents.length(),
-                overall[i],
-                productiveTime[i]);
+                file.getFileName(), contents.length(), overall[i], productiveTime[i]);
           System.out.println(statistics(overall));
           System.out.println();
         }

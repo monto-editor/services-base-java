@@ -1,7 +1,6 @@
 package monto.service.gson;
 
 import com.google.gson.JsonElement;
-
 import java.util.List;
 import monto.service.command.CommandMessage;
 import monto.service.configuration.Configuration;

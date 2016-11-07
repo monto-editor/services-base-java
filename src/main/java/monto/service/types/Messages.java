@@ -22,8 +22,8 @@ public final class Messages {
     return messages
         .stream()
         .<Optional<SourceMessage>>map(
-            msg
-                -> msg.match(
+            msg ->
+                msg.match(
                     src -> source.equals(src.getSource()) ? Optional.of(src) : Optional.empty(),
                     prd -> Optional.empty()))
         .filter(opt -> opt.isPresent())
@@ -36,11 +36,11 @@ public final class Messages {
     return messages
         .stream()
         .<Optional<ProductMessage>>map(
-            msg
-                -> msg.match(
+            msg ->
+                msg.match(
                     src -> Optional.empty(),
-                    prd
-                        -> prd.getProduct().equals(product) && prd.getLanguage().equals(lang)
+                    prd ->
+                        prd.getProduct().equals(product) && prd.getLanguage().equals(lang)
                             ? Optional.of(prd)
                             : Optional.empty()))
         .filter(opt -> opt.isPresent())
@@ -53,11 +53,11 @@ public final class Messages {
     return messages
         .stream()
         .<Optional<ProductMessage>>map(
-            msg
-                -> msg.match(
+            msg ->
+                msg.match(
                     src -> Optional.empty(),
-                    prd
-                        -> prd.getProduct().equals(product)
+                    prd ->
+                        prd.getProduct().equals(product)
                                 && prd.getLanguage().equals(lang)
                                 && prd.getSource().equals(source)
                             ? Optional.of(prd)

@@ -1,8 +1,7 @@
 package monto.service.ast;
 
-import monto.service.region.IRegion;
-
 import java.util.List;
+import monto.service.region.IRegion;
 
 public class ASTNode implements IRegion {
   private String name;

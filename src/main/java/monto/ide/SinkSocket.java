@@ -1,16 +1,14 @@
 package monto.ide;
 
 import java.util.function.Consumer;
-
-import org.zeromq.ZMQ;
-import org.zeromq.ZMQ.Context;
-import org.zeromq.ZMQ.Socket;
-
 import monto.service.discovery.DiscoveryResponse;
 import monto.service.gson.GsonMonto;
 import monto.service.gson.MessageToIde;
 import monto.service.product.ProductMessage;
 import monto.service.types.UnrecognizedMessageException;
+import org.zeromq.ZMQ;
+import org.zeromq.ZMQ.Context;
+import org.zeromq.ZMQ.Socket;
 
 public class SinkSocket {
   private Socket socket;

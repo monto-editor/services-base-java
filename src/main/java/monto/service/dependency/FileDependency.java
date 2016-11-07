@@ -1,8 +1,7 @@
 package monto.service.dependency;
 
-import monto.service.types.Source;
-
 import java.util.Set;
+import monto.service.types.Source;
 
 public class FileDependency {
 
