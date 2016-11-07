@@ -1,13 +1,11 @@
 package monto.service.ast;
 
-import monto.service.region.IRegion;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
-public class NonTerminal implements AST, IRegion {
+public class NonTerminal implements AST {
 
   private String name;
   private List<AST> children;
@@ -61,6 +59,6 @@ public class NonTerminal implements AST, IRegion {
 
   @Override
   public String toString() {
-    return String.format("%s%s", name, children);
+    return String.format("NonTerminal {name: %s, children: %s}", name, children);
   }
 }
